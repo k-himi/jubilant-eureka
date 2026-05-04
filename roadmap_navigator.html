@@ -1,0 +1,3431 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>必修化学 学習ロードマップナビゲーター</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&family=JetBrains+Mono:wght@400;600&display=swap');
+
+:root {
+  --bg:        #0d1117;
+  --surface:   #161b27;
+  --surface2:  #1d2436;
+  --border:    #252f45;
+  --border2:   #2e3a55;
+  --accent:    #58a6ff;
+  --accent-dim:rgba(88,166,255,0.15);
+  --green:     #3fb950;
+  --green-dim: rgba(63,185,80,0.12);
+  --orange:    #f0883e;
+  --orange-dim:rgba(240,136,62,0.15);
+  --text:      #e6edf3;
+  --text2:     #8b949e;
+  --text3:     #404d61;
+  --done-bg:   #0d1f12;
+  --font:      'Noto Sans JP', sans-serif;
+  --mono:      'JetBrains Mono', monospace;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: var(--font); background: var(--bg); color: var(--text); min-height: 100vh; font-size: 13px; line-height: 1.6; }
+@media (max-width: 768px) {
+  body { overflow-y: auto; }
+  html { overflow-y: auto; }
+}
+
+.app { display: grid; grid-template-columns: 260px 1fr; grid-template-rows: 48px 1fr; height: 100vh; overflow: hidden; }
+
+header { grid-column: 1/-1; background: var(--surface); border-bottom: 1px solid var(--border); display: flex; align-items: center; padding: 0 20px; gap: 12px; }
+.header-tag { font-family: var(--mono); font-size: 10px; color: var(--accent); background: var(--accent-dim); border: 1px solid rgba(88,166,255,0.25); padding: 2px 8px; border-radius: 4px; letter-spacing: 0.08em; }
+header h1 { font-size: 14px; font-weight: 700; flex: 1; }
+#headerBadge { font-size: 11px; color: var(--text2); font-family: var(--mono); }
+.header-tour-btn {
+  background: none;
+  border: 1px solid var(--border2);
+  border-radius: 5px;
+  padding: 3px 10px;
+  font-size: 10px;
+  color: var(--text3);
+  cursor: pointer;
+  font-family: var(--font);
+  transition: border-color 0.15s, color 0.15s;
+}
+.header-tour-btn:hover { border-color: var(--accent); color: var(--accent); }
+.header-tour-btn.pulse {
+  border-color: var(--accent);
+  color: var(--accent);
+  animation: tourBtnBounce 0.7s cubic-bezier(.36,.07,.19,.97) infinite;
+}
+@keyframes tourBtnBounce {
+  0%,100% { transform: translateY(0);    box-shadow: 0 0 0 0   rgba(88,166,255,0.5); }
+  20%     { transform: translateY(-5px); box-shadow: 0 6px 12px rgba(88,166,255,0.35); }
+  40%     { transform: translateY(0);    box-shadow: 0 0 0 0   rgba(88,166,255,0); }
+  60%     { transform: translateY(-3px); box-shadow: 0 4px 8px rgba(88,166,255,0.2); }
+  80%     { transform: translateY(0); }
+}
+/* 吹き出しがボタンに吸い込まれるアニメーション */
+.tour-bubble.fly-to {
+  transition: left 0.8s cubic-bezier(.4,0,.6,1),
+              top  0.8s cubic-bezier(.4,0,.6,1),
+              transform 0.8s cubic-bezier(.4,0,.6,1),
+              opacity  0.7s ease 0.1s;
+  transform: scale(0.12) !important;
+  opacity: 0 !important;
+}
+
+.sidebar { background: var(--surface); border-right: 1px solid var(--border); overflow-y: auto; display: flex; flex-direction: column; }
+.sidebar-head { padding: 12px 16px 8px; font-size: 10px; letter-spacing: 0.1em; color: var(--text3); text-transform: uppercase; font-family: var(--mono); border-bottom: 1px solid var(--border); }
+
+.scope-btn { width: 100%; background: none; border: none; border-left: 3px solid transparent; padding: 10px 16px 10px 13px; text-align: left; cursor: pointer; color: var(--text2); font-family: var(--font); font-size: 12px; transition: all 0.15s; display: flex; flex-direction: column; gap: 4px; }
+.scope-btn:hover { background: var(--surface2); color: var(--text); }
+.scope-btn.active { background: var(--surface2); border-left-color: var(--accent); color: var(--text); }
+.scope-btn-top { display: flex; align-items: center; gap: 6px; }
+.scope-btn-name { font-weight: 700; font-size: 12px; flex: 1; }
+.scope-term { font-size: 9px; font-family: var(--mono); background: var(--surface); padding: 1px 5px; border-radius: 3px; color: var(--text3); border: 1px solid var(--border2); }
+.scope-btn.active .scope-term { background: var(--accent-dim); color: var(--accent); border-color: rgba(88,166,255,0.3); }
+.scope-mini-bar { height: 3px; background: var(--border); border-radius: 2px; overflow: hidden; }
+.scope-mini-fill { height: 100%; background: var(--green); transition: width 0.4s; }
+.scope-mini-meta { font-size: 9px; font-family: var(--mono); color: var(--text3); display: flex; justify-content: space-between; }
+
+.main { overflow-y: auto; padding: 16px 20px; display: flex; flex-direction: column; gap: 14px; }
+
+.overview { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 14px 16px; }
+.overview-top { display: flex; align-items: flex-start; gap: 16px; margin-bottom: 12px; }
+.overview-title { flex: 1; }
+.overview-title h2 { font-size: 15px; font-weight: 700; margin-bottom: 2px; }
+.overview-title p { font-size: 11px; color: var(--text2); }
+.ov-stats { display: flex; gap: 16px; }
+.ov-stat { text-align: center; }
+.ov-num { font-family: var(--mono); font-size: 22px; font-weight: 600; line-height: 1; margin-bottom: 2px; }
+.ov-num.g { color: var(--green); } .ov-num.b { color: var(--accent); } .ov-num.o { color: var(--orange); }
+.ov-lbl { font-size: 9px; color: var(--text3); letter-spacing: 0.05em; }
+.tl-labels { display: flex; justify-content: space-between; font-size: 9px; font-family: var(--mono); color: var(--text3); margin-bottom: 3px; padding: 0 1px; }
+.tl-track { height: 20px; display: flex; border-radius: 4px; overflow: hidden; border: 1px solid var(--border); background: var(--bg); }
+.tl-blk { flex: 1; border-right: 1px solid var(--border); cursor: pointer; transition: opacity 0.12s; }
+.tl-blk:last-child { border-right: none; }
+.tl-blk:hover { opacity: 0.7; }
+.tl-blk.st-done    { background: rgba(63,185,80,0.4); }
+.tl-blk.st-partial { background: rgba(240,136,62,0.35); }
+.tl-blk.st-current { background: rgba(88,166,255,0.3); animation: pulse 2s ease-in-out infinite; }
+.tl-blk.st-future  { background: transparent; }
+@keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.55} }
+.hour-row { display: flex; align-items: center; gap: 8px; margin-top: 8px; flex-wrap: wrap; }
+.hour-row label { font-size: 11px; color: var(--text2); }
+.hr-btns { display: flex; gap: 3px; flex-wrap: wrap; }
+.hr-btn { font-family: var(--mono); font-size: 10px; padding: 2px 7px; border-radius: 3px; border: 1px solid var(--border2); background: var(--bg); color: var(--text2); cursor: pointer; transition: all 0.12s; }
+.hr-btn:hover { border-color: var(--accent); color: var(--accent); }
+.hr-btn.active { background: var(--accent); color: #000; border-color: var(--accent); font-weight: 700; }
+.hr-btn.done   { border-color: var(--green); color: var(--green); }
+
+.flow-section { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; overflow: hidden; }
+.flow-header { padding: 8px 14px; border-bottom: 1px solid var(--border); font-size: 11px; font-weight: 700; color: var(--text2); display: flex; align-items: center; gap: 8px; }
+.flow-body { padding: 12px 14px; display: flex; align-items: center; gap: 6px; overflow-x: auto; flex-wrap: wrap; }
+@media (max-width: 768px) {
+  .flow-body { flex-wrap: nowrap; overflow-x: auto; padding: 10px 12px; }
+  .flow-node { min-width: 56px; }
+  .flow-node-name { font-size: 9px; max-width: 60px; }
+}
+.flow-node { display: flex; flex-direction: column; align-items: center; gap: 3px; cursor: pointer; padding: 4px 6px; border-radius: 6px; transition: background 0.12s; min-width: 64px; border: 1px solid transparent; }
+.flow-node:hover { background: var(--surface2); }
+.flow-node.fn-active { border-color: var(--accent); background: var(--accent-dim); }
+.flow-node.fn-done   { border-color: var(--green);  background: var(--green-dim); }
+.flow-node.fn-partial{ border-color: var(--orange); background: var(--orange-dim); }
+.flow-circle { width: 44px; height: 44px; display: grid; place-items: center; font-size: 9px; font-family: var(--mono); font-weight: 600; background: var(--bg); color: var(--text2); flex-shrink: 0; }
+.flow-circle svg { grid-area: 1/1; width: 44px; height: 44px; }
+.flow-circle span { grid-area: 1/1; position: relative; z-index: 1; }
+.fn-done .flow-circle   { color: var(--green); }
+.fn-active .flow-circle { color: var(--accent); }
+.fn-partial .flow-circle{ color: var(--orange); }
+.flow-node-name { font-size: 10px; text-align: center; color: var(--text2); line-height: 1.3; max-width: 68px; }
+.fn-done .flow-node-name   { color: var(--green); }
+.fn-active .flow-node-name { color: var(--accent); font-weight: 700; }
+.flow-arrow { color: var(--text3); font-size: 14px; flex-shrink: 0; align-self: flex-start; margin-top: 10px; }
+
+.cards-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+@media (max-width: 768px) {
+  .cards-grid { grid-template-columns: 1fr; }
+}
+.phase-card { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; overflow: hidden; transition: border-color 0.2s; }
+.phase-card.is-active { border-color: var(--accent); }
+.pc-header { padding: 8px 12px; border-bottom: 1px solid var(--border); display: flex; align-items: center; gap: 8px; cursor: pointer; }
+.pc-num { font-family: var(--mono); font-size: 10px; font-weight: 600; background: var(--surface2); border: 1px solid var(--border2); padding: 1px 6px; border-radius: 3px; color: var(--text2); flex-shrink: 0; }
+.is-active .pc-num { background: var(--accent-dim); color: var(--accent); border-color: rgba(88,166,255,0.3); }
+.pc-title { flex: 1; font-size: 12px; font-weight: 700; line-height: 1.3; }
+.pc-ring { width: 30px; height: 30px; flex-shrink: 0; }
+.pc-body { overflow: hidden; max-height: 600px; transition: max-height 0.3s ease; }
+.phase-card.collapsed .pc-body { max-height: 0; }
+.pc-arrow { color: var(--text3); font-size: 10px; transition: transform 0.2s; flex-shrink: 0; }
+.phase-card.collapsed .pc-arrow { transform: rotate(-90deg); }
+.checklist { list-style: none; padding: 8px 10px; display: flex; flex-direction: column; gap: 3px; }
+.ci { display: flex; align-items: flex-start; gap: 7px; padding: 5px 7px; border-radius: 5px; cursor: pointer; border: 1px solid transparent; transition: background 0.1s; }
+.ci:hover { background: var(--surface2); }
+.ci.ck  { background: var(--done-bg); border-color: rgba(63,185,80,0.2); }
+.ci.cur { background: rgba(88,166,255,0.06); border-color: rgba(88,166,255,0.2); }
+.ci-box { width: 15px; height: 15px; border-radius: 3px; border: 1.5px solid var(--border2); background: var(--bg); flex-shrink: 0; margin-top: 2px; display: flex; align-items: center; justify-content: center; transition: all 0.12s; }
+.ci.ck .ci-box { background: var(--green); border-color: var(--green); }
+.ci-check { opacity: 0; transition: opacity 0.12s; }
+.ci.ck .ci-check { opacity: 1; }
+.ci-body { flex: 1; }
+.ci-text { font-size: 11px; color: var(--text2); line-height: 1.5; }
+.ci.ck .ci-text  { text-decoration: line-through; text-decoration-color: var(--text3); color: var(--text3); }
+.ci.cur .ci-text { color: var(--text); }
+.nuclide { display: inline-flex; flex-direction: column; font-size: 0.78em; line-height: 1.15; vertical-align: middle; margin: 0 1px; font-family: var(--mono); }
+.ci-meta { font-size: 9px; font-family: var(--mono); color: var(--text3); margin-top: 1px; }
+.ci.ck .ci-meta  { color: var(--green); }
+.ci.cur .ci-meta { color: var(--accent); }
+
+/* ── QUIZ MODAL ── */
+.quiz-overlay {
+  position: fixed; inset: 0;
+  background: rgba(0,0,0,0.78);
+  z-index: 300;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+}
+.quiz-overlay.open { display: flex; }
+.quiz-modal {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  width: 100%;
+  max-width: 560px;
+  max-height: 90vh;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 24px 80px rgba(0,0,0,0.7);
+}
+.quiz-modal-head {
+  padding: 14px 18px 12px;
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+}
+.quiz-modal-icon { font-size: 18px; flex-shrink: 0; line-height: 1.4; }
+.quiz-modal-titles { flex: 1; }
+.quiz-modal-label {
+  font-size: 9px; font-family: var(--mono); letter-spacing: 0.1em;
+  color: var(--purple); text-transform: uppercase; margin-bottom: 3px;
+}
+.quiz-modal-topic { font-size: 13px; font-weight: 700; line-height: 1.4; }
+.quiz-modal-close {
+  background: none; border: none; cursor: pointer;
+  color: var(--text2); font-size: 20px; line-height: 1; padding: 0;
+  flex-shrink: 0;
+}
+.quiz-modal-close:hover { color: var(--text); }
+
+.quiz-body { padding: 16px 18px; flex: 1; }
+
+/* 生成中 */
+.quiz-loading {
+  display: flex; flex-direction: column; align-items: center;
+  justify-content: center; gap: 12px; padding: 40px 0;
+}
+.quiz-spinner {
+  width: 32px; height: 32px;
+  border: 3px solid var(--border2);
+  border-top-color: var(--purple);
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+.quiz-loading-text { font-size: 12px; color: var(--text2); }
+
+/* 問題エリア */
+.quiz-question {
+  font-size: 13px; font-weight: 600; line-height: 1.75;
+  color: var(--text); margin-bottom: 14px;
+  background: var(--surface2); border-radius: 7px; padding: 12px 14px;
+  border-left: 3px solid var(--purple);
+}
+.quiz-type-badge {
+  display: inline-block;
+  font-family: var(--mono); font-size: 9px; letter-spacing: 0.08em;
+  padding: 1px 6px; border-radius: 3px; margin-bottom: 8px;
+}
+.quiz-type-badge.mc  { background: rgba(88,166,255,0.15); color: var(--accent); }
+.quiz-type-badge.fil { background: rgba(188,140,255,0.15); color: var(--purple); }
+.quiz-type-badge.txt { background: rgba(240,136,62,0.15);  color: var(--orange); }
+
+/* 選択肢 */
+.quiz-choices { display: flex; flex-direction: column; gap: 7px; margin-bottom: 14px; }
+.quiz-choice {
+  display: flex; align-items: flex-start; gap: 10px;
+  padding: 9px 12px; border-radius: 7px;
+  border: 1.5px solid var(--border2);
+  background: var(--surface2);
+  cursor: pointer; font-size: 12px; color: var(--text2);
+  transition: border-color 0.12s, background 0.12s, color 0.12s;
+  text-align: left; width: 100%;
+}
+.quiz-choice:hover:not(:disabled) { border-color: var(--accent); color: var(--text); }
+.quiz-choice.selected  { border-color: var(--accent); background: rgba(88,166,255,0.1); color: var(--text); }
+.quiz-choice.correct   { border-color: var(--green);  background: rgba(63,185,80,0.12); color: var(--green); }
+.quiz-choice.incorrect { border-color: #f85149; background: rgba(248,81,73,0.1); color: #f85149; }
+.quiz-choice:disabled  { cursor: default; }
+.quiz-choice-key {
+  font-family: var(--mono); font-size: 10px; font-weight: 700;
+  min-width: 18px; flex-shrink: 0; margin-top: 1px;
+}
+
+/* テキスト入力 */
+.quiz-input-wrap { margin-bottom: 14px; }
+.quiz-input {
+  width: 100%; background: var(--surface2);
+  border: 1.5px solid var(--border2); border-radius: 7px;
+  padding: 10px 12px; font-size: 12px; color: var(--text);
+  font-family: var(--font); resize: vertical; min-height: 80px;
+  transition: border-color 0.12s;
+}
+.quiz-input:focus { outline: none; border-color: var(--purple); }
+.quiz-input::placeholder { color: var(--text3); }
+
+/* 結果エリア */
+.quiz-result {
+  border-radius: 8px; padding: 12px 14px;
+  margin-bottom: 14px; font-size: 12px; line-height: 1.75;
+  display: none;
+}
+.quiz-result.show { display: block; }
+.quiz-result.pass { background: rgba(63,185,80,0.1); border: 1px solid rgba(63,185,80,0.3); color: var(--text); }
+.quiz-result.fail { background: rgba(248,81,73,0.08); border: 1px solid rgba(248,81,73,0.25); color: var(--text); }
+.quiz-result-head { font-size: 14px; font-weight: 700; margin-bottom: 6px; }
+.quiz-result.pass .quiz-result-head { color: var(--green); }
+.quiz-result.fail .quiz-result-head { color: #f85149; }
+.quiz-result-body { color: var(--text2); }
+
+/* アクションボタン列 */
+.quiz-actions {
+  display: flex; gap: 8px; justify-content: flex-end;
+  padding-top: 12px; border-top: 1px solid var(--border);
+  flex-wrap: wrap;
+}
+.quiz-action-btn {
+  font-family: var(--font); font-size: 12px; font-weight: 600;
+  padding: 7px 16px; border-radius: 6px; border: none; cursor: pointer;
+  transition: all 0.15s;
+}
+.qab-submit { background: var(--purple); color: #000; }
+.qab-submit:hover { background: #d4a8ff; }
+.qab-submit:disabled { opacity: 0.4; cursor: default; }
+.qab-check  { background: var(--green); color: #000; }
+.qab-check:hover { background: #56d364; }
+.qab-retry  { background: var(--surface2); color: var(--text); border: 1px solid var(--border2); }
+.qab-retry:hover { border-color: var(--purple); color: var(--purple); }
+.qab-next   { background: var(--accent); color: #000; }
+.qab-next:hover { background: #79bbff; }
+.quiz-btn {
+  flex-shrink: 0;
+  background: none;
+  border: 1px solid var(--border2);
+  border-radius: 4px;
+  padding: 1px 5px;
+  font-size: 10px;
+  cursor: pointer;
+  color: var(--text3);
+  opacity: 0.45;
+  transition: opacity 0.15s, border-color 0.15s, background 0.15s, color 0.15s;
+  align-self: flex-start;
+  margin-top: 2px;
+  line-height: 1.5;
+}
+.ci:hover .quiz-btn { opacity: 1; color: var(--purple); border-color: var(--purple); }
+.quiz-btn:hover { background: rgba(188,140,255,0.12); }
+
+/* ── LESSON NOTE MODAL ── */
+.note-overlay {
+  position: fixed; inset: 0;
+  background: rgba(0,0,0,0.78);
+  z-index: 300;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+}
+.note-overlay.open { display: flex; }
+.note-modal {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  width: 100%;
+  max-width: 600px;
+  max-height: 88vh;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 24px 80px rgba(0,0,0,0.7);
+}
+.note-modal-head {
+  padding: 14px 18px 12px;
+  border-bottom: 2px solid rgba(88,166,255,0.3);
+  display: flex; align-items: flex-start; gap: 10px;
+  background: linear-gradient(135deg, rgba(88,166,255,0.06), transparent);
+  flex-shrink: 0;
+}
+.note-modal-icon { font-size: 18px; flex-shrink: 0; line-height: 1.4; }
+.note-modal-titles { flex: 1; }
+.note-modal-label { font-size: 9px; font-family: var(--mono); letter-spacing: 0.1em; color: var(--accent); text-transform: uppercase; margin-bottom: 3px; }
+.note-modal-title { font-size: 14px; font-weight: 700; line-height: 1.3; }
+.note-modal-close { background: none; border: none; cursor: pointer; color: var(--text2); font-size: 20px; line-height: 1; padding: 0; flex-shrink: 0; }
+.note-modal-close:hover { color: var(--text); }
+.note-body { padding: 16px 18px; display: flex; flex-direction: column; gap: 14px; }
+.note-digest { background: rgba(88,166,255,0.08); border: 1px solid rgba(88,166,255,0.2); border-radius: 7px; padding: 11px 14px; font-size: 12px; color: var(--text); line-height: 1.75; font-weight: 500; }
+.note-section { display: flex; flex-direction: column; gap: 5px; }
+.note-section-heading { font-size: 11px; font-weight: 700; color: var(--text); padding-bottom: 5px; border-bottom: 1px solid var(--border); }
+.note-section-body { font-size: 11px; color: var(--text2); line-height: 1.85; white-space: pre-line; }
+.note-quote { background: var(--surface2); border-left: 3px solid var(--accent); border-radius: 0 6px 6px 0; padding: 10px 14px; font-size: 11px; color: var(--text2); line-height: 1.8; font-style: italic; }
+.note-quote-label { font-size: 9px; font-family: var(--mono); color: var(--accent); text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 5px; font-style: normal; }
+.note-related { background: var(--surface2); border-radius: 6px; padding: 10px 14px; }
+.note-related-label { font-size: 9px; font-family: var(--mono); color: var(--text3); letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 6px; }
+.note-related-item { display: flex; align-items: flex-start; gap: 6px; font-size: 10px; color: var(--text2); margin-bottom: 3px; line-height: 1.5; }
+.note-related-dot { width: 5px; height: 5px; border-radius: 50%; background: var(--accent); flex-shrink: 0; margin-top: 5px; }
+
+/* ── LESSON NOTE BUTTON ── */
+.note-btn {
+  flex-shrink: 0;
+  background: none;
+  border: 1px solid var(--border2);
+  border-radius: 4px;
+  padding: 1px 5px;
+  font-size: 10px;
+  cursor: pointer;
+  color: var(--text3);
+  opacity: 0.45;
+  transition: opacity 0.15s, border-color 0.15s, background 0.15s, color 0.15s;
+  align-self: flex-start;
+  margin-top: 2px;
+  line-height: 1.5;
+}
+.ci:hover .note-btn { opacity: 1; color: var(--accent); border-color: var(--accent); }
+.note-btn:hover { background: rgba(88,166,255,0.1); }
+
+.detail-card { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; overflow: hidden; }
+.detail-head { padding: 8px 14px; border-bottom: 1px solid var(--border); display: flex; align-items: center; gap: 8px; }
+.detail-head h3 { font-size: 12px; font-weight: 700; flex: 1; }
+.badge { font-family: var(--mono); font-size: 9px; padding: 2px 6px; border-radius: 3px; font-weight: 600; }
+.badge-g { background: rgba(63,185,80,0.2); color: var(--green); }
+.badge-b { background: var(--accent-dim);   color: var(--accent); }
+.detail-body { padding: 10px 14px; }
+.ab-section { margin-bottom: 10px; }
+.ab-section:last-child { margin-bottom: 0; }
+.ab-label { font-size: 9px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--text3); font-family: var(--mono); margin-bottom: 5px; padding-bottom: 3px; border-bottom: 1px dashed var(--border); }
+.ab-item { display: flex; align-items: flex-start; gap: 8px; padding: 4px 6px; border-radius: 4px; margin-bottom: 2px; }
+.ab-item.can    { background: rgba(63,185,80,0.07); }
+.ab-item.cannot { background: rgba(240,136,62,0.08); }
+.ab-dot { width: 5px; height: 5px; border-radius: 50%; margin-top: 6px; flex-shrink: 0; }
+.ab-item.can    .ab-dot { background: var(--green); }
+.ab-item.cannot .ab-dot { background: var(--orange); }
+.ab-content { flex: 1; }
+.ab-text { font-size: 11px; line-height: 1.5; }
+.ab-item.can    .ab-text { color: var(--text2); }
+.ab-item.cannot .ab-text { color: var(--text); font-weight: 500; }
+.ab-hint { font-size: 9px; color: var(--orange); margin-top: 2px; cursor: pointer; }
+.ab-hint:hover { color: var(--accent); text-decoration: underline; }
+
+.review-card { background: var(--surface); border: 1px solid #3a2a18; border-radius: 8px; overflow: hidden; }
+.review-card.hidden { display: none; }
+.review-head { padding: 8px 14px; background: linear-gradient(90deg,#231608,#1a1805); border-bottom: 1px solid #3a2a18; display: flex; align-items: center; gap: 8px; }
+.review-head h3 { font-size: 12px; font-weight: 700; color: var(--orange); flex: 1; }
+.review-body { padding: 10px 14px; display: flex; flex-direction: column; gap: 6px; }
+.rv-item { display: flex; gap: 10px; padding: 7px 10px; background: var(--bg); border-radius: 5px; border-left: 3px solid var(--orange); }
+.rv-title { font-size: 11px; font-weight: 700; color: var(--text); margin-bottom: 2px; }
+.rv-sub { font-size: 9px; color: var(--text3); }
+.rv-link { font-size: 10px; color: var(--orange); cursor: pointer; margin-top: 2px; }
+.rv-link:hover { color: var(--accent); }
+
+.overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.75); z-index: 200; display: none; align-items: center; justify-content: center; }
+.overlay.open { display: flex; }
+.modal { background: var(--surface); border: 1px solid var(--border); border-radius: 10px; padding: 20px 22px; max-width: 460px; width: 90%; max-height: 80vh; overflow-y: auto; }
+.modal h2 { font-size: 14px; margin-bottom: 8px; }
+.modal-close { float: right; background: none; border: none; cursor: pointer; color: var(--text2); font-size: 20px; line-height: 1; }
+
+::-webkit-scrollbar { width: 5px; height: 5px; }
+::-webkit-scrollbar-track { background: var(--bg); }
+::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+
+/* ── HOME PAGE ── */
+.home-summary {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 16px 20px;
+  display: flex;
+  align-items: center;
+  gap: 24px;
+}
+.home-summary-left { flex: 1; }
+.home-title { font-size: 16px; font-weight: 700; margin-bottom: 3px; }
+.home-subtitle { font-size: 11px; color: var(--text2); }
+.home-summary-right { display: flex; gap: 20px; }
+
+.roadmap-map-wrap {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  overflow: hidden;
+  width: 100%;
+  box-sizing: border-box;
+}
+.roadmap-map-wrap svg { display: block; }
+.roadmap-node { transition: filter 0.2s; }
+.node-hover-overlay { transition: opacity 0.15s; pointer-events: all; }
+
+.home-row {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  overflow: hidden;
+}
+.home-row-label {
+  padding: 8px 16px;
+  font-size: 10px;
+  font-family: var(--mono);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--text3);
+  border-bottom: 1px solid var(--border);
+  background: var(--surface2);
+}
+.home-row-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: 0;
+}
+
+.home-scope-card {
+  padding: 14px 16px;
+  cursor: pointer;
+  border-right: 1px solid var(--border);
+  transition: background 0.15s;
+  position: relative;
+}
+.home-scope-card:last-child { border-right: none; }
+.home-scope-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 2px;
+  background: var(--c);
+  opacity: 0.7;
+}
+.home-scope-card:hover { background: var(--surface2); }
+.home-scope-card:hover .home-card-btn { color: var(--c); }
+
+.home-card-top { display: flex; align-items: flex-start; gap: 10px; margin-bottom: 8px; }
+.home-card-name { font-size: 13px; font-weight: 700; color: var(--text); margin-bottom: 2px; }
+.home-card-desc { font-size: 10px; color: var(--text3); line-height: 1.5; }
+.home-card-pct {
+  font-family: var(--mono);
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--c);
+  flex-shrink: 0;
+  line-height: 1;
+  padding-top: 2px;
+}
+.home-card-bar {
+  height: 3px;
+  background: var(--border);
+  border-radius: 2px;
+  overflow: hidden;
+  margin-bottom: 10px;
+}
+.home-card-bar-fill { height: 100%; border-radius: 2px; transition: width 0.4s; }
+.home-card-phases { display: flex; flex-direction: column; gap: 4px; margin-bottom: 10px; }
+.home-phase-row { display: flex; align-items: center; gap: 6px; }
+.home-phase-dot { width: 6px; height: 6px; border-radius: 50%; flex-shrink: 0; }
+.home-phase-name { flex: 1; font-size: 10px; color: var(--text2); }
+.home-phase-count { font-size: 9px; font-family: var(--mono); color: var(--text3); }
+.home-card-btn {
+  font-size: 10px;
+  color: var(--text3);
+  transition: color 0.15s;
+  font-family: var(--mono);
+}
+
+.home-btn { border-bottom: 1px solid var(--border); }
+
+/* ── PHASE TOOLTIP ── */
+.phase-tooltip {
+  position: fixed;
+  z-index: 9999;
+  background: #111827;
+  border: 1px solid var(--border2);
+  border-radius: 10px;
+  min-width: 300px;
+  max-width: 380px;
+  box-shadow: 0 20px 60px rgba(0,0,0,0.7), 0 0 0 1px rgba(255,255,255,0.04);
+  opacity: 0;
+  pointer-events: none;
+  transform: translateY(6px);
+  transition: opacity 0.15s ease, transform 0.15s ease;
+  overflow: hidden;
+}
+.phase-tooltip.visible {
+  opacity: 1;
+  pointer-events: all;
+  transform: translateY(0);
+}
+
+.pt-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 14px 8px;
+  border-bottom: 2px solid var(--tc, #58a6ff);
+  background: linear-gradient(135deg, rgba(255,255,255,0.03), transparent);
+}
+.pt-title {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--tc, #58a6ff);
+}
+.pt-term {
+  font-size: 10px;
+  font-family: var(--mono);
+  color: var(--tc, #58a6ff);
+  opacity: 0.7;
+  background: rgba(255,255,255,0.06);
+  padding: 1px 6px;
+  border-radius: 3px;
+}
+
+.pt-flow {
+  padding: 10px 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+.pt-phase {
+  background: rgba(255,255,255,0.02);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 8px 10px;
+  margin-bottom: 2px;
+}
+.pt-phase-head {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-bottom: 3px;
+}
+.pt-ph-dot {
+  width: 7px; height: 7px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+.pt-ph-name {
+  flex: 1;
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--text);
+}
+.pt-ph-badge {
+  font-size: 9px;
+  font-family: var(--mono);
+}
+.pt-ph-cnt {
+  font-size: 9px;
+  font-family: var(--mono);
+  background: rgba(255,255,255,0.05);
+  padding: 1px 5px;
+  border-radius: 3px;
+}
+.pt-ph-hrs {
+  font-size: 9px;
+  font-family: var(--mono);
+  color: var(--text3);
+  margin-bottom: 6px;
+}
+
+.pt-kw-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 3px;
+}
+.pt-kw {
+  font-size: 10px;
+  color: var(--text2);
+  background: var(--surface2);
+  border: 1px solid var(--border2);
+  padding: 2px 7px;
+  border-radius: 10px;
+  white-space: nowrap;
+  transition: all 0.1s;
+}
+.pt-kw.pt-kw-ok {
+  color: var(--green);
+  background: var(--green-dim);
+  border-color: rgba(63,185,80,0.3);
+}
+.pt-arr {
+  font-size: 9px;
+  color: var(--text3);
+}
+
+.pt-phase-sep {
+  text-align: center;
+  font-size: 12px;
+  padding: 2px 0;
+  opacity: 0.5;
+}
+
+.pt-foot {
+  padding: 7px 14px;
+  font-size: 10px;
+  font-family: var(--mono);
+  color: var(--text3);
+  border-top: 1px solid var(--border);
+  background: rgba(255,255,255,0.015);
+  text-align: right;
+}
+
+/* ═══════════════════════════════════════════════════
+   TOUR / チュートリアル
+═══════════════════════════════════════════════════ */
+.tour-backdrop {
+  position: fixed; inset: 0;
+  z-index: 1000;
+  pointer-events: none;
+}
+
+/* スポットライト穴 - clip-pathで切り抜く */
+.tour-backdrop-svg {
+  position: fixed; inset: 0;
+  width: 100%; height: 100%;
+  pointer-events: all;
+}
+
+.tour-bubble {
+  position: fixed;
+  z-index: 1001;
+  background: var(--surface);
+  border: 1.5px solid var(--accent);
+  border-radius: 12px;
+  padding: 18px 20px 14px;
+  width: 300px;
+  box-shadow: 0 20px 60px rgba(0,0,0,0.6), 0 0 0 1px rgba(88,166,255,0.15);
+  animation: tourPop 0.25s cubic-bezier(.17,.67,.35,1.2) forwards;
+}
+@keyframes tourPop {
+  from { opacity:0; transform:scale(0.92) translateY(8px); }
+  to   { opacity:1; transform:scale(1)    translateY(0); }
+}
+
+.tour-bubble-arrow {
+  position: absolute;
+  width: 12px; height: 12px;
+  background: var(--surface);
+  border: 1.5px solid var(--accent);
+  transform: rotate(45deg);
+}
+.tour-arrow-top    { top:-7px; border-bottom:none; border-right:none; }
+.tour-arrow-bottom { bottom:-7px; border-top:none; border-left:none; }
+.tour-arrow-left   { left:-7px; border-right:none; border-bottom:none; top:20px; }
+
+.tour-step-num {
+  font-family: var(--mono);
+  font-size: 9px;
+  color: var(--accent);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  margin-bottom: 6px;
+}
+.tour-bubble h3 {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--text);
+  margin-bottom: 7px;
+  line-height: 1.4;
+}
+.tour-bubble p {
+  font-size: 11px;
+  color: var(--text2);
+  line-height: 1.75;
+  margin-bottom: 14px;
+}
+.tour-actions {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+.tour-dots {
+  display: flex; gap: 5px; align-items: center;
+}
+.tour-dot {
+  width: 6px; height: 6px; border-radius: 50%;
+  background: var(--border2);
+  transition: background 0.2s, transform 0.2s;
+}
+.tour-dot.active { background: var(--accent); transform: scale(1.3); }
+.tour-dot.done   { background: var(--green); }
+.tour-btn-skip {
+  background: none; border: none; cursor: pointer;
+  font-size: 11px; color: var(--text3); font-family: var(--font);
+  padding: 4px 0;
+}
+.tour-btn-skip:hover { color: var(--text2); }
+.tour-btn-next {
+  background: var(--accent); color: #000;
+  border: none; border-radius: 6px; cursor: pointer;
+  font-size: 12px; font-weight: 700; font-family: var(--font);
+  padding: 6px 16px; transition: background 0.15s;
+}
+.tour-btn-next:hover { background: #79bbff; }
+.tour-btn-next.finish { background: var(--green); }
+.tour-btn-next.finish:hover { background: #56d364; }
+
+/* ハイライトリング */
+.tour-highlight-ring {
+  position: fixed;
+  border: 2px solid var(--accent);
+  border-radius: 8px;
+  pointer-events: none;
+  z-index: 999;
+  box-shadow: 0 0 0 3000px rgba(0,0,0,0.55);
+  transition: all 0.35s cubic-bezier(.4,0,.2,1);
+  animation: ringPulse 2s ease-in-out infinite;
+}
+@keyframes ringPulse {
+  0%,100% { box-shadow: 0 0 0 3000px rgba(0,0,0,0.55), 0 0 0 0 rgba(88,166,255,0.4); }
+  50%      { box-shadow: 0 0 0 3000px rgba(0,0,0,0.55), 0 0 0 6px rgba(88,166,255,0.15); }
+}
+
+/* ═══════════════════════════════════════════════════
+   MOBILE RESPONSIVE  （〜 768px）
+═══════════════════════════════════════════════════ */
+@media (max-width: 768px) {
+
+  /* ── モバイル：body自体をスクロールコンテナに */
+  html { height: auto !important; }
+  body {
+    height: auto !important;
+    overflow: auto !important;
+    overflow-x: hidden !important;
+    -webkit-overflow-scrolling: touch !important;
+  }
+  .app {
+    display: block !important;
+    height: auto !important;
+    min-height: 100vh !important;
+    overflow: visible !important;
+  }
+  header {
+    position: sticky !important;
+    top: 0;
+    z-index: 100;
+  }
+  .main {
+    height: auto !important;
+    max-height: none !important;
+    overflow: visible !important;
+    padding: 10px 10px 60px !important;
+  }
+
+  /* ヘッダー */
+  header {
+    padding: 0 12px;
+    gap: 8px;
+  }
+  header h1 {
+    font-size: 11px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .header-tour-btn { display: none; }
+
+  /* サイドバー：オフスクリーンに隠す */
+  .sidebar {
+    position: fixed;
+    top: 48px; left: 0; bottom: 0;
+    width: 280px;
+    z-index: 200;
+    transform: translateX(-100%);
+    transition: transform 0.28s cubic-bezier(.4,0,.2,1);
+    box-shadow: none;
+  }
+  .sidebar.open {
+    transform: translateX(0);
+    box-shadow: 4px 0 24px rgba(0,0,0,0.5);
+  }
+
+  /* オーバーレイ */
+  .sidebar-overlay {
+    display: none;
+    position: fixed;
+    inset: 48px 0 0 0;
+    background: rgba(0,0,0,0.5);
+    z-index: 199;
+  }
+  .sidebar-overlay.show { display: block; }
+
+  /* キーワードマップポップアップ：画面に収めて内部スクロール */
+  .phase-tooltip {
+    max-width: calc(100vw - 24px) !important;
+    max-height: calc(100vh - 80px) !important;
+    max-height: calc(100dvh - 80px) !important;
+    overflow-y: auto !important;
+    -webkit-overflow-scrolling: touch !important;
+  }
+
+  /* メイン用の追加調整は上記で完了 */
+
+  /* ホームサマリー */
+  .home-summary { flex-direction: column; gap: 10px; }
+  .home-summary-right { justify-content: flex-start; }
+
+  /* ロードマップノード：縦1列 */
+  .roadmap-map-wrap {
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 8px !important;
+    padding: 12px !important;
+  }
+  .roadmap-map-wrap > div:not(.home-map-card) { display: none !important; }
+  .home-map-card {
+    width: 100% !important;
+    padding: 8px 14px !important;
+    text-align: left !important;
+    display: flex !important;
+    align-items: center !important;
+    gap: 14px !important;
+  }
+  .map-card-term  { display: none !important; }
+  .map-card-ring  { margin: 0 !important; flex-shrink: 0 !important; }
+  .map-card-title { flex: 1 !important; font-size: 14px !important; }
+
+  /* 学期カード：1列、区切り線を下方向に */
+  .home-row-cards { grid-template-columns: 1fr !important; }
+  .home-scope-card {
+    border-right: none !important;
+    border-bottom: 1px solid var(--border) !important;
+  }
+  .home-scope-card:last-child {
+    border-bottom: none !important;
+  }
+
+  /* チェックリスト：1列 */
+  .cards-grid { grid-template-columns: 1fr !important; }
+
+  /* フェーズロードマップ：横スクロール */
+  .flow-body { flex-wrap: nowrap !important; overflow-x: auto !important; }
+
+  /* モーダル：下から出るシート型 */
+  .quiz-modal, .note-modal {
+    max-width: 100%; max-height: 92vh;
+    border-radius: 12px 12px 0 0;
+    position: fixed;
+    bottom: 0; left: 0; right: 0; width: 100%;
+  }
+  .quiz-overlay, .note-overlay { align-items: flex-end; padding: 0; }
+
+  /* ツアー：常に下部固定 */
+  .tour-bubble {
+    position: fixed !important;
+    left: 12px !important; right: 12px !important;
+    bottom: 24px !important; top: auto !important;
+    width: calc(100vw - 24px) !important;
+    max-width: none !important;
+  }
+  .tour-highlight-ring { display: none !important; }
+
+  /* フェーズカード */
+  .pc { font-size: 11px; }
+}
+
+/* メニューボタン（ハンバーガー） */
+.menu-btn {
+  background: none;
+  border: 1px solid var(--border2);
+  border-radius: 5px;
+  padding: 4px 8px;
+  cursor: pointer;
+  color: var(--text2);
+  font-size: 14px;
+  line-height: 1;
+  flex-shrink: 0;
+  display: none;
+  transition: border-color 0.15s, color 0.15s;
+}
+.menu-btn:hover { border-color: var(--accent); color: var(--accent); }
+@media (max-width: 768px) {
+  .menu-btn { display: block; }
+
+  /* ツアー吹き出し：常に画面下部固定 */
+  .tour-bubble {
+    position: fixed !important;
+    left: 12px !important;
+    right: 12px !important;
+    bottom: 24px !important;
+    top: auto !important;
+    width: calc(100vw - 24px) !important;
+    max-width: none !important;
+  }
+  .tour-highlight-ring { display: none !important; }
+}
+
+</style>
+</head>
+<body>
+<div class="sidebar-overlay" id="sidebarOverlay" onclick="closeSidebar()"></div>
+<div class="app">
+<header>
+  <button class="menu-btn" id="menuBtn" onclick="toggleSidebar()">☰</button>
+  <span class="header-tag">ChemNav</span>
+  <h1>必修化学 学習ロードマップナビゲーター</h1>
+  <span id="headerBadge"></span>
+  <button class="header-tour-btn" onclick="startTour()">？ 使い方</button>
+</header>
+<nav class="sidebar" id="sidebar">
+  <div class="sidebar-head">試験範囲</div>
+</nav>
+<main class="main" id="main">
+  <div style="padding:60px;text-align:center;color:var(--text3)">左のメニューから試験範囲を選択してください</div>
+</main>
+</div>
+<div class="overlay" id="overlay">
+  <div class="modal"><button class="modal-close" id="modalClose">×</button><div id="modalBody"></div></div>
+</div>
+
+<!-- QUIZ MODAL -->
+<div class="quiz-overlay" id="quizOverlay">
+  <div class="quiz-modal">
+    <div class="quiz-modal-head">
+      <span class="quiz-modal-icon">🧩</span>
+      <div class="quiz-modal-titles">
+        <div class="quiz-modal-label">確認クイズ</div>
+        <div class="quiz-modal-topic" id="quizTopic">—</div>
+      </div>
+      <button class="quiz-modal-close" id="quizClose">×</button>
+    </div>
+    <div class="quiz-body" id="quizBody">
+      <div class="quiz-loading">
+        <div class="quiz-spinner"></div>
+        <div class="quiz-loading-text">AIが問題を生成しています…</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- LESSON NOTE MODAL -->
+<div class="note-overlay" id="noteOverlay">
+  <div class="note-modal">
+    <div class="note-modal-head">
+      <span class="note-modal-icon">📝</span>
+      <div class="note-modal-titles">
+        <div class="note-modal-label" id="noteLabel">授業メモ</div>
+        <div class="note-modal-title" id="noteTitle">—</div>
+      </div>
+      <button class="note-modal-close" id="noteClose">×</button>
+    </div>
+    <div class="note-body" id="noteBody"></div>
+  </div>
+</div>
+
+<script>
+
+
+// ═══════════════════════════════════════════════════════
+//  LESSON NOTES  ── 授業録音要約（2年3組 2026年度）
+// ═══════════════════════════════════════════════════════
+const LESSON_NOTES = {
+
+
+  // ── オリエンテーション（04-14〜04-17 複数クラス統合） ──
+  // 対応項目：m1-1, m1-2, m1-3（間接的）
+  // ── 録音の意図 ──
+  'lesson_m1_recording': {
+    date: '2026-04-14',
+    title: 'なぜ授業を録音しているのか',
+    scope: '1学期中間',
+    phase: '混合物と純物質・分離',
+    relatedItems: ['m1-1','m1-2','m1-3'],
+    classes: ['2年1組〜6組（初回授業）'],
+    digest: 'このメモが存在する理由。先生が初回授業から構想していた「授業録音→AI要約→生徒に共有」というシステムの説明。',
+    sections: [
+      {
+        heading: '🎙 先生が録音を始めた理由',
+        body: `「最近生成AIってあるじゃないですか。あれで要約して、この授業で話した内容を要約して、皆さんに共有したいと思ってます。授業についていけなくなる生徒が毎年いて、欠席すると一気に話がわかんなくなる。テスト前に頑張っても点数が取れない。そういう人を助けたいので」
+→ 今あなたが読んでいるこのメモは、先生が初回授業から構想していたもの。`
+      },
+      {
+        heading: '📌 このメモの使い方',
+        body: `欠席した授業の内容を確認する
+理解があいまいな項目を復習する
+試験前に先生のキーフレーズを思い出す
+→ 「あれこの言葉って何だっけ」というときに見返す補助教材として使う`
+      },
+    ],
+    teacherQuote: '「なるべく皆さんには、学んでよかったなっていうふうに思ってもらえる授業にしたいと思ってます。せっかくの高校生活で、氷見の授業うぜーとかって思って生活するのってしんどいと思いますんでね」',
+  },
+
+  // ── 学習の心構え ──
+  'lesson_m1_philosophy': {
+    date: '2026-04-14〜04-20',
+    title: '先生の学習哲学・授業の心構え',
+    scope: '1学期中間',
+    phase: '混合物と純物質・分離',
+    relatedItems: ['m1-1','m1-2','m1-3'],
+    classes: ['2年1組〜6組（初回〜4回目授業）'],
+    digest: 'テスト前だけ頑張るスタイルの限界と、コンスタントに続けることの強さ。授業はチュートリアルにすぎず、授業外で使ってみることが本当の学びという先生の哲学。',
+    sections: [
+      {
+        heading: '💡 コンスタントに続けることが最強',
+        body: `「コンスタントに6割のパフォーマンスを出し続けられる人が社会で一番重宝される」
+「テスト前だけ頑張るスタイルは学校ではなんとかなるけど社会に出たら詰む」
+→ めちゃめちゃ高いパフォーマンスを出さなくていい。6割をコンスタントに出せる人が強い。`
+      },
+      {
+        heading: '🎮 授業はチュートリアルにすぎない',
+        body: `「授業はチュートリアル（操作説明）に過ぎない。バトル（授業外での活用）をしないと本当に強くはならない」
+→ スプラトゥーンの例え：練習場で球を打つだけではうまくならない。バトルしないと。
+→ 授業を聞いてるだけでうまくなった気にはなるけど、実際にうまくなってることはない。
+→ 授業外のところで「あ、あれ授業で習ったやつと関係ありそう」と気づける人が伸びる。`
+      },
+      {
+        heading: '🔋 自分でレベルを上げる',
+        body: `「簡単すぎてつまらん」と思うなら、自分でレベルを調整する。
+→ おすすめ：純物質を100個自分で書き出してみる。混合物を100個。限界まで絞り出す。
+→ 言われたことだけやっていれば力がつくと思っちゃいけない。
+→ 先生に質問して答えをもらうだけで終わるのはもったいない。自分で調べる力をつけること。`
+      },
+    ],
+    teacherQuote: '「学んでることを他の人にも言いたいと思える瞬間が一番学んでいる瞬間です」',
+  },
+
+  // ── 評価・コメントシートの運用 ──
+  'lesson_m1_evaluation': {
+    date: '2026-04-14〜04-20',
+    title: '評価の仕組みとコメントシートの活用法',
+    scope: '1学期中間',
+    phase: '混合物と純物質・分離',
+    relatedItems: ['m1-1','m1-2','m1-3'],
+    classes: ['2年1組〜6組（初回〜4回目授業）'],
+    digest: '成績の8割はテスト。コメントシートは点数のためでなく自分のために書く。先生が最も喜ぶのは「学んだことを誰かに話したくなった」というコメント。',
+    sections: [
+      {
+        heading: '📋 成績の仕組み',
+        body: `テスト：約8割
+コメントシート・提出物：残り約2割
+→ テストが最重要。ただしコメントシートは「自分のため」に書く。2ヶ月後の自分へのお手紙のつもりで。
+→ 返却希望は右下のチェックボックスにチェック。「特になし」はNG（欠席扱いと同等）。`
+      },
+      {
+        heading: '📝 コメントシートに書いてほしいこと',
+        body: `先生が喜ぶコメントの例：
+「味噌汁が吹きこぼれる時、なぜ青い炎からオレンジになるのかわかった。今日家族に話してみます」（04-24 3組のコメント）
+「ブレイキングバッド（覚醒剤を作る化学教師のドラマ）が授業の分離と関係ありそう」（04-23のコメント）
+→「学んだことをなんかすごい役に立ちそうとか、使ってみたいとか思えたら周りの人に話してほしい。それが一番学んでる瞬間」`
+      },
+      {
+        heading: '📁 プリントの管理・提出物',
+        body: `欠席者の机にプリントをきれいに畳んで入れておくのは全員の仕事。
+→ 「休んだ翌日、机を開けたら綺麗に入ってて嬉しい」という体験を作ること。
+→ 先生「プリントが散乱しているクラスは大抵やばい。物が盗まれるトラブルが起きやすい」
+→ もらったときにすぐ日付・名前を書く習慣をつけると提出し忘れがなくなる。`
+      },
+    ],
+    teacherQuote: '「一番学んでいる時って、自分の学んでいることを他の人にも言いたいとか、そういう状況になると思うんですよ。自分の推しがライブをするってなったら周りの友達にも言うでしょ。それぐらいのめり込んでますか」',
+  },
+
+  // ── 1学期中間：原子の構造フェーズ（2026-05-01 授業録音より） ──
+  // 対応項目：m1-15, m1-16, m1-17, m1-18
+  'lesson_m1_atom': {
+    date: '2026-05-01',
+    title: '原子の構造の導入',
+    scope: '1学期中間',
+    phase: '原子の構造・同位体',
+    relatedItems: ['m1-15','m1-16','m1-17','m1-18'],
+    digest: `この授業では「原子は3種類のパーツでできている」という今年一番大事なポイントを学んだ。`,
+    sections: [
+      {
+        heading: '📌 今日の授業の位置づけ',
+        body: `前回まで「物質→純物質→原子」という流れで学んできた。醤油から塩化ナトリウムを分離する実験が総まとめで、今日はその次のステップ「原子の中身を知る」授業。先生の言葉：「今日の授業は一年間で一番大事な授業です」`
+      },
+      {
+        heading: '⚛️ 原子の3つのパーツ',
+        body: `原子は【陽子・中性子・電子】の3種類だけでできている。
+• 陽子（赤コイン）＝プラスの電気を持つ粒。原子核の中にある。
+• 中性子（白コイン）＝プラスもマイナスもないニュートラルな粒。「接着剤」の役割。
+• 電子（黄コイン）＝マイナスの電気を持つ粒。原子核の周りをすごい速さで動いている。
+→ 先生の例え：「レゴブロックのパーツが3種類しかないのに、組み合わせで120種類以上の元素が作れる。デジタルも0と1の2種類だけで全情報を表現できる」`
+      },
+      {
+        heading: '🍑 梅干しモデル',
+        body: `原子核＝梅干しの「種」の部分（陽子＋中性子）
+電子＝種の周りを漂う「果肉」のイメージ
+原子核はめちゃめちゃ小さい：東京ドーム（原子のサイズ）の中のビーズ玉2mm（原子核のサイズ）→ 原子の中はほぼスカスカ！`
+      },
+      {
+        heading: '🔑 陽子数＝アイデンティティ',
+        body: `陽子の数（＝原子番号）がその元素を決める。
+• 陽子1個 → 水素（H）
+• 陽子2個 → ヘリウム（He）
+• 陽子20個 → カルシウム（Ca）
+陽子の数と電子の数は必ず同じ（原子は電気的に中性だから）。
+中性子の数は「だいたい陽子と同じか2倍くらい」で適当でOK。`
+      },
+      {
+        heading: '⚖️ 重さのポイント',
+        body: `陽子≒中性子（ほぼ同じ重さ）
+電子＝陽子の1/1840 → めちゃめちゃ軽い（アクセサリーみたいなもの）
+→ 原子全体の重さは陽子＋中性子の数で決まる。電子は無視できるくらい軽い。`
+      },
+      {
+        heading: '🎮 コインワーク（グループ活動）',
+        body: `赤コイン＝陽子、白コイン＝中性子、黄コイン＝電子として、班でヘリウム→水素→リチウム→ベリリウムを作った。
+作り方：原子核（赤＋白）を中央に置き、黄コイン（電子）を周りに散らす。
+→「自分が神になって原子を作る」体験で、陽子数＝元素の種類という感覚をつかむ。`
+      },
+      {
+        heading: '🔮 次回の予告',
+        body: `「<span class="nuclide"><span>4</span><span>2</span></span>He」のような表記（質量数・原子番号の書き方）を次回やる。
+同位体（中性子の数が違う同じ元素のバリエーション）も次回扱う。`
+      },
+    ],
+    teacherQuote: '「すべての化学的現象はだいたい電子のせいです。なんでこういう反応するの？→電子のせいです。炎色反応なんでこの色するの？→電子のせいです」',
+  },
+
+  // ── 物質の分類・分離と分解・元素記号（04-14〜04-28 複数クラス統合） ──
+  // 対応項目：m1-1, m1-2, m1-3, m1-4, m1-5, m1-6, m1-7, m1-8, m1-9, m1-10
+  'lesson_m1_bunrui': {
+    date: '2026-04-14〜04-28',
+    title: '物質の分類・分離と分解・元素記号の書き方',
+    scope: '1学期中間',
+    phase: '混合物と純物質・分離 ／ 元素・単体・化合物',
+    relatedItems: ['m1-1','m1-2','m1-3','m1-4','m1-5','m1-6','m1-7','m1-8','m1-9','m1-10'],
+    classes: ['2年2組 04-24','2年3組 04-24','2年4組 04-15〜04-27','2年5組 04-17〜04-28','2年6組 04-20'],
+    digest: '「分離」と「分解」は似た言葉だが化学では全く意味が違う。純物質・混合物の区別、分離操作の実験体験、単体・化合物の見分け方は3学期でも直結する最重要事項。',
+    sections: [
+      {
+        heading: '🌏 なぜ純物質を取り出すのか',
+        body: `混ざりもの（混合物）のままだと、調べようとしても何かよくわからない数値が出てきてしまう。化学では「ピュアな物質」を使って調べる必要がある。それが「分離」という操作の動機。
+→ 先生の言葉：「この世の中の物質は大体が混ざりものなんです。混ざったままだと調べようと思っても、よくわかんない数値が出てきちゃう」`
+      },
+      {
+        heading: '☕ 分離の身近な例（コーヒーの話）',
+        body: `ドリップコーヒーを作る操作の中に分離が2種類入っている：
+①抽出：お湯でコーヒーの成分（カフェインなど）を粉から溶け出させる→溶解度の差を利用
+②ろ過：コーヒーフィルターに粉を入れてお湯を注ぐ→粒子の大きさの違いを利用
+→「皆さん普段から何気なくやってるんですよ、分離を」`
+      },
+      {
+        heading: '🧂 塩と砂の分離実験（04-17〜04-20）',
+        body: `実際に「塩（NaCl）と石英砂（SiO₂）の混合物」を班で分離する体験実験を行った。
+手順：①水を加える（塩は溶けるが砂は溶けない）②ろ過（ろ紙で砂をキャッチ）③ろ液を蒸発させると塩が残る
+→ ろ紙の折り方は教科書20ページに載っている。破れたら新しいものをもらう。
+→「なぜ水を加えるか」「なぜろ過をするか」を自分の言葉で説明できることが大事`
+      },
+      {
+        heading: '📌 分離 vs 分解（先生の名言）',
+        body: `分離＝交通整理「あなたはここ、あなたはここ」→元に戻せる
+分解＝ぶっ壊す「ドーン！」→元には戻れない
+→ 水（H₂O）に電気をビリビリ流す＝分解。H₂とO₂という全く別の物質ができる。
+→ 先生の例え：「皆さんも腕を折ってみてください。痛いよね。戻らんよ。だから分解って覚悟のいる行為」`
+      },
+      {
+        heading: '⚗️ 水の電気分解で何がわかるか',
+        body: `水素の検出法：炎を近づける→ポンっと爆発音
+酸素の検出法：線香を突っ込む→炎がブワッと激しく燃える（助燃性）
+→「無色透明・無味無臭の気体だから見えない。でもこういうリアクションで存在がわかる」`
+      },
+      {
+        heading: '🧱 単体・化合物の見分け方（3学期にも直結！）',
+        body: `単体＝化学式に1種類の元素記号だけ（H₂, O₂, Fe）→これ以上分解できない
+化合物＝化学式に2種類以上の元素記号（H₂O, NaCl, CO₂）→ぶっ壊せる
+→ 先生の言葉：「今日頑張ると3学期期末で非常に助かる。1月の自分に教科書に手紙を書いておけ」
+→ NaClの場合：NaとClの2種類→化合物。電気エネルギーでNaとCl₂に分けられる。`
+      },
+      {
+        heading: '🔗 化学式＝つながっている関係を示す',
+        body: `化学式で一つにまとまって書けるもの＝原子同士がつながっている（結合している）
+H₂O：HとOがつながっている→1つの純物質
+分解後のH₂とO₂：HとHはつながっているがHとOはつながっていない→別の物質
+→ これは1学期期末「化学結合」のキーワードになる。`
+      },
+      {
+        heading: '✍️ 元素記号の書き方（先生のこだわり）',
+        body: `1文字目＝必ず大文字（活字体）、2文字目以降は小文字
+→ ClをCLと書かない。Clの1文字目は大文字の高さ、lは小文字の高さ
+→ CaとCuを混同しないようにAは必ず閉じる
+→ Mgの小文字gは下に下げる
+→ 先生の言葉：「テストで読めない字を書かれるのが本当に苦痛。汚くてもいいから丁寧に」
+→ 毎回授業前に1〜20番を練習するだけで身につく`
+      },
+      {
+        heading: '📖 元素と原子の違い（よく混乱する）',
+        body: `原子＝実体としての粒そのもの（つぶつぶ）
+元素＝原子の種類・性質のこと（抽象的な概念）
+→「原子はモノで、元素はカテゴリー」
+→ 最初のうちは適当でいいが、慣れてきたら区別できるように`
+      },
+    ],
+    teacherQuote: '「化学式で表せるっていうのは、そこに含まれている原子同士が何かしらつながっている関係にあるということを示しています。結構大事なこと言いました。多分一年間の授業でトップ3に入るぐらい重要なことです」',
+  },
+
+  // ── 炎色反応・沈殿反応（04-22〜04-30 複数クラス統合） ──
+  // 対応項目：m1-11, m1-12, m1-13, m1-14
+  'lesson_m1_enshoku': {
+    date: '2026-04-22〜04-30',
+    title: '成分元素の検出（炎色反応・沈殿反応）＋醤油実験',
+    scope: '1学期中間',
+    phase: '成分元素の検出（炎色反応・沈殿反応）',
+    relatedItems: ['m1-11','m1-12','m1-13','m1-14'],
+    classes: ['2年2組 04-24','2年3組 04-22〜04-24','2年4組 04-27','2年5組 04-23〜04-28','2年6組 04-30'],
+    digest: '化学はビジュアル（色）が命。色がついている・沈殿が出るというのは、目に見えない世界を知る手がかりとして最高の情報。炎色反応は花火の原理でもある。',
+    sections: [
+      {
+        heading: '🎨 「化学はビジュアルだ」（先生の核心メッセージ）',
+        body: `空気の成分（窒素・酸素・CO₂など）はすべて無色透明・無味無臭
+→ 色がついている情報は超貴重。「こんな嬉しいことはない」
+→ Appleの水没インジケーター（ピンクになると水没の証拠）も同じ原理
+→ 「色を覚えるのだるい」じゃなく「色があるって嬉しい」と思ってほしい`
+      },
+      {
+        heading: '🔥 炎色反応のポイント',
+        body: `炎色反応とは：白金線に液体をつけてガスバーナーで炙ると炎の色が変わる
+全部の元素ではなく周期表の左端付近の元素（アルカリ金属・アルカリ土類）が示す
+色の覚え方：
+Li→赤、Na→黄、K→紫、Ca→橙赤、Sr→紅、Ba→黄緑、Cu→青緑
+→ NaはとにかくNa黄色が最重要。少量でも目立つ鮮明な黄色。
+→ 「なんでこの色なの？」→電子のせい（これは5月1日の原子構造授業で学ぶ）
+→ 花火の原理もこれ。打ち上げ花火の色はこの炎色反応でデザインされている`
+      },
+      {
+        heading: '🧪 沈殿反応のポイント',
+        body: `沈殿とは：液体の中に白い固体（濁り）が出てくる反応
+塩化物イオン（Cl⁻）の検出：硝酸銀水溶液（AgNO₃aq）を加える→白色沈殿（AgCl）
+→ 化学式：Ag⁺ + Cl⁻ → AgCl（白色）
+→ これは2学期の内容だが、塩化銀ができれば「塩素がある」証拠
+→ 授業では「今はこれが何かを覚えなくていい、Clがあると白くなると覚えるだけ」`
+      },
+      {
+        heading: '🧅 醤油実験（04-24授業：総まとめ実験）',
+        body: `「白い粉を手に入れるだけじゃなく、それがNaClである証拠を出すことが今日のテーマ」
+手順：①ガスバーナーで加熱→有機物を燃やし尽くす（煙がなくなるまで）
+②純水を加えてろ過→NaClは水に溶けるが炭素は溶けない→ろ液にNaClが入っている
+③炎色反応でNa（黄）を確認→Naが含まれていることの証明
+④硝酸銀水溶液で白色沈殿→Clの存在確認
+→ 生徒のコメントシートより：「味噌汁が吹きこぼれる時、なぜ青い炎がオレンジになるのかわかった。今日家族に話してみます」→先生「最高のコメント。学んだことを誰かに言いたいと思えた瞬間が一番学んでいる」`
+      },
+      {
+        heading: '🎆 花火と炎色反応',
+        body: `炎色反応は花火の原理。打ち上げ花火の色はこの炎色反応でデザインされている。
+→ 先生のひとこと：「デートしているときに花火を見ながら『あれ炎色反応なんだぜ』とか言っちゃダメだからな。一気に萎えるから。大体その次の日ぐらいに別れます。綺麗だねでいいんだよ」`
+      },
+    ],
+    teacherQuote: '「化学にとって色がついてるっていうのは、これ以上ないお得な情報なんです。無色透明、無味無臭のやつばっかだからね。有毒だけど無味無臭。そんなんばっかですよ、世の中。だから特徴があるって嬉しいんですよ」',
+  },
+
+
+};
+
+// 項目IDから関連する授業メモを取得するヘルパー
+// 学習内容に直結するメモを優先（recording/philosophy/evaluationは「授業の受け方」専用扱い）
+function getLessonNote(itemId) {
+  // 優先キー（学習内容直結のメモを先にチェック）
+  const priorityKeys = ['lesson_m1_bunrui', 'lesson_m1_enshoku', 'lesson_m1_atom'];
+  for (const key of priorityKeys) {
+    if (LESSON_NOTES[key]?.relatedItems.includes(itemId)) {
+      return LESSON_NOTES[key];
+    }
+  }
+  // フォールバック：他のメモから検索（recording/philosophy/evaluationは除外）
+  const excludeKeys = ['lesson_m1_recording', 'lesson_m1_philosophy', 'lesson_m1_evaluation'];
+  for (const key in LESSON_NOTES) {
+    if (excludeKeys.includes(key)) continue;
+    if (LESSON_NOTES[key].relatedItems.includes(itemId)) {
+      return LESSON_NOTES[key];
+    }
+  }
+  return null;
+}
+
+
+// ═══════════════════════════════════════════════════════
+//  RECORDING LOG  ── 授業録音アップロードログ
+// ═══════════════════════════════════════════════════════
+const RECORDING_LOG = [
+  {
+    id: 'log_20260501_3',
+    filename: '05-01_授業録音要約__原子構造の導入_2年3組_2026-05-01-transcript.txt',
+    date: '2026-05-01',
+    classes: ['2年3組'],
+    title: '原子の構造の導入',
+    topics: ['原子の構造（陽子・中性子・電子）','コインワーク','梅干しモデル','陽子数とアイデンティティ'],
+    noteKey: 'lesson_m1_atom',
+    relatedItems: ['m1-15','m1-16','m1-17','m1-18'],
+    scope: '1学期中間',
+    addedAt: '2026-05-04',
+  },
+  {
+    id: 'log_20260414_ori',
+    filename: '04-14_講義__高校化学オリエンテーション_-_授業計画と学習姿勢-transcript.txt',
+    date: '2026-04-14',
+    classes: ['（複数クラス）'],
+    title: '高校化学オリエンテーション・授業計画と学習姿勢',
+    topics: ['録音要約の説明','評価方針','コメントシートの活用','授業哲学'],
+    noteKey: 'lesson_m1_recording',
+    relatedItems: ['m1-1','m1-2','m1-3'],
+    scope: '1学期中間',
+    addedAt: '2026-05-04',
+  },
+  {
+    id: 'log_20260415_bunrui',
+    filename: '04-15_講義__化学基礎オリエンテーションと純物質_混合物-transcript.txt',
+    date: '2026-04-15',
+    classes: ['（複数クラス）'],
+    title: '化学基礎オリエンテーション・純物質と混合物',
+    topics: ['純物質・混合物の定義','化学式の読み方'],
+    noteKey: 'lesson_m1_bunrui',
+    relatedItems: ['m1-1','m1-2','m1-3'],
+    scope: '1学期中間',
+    addedAt: '2026-05-04',
+  },
+  {
+    id: 'log_20260416a',
+    filename: '04-16_授業要約__高校化学導入_純物質と混合物の基礎_提出物運用と学習姿勢-transcript.txt',
+    date: '2026-04-16',
+    classes: ['（複数クラス）'],
+    title: '純物質と混合物の基礎・提出物運用',
+    topics: ['純物質・混合物の定義','提出物の扱い','学習姿勢'],
+    noteKey: 'lesson_m1_evaluation',
+    relatedItems: ['m1-1','m1-2','m1-3'],
+    scope: '1学期中間',
+    addedAt: '2026-05-04',
+  },
+  {
+    id: 'log_20260416b',
+    filename: '04-16_オリエンテーション_必修化学の授業運営_評価方針とICT_生成AI活用_年間カリキュラム-transcript.txt',
+    date: '2026-04-16',
+    classes: ['（複数クラス）'],
+    title: '必修化学の授業運営・評価方針・生成AI活用・年間カリキュラム',
+    topics: ['授業運営方針','評価の仕組み','生成AI活用方針','年間カリキュラム概観'],
+    noteKey: 'lesson_m1_evaluation',
+    relatedItems: ['m1-1','m1-2','m1-3'],
+    scope: '1学期中間',
+    addedAt: '2026-05-04',
+  },
+  {
+    id: 'log_20260417a',
+    filename: '04-17_授業概要__高校化学_混合物の分離_濾過_抽出_と分解_電気分解_の導入-transcript.txt',
+    date: '2026-04-17',
+    classes: ['2年（複数クラス）'],
+    title: '混合物の分離（ろ過・抽出）と分解の導入・塩と砂の分離実験',
+    topics: ['コーヒーの例え（ろ過・抽出）','塩と砂の分離実験','ろ紙の使い方','水の電気分解の導入'],
+    noteKey: 'lesson_m1_bunrui',
+    relatedItems: ['m1-1','m1-2','m1-3','m1-4','m1-5','m1-6'],
+    scope: '1学期中間',
+    addedAt: '2026-05-04',
+  },
+  {
+    id: 'log_20260417b',
+    filename: '04-17_オリエンテーション講義_高校必修化学の導入_安全教育_評価方針-transcript.txt',
+    date: '2026-04-17',
+    classes: ['（複数クラス）'],
+    title: '必修化学の導入・安全教育・評価方針',
+    topics: ['実験室での安全管理','薬品の取り扱い','評価方針'],
+    noteKey: 'lesson_m1_philosophy',
+    relatedItems: ['m1-1','m1-2','m1-3'],
+    scope: '1学期中間',
+    addedAt: '2026-05-04',
+  },
+  {
+    id: 'log_20260420a',
+    filename: '04-20_授業レビュー__化学入門_純物質と混合物_物性判別_分離法予告-transcript.txt',
+    date: '2026-04-20',
+    classes: ['2年4組'],
+    title: '純物質と混合物の復習・物性判別・分離法の予告',
+    topics: ['純物質・混合物の復習クイズ','物性による判別','分離方法の概要'],
+    noteKey: 'lesson_m1_bunrui',
+    relatedItems: ['m1-1','m1-2','m1-3','m1-4','m1-5'],
+    scope: '1学期中間',
+    addedAt: '2026-05-04',
+  },
+  {
+    id: 'log_20260420b',
+    filename: '04-20_講義__高校化学導入_純物質と混合物の基礎_授業運営と学習姿勢-transcript.txt',
+    date: '2026-04-20',
+    classes: ['（複数クラス）'],
+    title: '純物質と混合物の基礎・授業運営と学習姿勢',
+    topics: ['純物質・混合物の基礎','コンスタントに続けることの重要性'],
+    noteKey: 'lesson_m1_philosophy',
+    relatedItems: ['m1-1','m1-2','m1-3'],
+    scope: '1学期中間',
+    addedAt: '2026-05-04',
+  },
+  {
+    id: 'log_20260422',
+    filename: '04-22_講義__化学の分離_元素の検出_炎色反応_沈殿反応-transcript.txt',
+    date: '2026-04-22',
+    classes: ['2年3組'],
+    title: '化学の分離・元素の検出・炎色反応・沈殿反応',
+    topics: ['分離の復習','炎色反応の実験','沈殿反応（硝酸銀）','化学はビジュアル'],
+    noteKey: 'lesson_m1_enshoku',
+    relatedItems: ['m1-11','m1-12','m1-13','m1-14'],
+    scope: '1学期中間',
+    addedAt: '2026-05-04',
+  },
+  {
+    id: 'log_20260423a',
+    filename: '04-23_講義__化学実験と物質の分離-transcript.txt',
+    date: '2026-04-23',
+    classes: ['（複数クラス）'],
+    title: '化学実験と物質の分離・実験の心構え',
+    topics: ['分離操作の実験','授業外での活用（スプラトゥーンの例え）','コメントシートの活用法'],
+    noteKey: 'lesson_m1_bunrui',
+    relatedItems: ['m1-4','m1-5','m1-6'],
+    scope: '1学期中間',
+    addedAt: '2026-05-04',
+  },
+  {
+    id: 'log_20260423b',
+    filename: '04-23_講義__化学実験の安全管理と物質の分離-transcript.txt',
+    date: '2026-04-23',
+    classes: ['（複数クラス）'],
+    title: '化学実験の安全管理と物質の分離',
+    topics: ['実験室の安全管理','提出物の整理整頓','分離操作の実践'],
+    noteKey: 'lesson_m1_bunrui',
+    relatedItems: ['m1-4','m1-5','m1-6'],
+    scope: '1学期中間',
+    addedAt: '2026-05-04',
+  },
+  {
+    id: 'log_20260424a',
+    filename: '04-24_講義__醤油からNaClの分離_同定と炎色反応_AgNO3試験の安全実験運営-transcript.txt',
+    date: '2026-04-24',
+    classes: ['2年3組'],
+    title: '醤油からNaClの分離・炎色反応とAgNO₃試験・花火の話',
+    topics: ['醤油実験（総まとめ）','炎色反応でNaの確認','硝酸銀でClの確認','花火との関連','コメントシート紹介'],
+    noteKey: 'lesson_m1_enshoku',
+    relatedItems: ['m1-11','m1-12','m1-13','m1-14'],
+    scope: '1学期中間',
+    addedAt: '2026-05-04',
+  },
+  {
+    id: 'log_20260424b',
+    filename: '04-24_講義__物質の分離_-_塩化ナトリウムと石英砂のろ過実験-transcript.txt',
+    date: '2026-04-24',
+    classes: ['2年2組'],
+    title: '塩化ナトリウムと石英砂のろ過実験',
+    topics: ['塩と砂の分離実験','ろ過の手順','分離後の確認方法'],
+    noteKey: 'lesson_m1_bunrui',
+    relatedItems: ['m1-1','m1-2','m1-3','m1-4','m1-5','m1-6'],
+    scope: '1学期中間',
+    addedAt: '2026-05-04',
+  },
+  {
+    id: 'log_20260427_bunrui',
+    filename: '04-27〜04-28_物質の分類_分離と分解_元素記号_複数クラス統合',
+    date: '2026-04-27〜04-28',
+    classes: ['2年4組','2年5組'],
+    title: '物質の分類・分離と分解・元素記号の書き方',
+    topics: ['分離 vs 分解','水の電気分解','単体・化合物の見分け方','元素記号の書き方'],
+    noteKey: 'lesson_m1_bunrui',
+    relatedItems: ['m1-1','m1-2','m1-3','m1-4','m1-5','m1-6','m1-7','m1-8','m1-9','m1-10'],
+    scope: '1学期中間',
+    addedAt: '2026-05-04',
+  },
+  {
+    id: 'log_20260427_enshoku',
+    filename: '04-27〜04-30_炎色反応と沈殿反応_複数クラス統合',
+    date: '2026-04-27〜04-30',
+    classes: ['2年5組','2年6組'],
+    title: '成分元素の検出（炎色反応・沈殿反応）＋醤油実験',
+    topics: ['炎色反応（7元素の色）','沈殿反応（硝酸銀）','醤油からNaCl分離'],
+    noteKey: 'lesson_m1_enshoku',
+    relatedItems: ['m1-11','m1-12','m1-13','m1-14'],
+    scope: '1学期中間',
+    addedAt: '2026-05-04',
+  },
+];
+
+// ═══════════════════════════════════════════════════════
+//  QUIZ DATA  ── 事前生成済み確認クイズ（1学期中間）
+// ═══════════════════════════════════════════════════════
+const QUIZZES = {
+  'm1-1': { type:'mc', question:'次のうち「混合物」はどれか。', choices:['A. 純粋な水（H₂O）','B. 食塩水','C. 鉄（Fe）','D. 二酸化炭素（CO₂）'], answer:'B', explanation:'食塩水は水と塩化ナトリウムが混ざったもの。2種類以上の純物質が混ざったものが混合物。' },
+  'm1-2': { type:'mc', question:'次のうち純物質をすべて含む組み合わせはどれか。', choices:['A. 空気・水・鉄','B. 食塩水・エタノール・酸素','C. 水・鉄・エタノール','D. 石油・塩酸・酸素'], answer:'C', explanation:'水(H₂O)・鉄(Fe)・エタノール(C₂H₅OH)はいずれも1種類の物質。空気・食塩水・石油・塩酸は混合物。' },
+  'm1-3': { type:'fill', question:'混合物から純物質を取り出す操作を（　）という。', answer:'分離', explanation:'「分離」は物質の化学的性質を変えず、物理的な性質の違いを利用して分ける操作。' },
+  'm1-4': { type:'mc', question:'ろ過で利用する「物質の性質の違い」として正しいものはどれか。', choices:['A. 沸点の差','B. 溶解度の温度差','C. 粒子の大きさの差','D. 密度の差'], answer:'C', explanation:'ろ過はろ紙の目より大きい固体の粒子と、通過できる液体を分ける。粒子の大きさの違いを利用する。' },
+  'm1-5': { type:'mc', question:'蒸留で利用する「物質の性質の違い」として正しいものはどれか。', choices:['A. 粒子の大きさの差','B. 沸点の差','C. 溶解度の差','D. 色の違い'], answer:'B', explanation:'蒸留は液体混合物を加熱し、沸点の低い成分を先に蒸発・冷却して分離する。沸点の差を利用する。' },
+  'm1-6': { type:'mc', question:'「溶媒への溶けやすさの違い」を利用する分離操作はどれか。', choices:['A. ろ過','B. 蒸留','C. 再結晶','D. 抽出'], answer:'D', explanation:'抽出は目的物質だけが溶ける溶媒で取り出す操作。再結晶は溶解度の温度差、ろ過は粒子の大きさ、蒸留は沸点の差を利用する。' },
+  'm1-7': { type:'mc', question:'「単体」の説明として正しいものはどれか。', choices:['A. 2種類以上の元素からなる純物質','B. 1種類の元素だけからなる純物質','C. 2種類以上の純物質が混ざったもの','D. 化学変化で分解できないもの'], answer:'B', explanation:'単体＝1種類の元素のみからなる純物質（例：H₂, O₂, Fe）。化合物＝2種類以上の元素からなる純物質（例：H₂O, NaCl）。' },
+  'm1-8': { type:'mc', question:'「水素は燃えやすい気体だ」という文の「水素」は何を指すか。', choices:['A. 元素としての水素','B. 単体（H₂ガス）としての水素','C. 化合物中の水素原子','D. 水素イオン（H⁺）'], answer:'B', explanation:'「燃えやすい気体」は物質の性質を表すので単体H₂を指す。「水は水素と酸素からなる」の「水素」は元素（成分）を指す。' },
+  'm1-9': { type:'mc', question:'次のうち「化合物」はどれか。', choices:['A. 鉄（Fe）','B. 酸素（O₂）','C. 水（H₂O）','D. 銅（Cu）'], answer:'C', explanation:'水（H₂O）はH（水素）とO（酸素）の2種類の元素からなる純物質→化合物。Fe・O₂・Cuはそれぞれ1種類の元素のみ→単体。' },
+  'm1-10': { type:'fill', question:'原子番号11番の元素の元素記号を答えよ。', answer:'Na', explanation:'原子番号11＝ナトリウム（Na）。スイヘイリーベ順：H(1)He(2)Li(3)Be(4)B(5)C(6)N(7)O(8)F(9)Ne(10)Na(11)。' },
+  'm1-11': { type:'mc', question:'炎色反応でナトリウム（Na）が示す色はどれか。', choices:['A. 赤','B. 黄','C. 紫','D. 青緑'], answer:'B', explanation:'Na→黄、Li→赤、K→紫、Cu→青緑、Ca→橙赤、Sr→紅、Ba→黄緑。Na黄色は最重要。' },
+  'm1-12': { type:'mc', question:'炎色反応でわかることは何か。', choices:['A. 物質の質量','B. 含まれる元素の種類','C. 物質の沸点','D. 化学結合の種類'], answer:'B', explanation:'炎色反応は金属元素に特有の炎の色で、その物質にどの元素が含まれているかを確認する検出法。' },
+  'm1-13': { type:'mc', question:'塩化物イオン（Cl⁻）の存在を確認するために加える試薬はどれか。', choices:['A. 石灰水','B. 塩化コバルト紙','C. 硝酸銀水溶液','D. フェノールフタレイン'], answer:'C', explanation:'硝酸銀水溶液（AgNO₃aq）を加えると、Cl⁻と反応して白色沈殿（AgCl）が生じる。これでClの存在を確認できる。' },
+  'm1-14': { type:'mc', question:'燃焼させたら炎が黄色くなり、硝酸銀水溶液を加えると白色沈殿が生じた。含まれる元素の組み合わせはどれか。', choices:['A. Na と Cl','B. K と S','C. Ca と O','D. Li と N'], answer:'A', explanation:'炎が黄色→Na（ナトリウム）の存在。硝酸銀で白色沈殿→Cl（塩素）の存在。よってNaとCl。' },
+  'm1-15': { type:'mc', question:'原子の構造として正しいものはどれか。', choices:['A. 中心に電子があり、外側を陽子と中性子が回る','B. 中心に原子核（陽子＋中性子）があり、外側を電子が回る','C. 陽子・中性子・電子が均一に分布する','D. 中心に中性子のみあり、周囲を陽子と電子が囲む'], answer:'B', explanation:'原子の中心＝原子核（陽子＋中性子）、外側＝電子（電子殻上を運動）。' },
+  'm1-16': { type:'fill', question:'原子番号とは何の数に等しいか。「陽子の数」以外にもう一つ答えよ。', answer:'電子の数', explanation:'原子は電気的に中性なので陽子の数（＋）＝電子の数（－）。原子番号＝陽子の数＝電子の数。' },
+  'm1-17': { type:'mc', question:'質量数23、原子番号11の原子（Na）の中性子の数はいくつか。', choices:['A. 11','B. 12','C. 23','D. 34'], answer:'B', explanation:'中性子の数＝質量数－原子番号＝23－11＝12。' },
+  'm1-18': { type:'mc', question:'質量数17、原子番号8の酸素原子の電子の数はいくつか。', choices:['A. 8','B. 9','C. 17','D. 25'], answer:'A', explanation:'電子の数＝原子番号＝8。質量数17、中性子数＝17－8＝9。電子数は原子番号と同じ8。' },
+  'm1-19': { type:'mc', question:'次の核種のうち、炭素-12（¹²C、原子番号6）と同位体の関係にあるものはどれか。', choices:['A. 窒素-14（¹⁴N、原子番号7）','B. 炭素-13（¹³C、原子番号6）','C. ホウ素-12（¹²B、原子番号5）','D. 酸素-16（¹⁶O、原子番号8）'], answer:'B', explanation:'同位体＝陽子数（原子番号）が同じで質量数が異なる原子。¹³Cは原子番号6で同じ→同位体。他は原子番号が異なる別元素。' },
+  'm1-20': { type:'mc', question:'同位体どうしの化学的性質がほぼ同じ理由として正しいものはどれか。', choices:['A. 質量数が近いから','B. 中性子の数が同じだから','C. 電子の数が同じだから','D. 原子核の大きさが同じだから'], answer:'C', explanation:'化学反応は電子のやり取り・共有で起こる。同位体は陽子数が同じ→電子数が同じ→化学的性質はほぼ同じ。' },
+  'm1-21': { type:'mc', question:'L殻に収容できる電子の最大数はいくつか。', choices:['A. 2','B. 4','C. 8','D. 18'], answer:'C', explanation:'K殻：最大2個、L殻：最大8個、M殻：最大8個（高校）。内側から順に電子が入る。' },
+  'm1-22': { type:'mc', question:'原子番号17（Cl）の電子配置として正しいものはどれか。', choices:['A. K2 L8 M7','B. K2 L8 M8 N-1','C. K2 L7 M8','D. K2 L8 M5'], answer:'A', explanation:'電子数17をK殻から詰める：K殻2→L殻8→M殻7。よってK2 L8 M7。' },
+  'm1-23': { type:'fill', question:'最も外側の電子殻にある電子を（　）電子という。（2文字）', answer:'最外殻', explanation:'最外殻電子は元素の化学的性質を決める重要な電子。この授業では「価電子」という用語は使わない。' },
+  'm1-24': { type:'mc', question:'原子番号12（Mg）の最外殻電子の数はいくつか。', choices:['A. 2','B. 8','C. 10','D. 12'], answer:'A', explanation:'Mg（12）の電子配置：K2 L8 M2。最も外側のM殻に2個→最外殻電子は2個。' },
+  'm1-25': { type:'mc', question:'希ガス（He, Ne, Ar）の電子配置が安定な理由として正しいものはどれか。', choices:['A. 陽子の数が特別に多いから','B. 最外殻電子が8個（Heは2個）で満たされているから','C. 中性子の数が陽子の数と等しいから','D. 電子が存在しないから'], answer:'B', explanation:'Ne：K2 L8（最外殻8個）、Ar：K2 L8 M8（最外殻8個）、He：K2（最外殻2個）。この閉殻状態が最も安定。' },
+  'm1-26': { type:'mc', question:'原子番号20（Ca）の電子配置として正しいものはどれか。', choices:['A. K2 L8 M8 N2','B. K2 L8 M10','C. K2 L10 M8','D. K2 L8 M8 N0（おかしい）'], answer:'A', explanation:'電子数20：K殻2→L殻8→M殻8→N殻2。よってK2 L8 M8 N2。' },
+  // ── 1学期期末 ────────────────────────────────────────────
+  'f1-1': { type:'mc', question:'次のうち「電子対」の説明として正しいものはどれか。', choices:['A. 原子核の中にある2個の陽子','B. 2個1組でペアになった電子','C. 原子間で共有された1個の電子','D. 最外殻にある1個の孤立した電子'], answer:'B', explanation:'電子対＝2個1組でペアになった電子。不対電子はペアになっていない1個の電子。N原子は不対電子3個・非共有電子対1組を持つ。' },
+  'f1-2': { type:'mc', question:'O原子（酸素）の電子式として、最外殻電子は何個か。', choices:['A. 4個','B. 6個','C. 8個','D. 2個'], answer:'B', explanation:'Oの原子番号は8、電子配置K2 L6。最外殻（L殻）に6個の電子があり、2組の電子対と2個の不対電子として表す。' },
+  'f1-3': { type:'mc', question:'Na⁺の電子式の表し方として正しいものはどれか。', choices:['A. 電子を8個描き[ ]で囲まない','B. 電子を10個描き[ ]で囲み右上に⁺','C. 電子を8個描き[ ]で囲み右上に⁺','D. 電子を0個描き[ ]なし'], answer:'C', explanation:'Na（原子番号11）が電子1個を失いNa⁺（電子10個）になる。Ne（10個）と同じ電子配置。電子8個を最外殻に描き[ ]⁺と表す。' },
+  'f1-4': { type:'mc', question:'イオン結合の説明として正しいものはどれか。', choices:['A. 2原子が電子を1個ずつ出し合って共有する結合','B. 陽イオンと陰イオンが静電気的引力で引き合う結合','C. 金属原子が自由電子を介して結合する結合','D. 分子間にはたらく弱い引力による結合'], answer:'B', explanation:'イオン結合＝陽イオン（金属）と陰イオン（非金属）が静電気的引力（クーロン力）で結合。NaClが代表例。' },
+  'f1-5': { type:'mc', question:'イオン結晶の性質として誤っているものはどれか。', choices:['A. 一般に融点が高い','B. 固体状態でも電気をよく導く','C. 硬いが力を加えると割れやすい','D. 水に溶かすと電気を導く'], answer:'B', explanation:'イオン結晶は固体状態ではイオンが移動できないため導電性がない。水溶液や融解状態ではイオンが自由に動けるため導電する。' },
+  'f1-6': { type:'mc', question:'NaClの結晶構造の説明として正しいものはどれか。', choices:['A. Na⁺だけが規則正しく並ぶ','B. Na⁺とCl⁻が交互に並ぶ正六面体構造','C. NaとClが共有結合でつながる','D. 分子結晶として存在する'], answer:'B', explanation:'NaCl結晶はNa⁺とCl⁻が交互に規則正しく並ぶ正六面体（立方体）構造。各イオンは6個の逆符号イオンに囲まれる。' },
+  'f1-7': { type:'mc', question:'H₂Oの電子式について、Oがもつ「非共有電子対」は何組か。', choices:['A. 0組','B. 1組','C. 2組','D. 3組'], answer:'C', explanation:'H₂O：OはHと2本の共有結合（共有電子対2組）＋非共有電子対2組を持つ。計4組の電子対（最外殻6電子）。' },
+  'f1-8': { type:'mc', question:'N₂の電子式に含まれる共有電子対は何組か。', choices:['A. 1組（単結合）','B. 2組（二重結合）','C. 3組（三重結合）','D. 4組'], answer:'C', explanation:'N₂はN≡Nの三重結合。共有電子対3組。各N原子に非共有電子対1組ずつある。' },
+  'f1-9': { type:'mc', question:'電気陰性度が最も大きい元素はどれか。', choices:['A. H','B. O','C. F','D. Cl'], answer:'C', explanation:'電気陰性度は周期表の右上ほど大きい。最大はF（フッ素）≈4.0、次いでO≈3.4、N≈3.0、Cl≈3.2の順。' },
+  'f1-10': { type:'mc', question:'HClとCl₂について「極性結合」はどちらか。', choices:['A. HClのみ','B. Cl₂のみ','C. 両方とも極性結合','D. 両方とも無極性結合'], answer:'A', explanation:'HClはHとClの電気陰性度差が大→極性結合。Cl₂は同じ元素どうしで電気陰性度差=0→無極性結合。' },
+  'f1-11': { type:'mc', question:'CO₂が無極性分子である理由として正しいものはどれか。', choices:['A. C=O結合が無極性だから','B. 直線形の構造で結合の極性が打ち消し合うから','C. 共有電子対がないから','D. C原子の電気陰性度が大きいから'], answer:'B', explanation:'C=O結合は極性結合だが、CO₂は直線形（O=C=O）のため2本の極性が逆方向で打ち消し合い、分子全体では無極性。' },
+  'f1-12': { type:'mc', question:'金属結合の特徴として正しいものはどれか。', choices:['A. 陽イオンと陰イオンが引き合う','B. 原子が電子を共有する','C. 金属陽イオンの格子を自由電子が動き回る','D. 分子間に弱い引力がはたらく'], answer:'C', explanation:'金属結合：金属原子が価電子を放出し、正イオンの格子中を自由電子が自由に動き回ることで結合。' },
+  'f1-13': { type:'mc', question:'金属が展性・延性をもつ理由として正しいものはどれか。', choices:['A. イオン結合が強いから','B. 共有電子対が多いから','C. 力を加えてもイオン配列がずれず安定なイオン結晶だから','D. 自由電子がイオン格子のずれに追随して結合を維持するから'], answer:'D', explanation:'力を加えると金属陽イオンの格子がずれるが、自由電子が追随して結合を維持するため、割れずに延びたり広がったりできる。' },
+  'f1-14': { type:'mc', question:'イオン結合・共有結合・金属結合の組み合わせで正しいものはどれか。', choices:['A. イオン：電子共有　共有：静電気力　金属：自由電子','B. イオン：静電気力　共有：電子共有　金属：自由電子','C. イオン：自由電子　共有：静電気力　金属：電子共有','D. すべて静電気力による結合'], answer:'B', explanation:'イオン結合＝陽・陰イオン間の静電気力。共有結合＝2原子間で電子を共有。金属結合＝陽イオン格子＋自由電子。' },
+  'f1-15': { type:'mc', question:'共有結合の結晶の代表例として正しいものはどれか。', choices:['A. NaCl','B. CO₂（ドライアイス）','C. ダイヤモンド（C）','D. 鉄（Fe）'], answer:'C', explanation:'共有結合の結晶：ダイヤモンド(C)・SiO₂など。イオン結晶：NaCl。分子結晶：CO₂・H₂O。金属結晶：Fe・Cu。' },
+  'f1-16': { type:'mc', question:'4種の結晶のうち、最も融点が高い傾向にあるものはどれか。', choices:['A. 分子結晶','B. 金属結晶','C. イオン結晶','D. 共有結合の結晶'], answer:'D', explanation:'融点の高さ：共有結合の結晶（ダイヤモンドなど）＞イオン結晶≒金属結晶＞分子結晶。共有結合の結晶は原子間の共有結合が非常に強固。' },
+  'f1-17': { type:'mc', question:'黒鉛（グラファイト）が電気を導く理由として正しいものはどれか。', choices:['A. イオンが自由に動けるから','B. 層内でπ電子が自由に動けるから','C. 共有電子対が動くから','D. 自由電子を放出した金属陽イオンがあるから'], answer:'B', explanation:'黒鉛は層状構造で各炭素が3本の共有結合を形成。残り1個の電子（π電子）が層内を自由に動けるため導電性をもつ。' },
+  'f1-18': { type:'mc', question:'ダイヤモンドと黒鉛はどちらも炭素のみからなるが、性質が大きく異なる。その主な理由はどれか。', choices:['A. 同位体の割合が異なるから','B. 結晶構造（結合の仕方）が異なるから','C. 原子量が異なるから','D. イオン化傾向が異なるから'], answer:'B', explanation:'ダイヤモンド：各C原子が4本の共有結合→正四面体構造→最硬・絶縁体。黒鉛：各C原子が3本の共有結合→層状構造→軟らかく導電性あり。同じ元素でも結晶構造が違えば性質が全く異なる（同素体）。' },
+
+  // ── 2学期中間 ────────────────────────────────────────────
+  'm2-1': { type:'mc', question:'相対質量の基準として正しいものはどれか。', choices:['A. 水素原子1個の質量を1とする','B. 炭素-12（¹²C）原子1個の質量を12とする','C. 陽子1個の質量を1とする','D. 電子1個の質量を1とする'], answer:'B', explanation:'相対質量は¹²C原子1個の質量を12として、それを基準にした各原子の相対的な質量。' },
+  'm2-2': { type:'fill', question:'水（H₂O）の分子量を求めよ。ただしH=1, O=16とする。', answer:'18', explanation:'分子量＝原子量の総和。H₂O = 1×2 + 16×1 = 18。' },
+  'm2-3': { type:'mc', question:'NaClの式量として正しいものはどれか。（Na=23, Cl=35.5）', choices:['A. 23','B. 35.5','C. 58.5','D. 59'], answer:'C', explanation:'式量＝原子量の総和。NaCl = 23 + 35.5 = 58.5。' },
+  'm2-4': { type:'mc', question:'アボガドロ定数として正しいものはどれか。', choices:['A. 6.0×10²² /mol','B. 6.0×10²³ /mol','C. 6.0×10²⁴ /mol','D. 22.4 L/mol'], answer:'B', explanation:'アボガドロ定数Nₐ = 6.0×10²³ /mol。1 mol の粒子（原子・分子・イオン）の個数。' },
+  'm2-5': { type:'mc', question:'水分子（H₂O）3.0 mol に含まれる分子の個数はいくつか。', choices:['A. 3.0×10²³個','B. 6.0×10²³個','C. 18×10²³個','D. 1.8×10²⁴個'], answer:'D', explanation:'個数 = mol × Nₐ = 3.0 × 6.0×10²³ = 18×10²³ = 1.8×10²⁴個。' },
+  'm2-6': { type:'mc', question:'CO₂（分子量44）2.2gは何molか。', choices:['A. 0.025 mol','B. 0.05 mol','C. 0.5 mol','D. 2.5 mol'], answer:'B', explanation:'mol = 質量÷モル質量 = 2.2÷44 = 0.05 mol。' },
+  'm2-7': { type:'mc', question:'標準状態で酸素（O₂）0.5 molの体積は何Lか。', choices:['A. 5.6 L','B. 11.2 L','C. 22.4 L','D. 44.8 L'], answer:'B', explanation:'体積 = mol × 22.4 L/mol = 0.5 × 22.4 = 11.2 L。' },
+  'm2-8': { type:'mc', question:'CO₂ 44gに含まれる分子の個数はいくつか。（C=12, O=16, Nₐ=6.0×10²³）', choices:['A. 3.0×10²²個','B. 6.0×10²³個','C. 1.2×10²⁴個','D. 2.4×10²⁴個'], answer:'B', explanation:'CO₂のモル質量＝44 g/mol。mol = 44÷44 = 1.0 mol。個数 = 1.0 × 6.0×10²³ = 6.0×10²³個。' },
+  'm2-9': { type:'mc', question:'化学反応式 2H₂ + O₂ → 2H₂O の係数が示すことはどれか。', choices:['A. 反応する物質の質量の比','B. 反応する物質の体積の比','C. 反応する物質の物質量（mol）の比','D. 反応する粒子のエネルギーの比'], answer:'C', explanation:'化学反応式の係数の比＝物質量（mol）の比。2:1:2はH₂:O₂:H₂Oのmol比を表す。' },
+  'm2-10': { type:'mc', question:'Fe + O₂ → Fe₂O₃ を正しく係数合わせしたものはどれか。', choices:['A. Fe + O₂ → Fe₂O₃','B. 2Fe + O₂ → Fe₂O₃','C. 4Fe + 3O₂ → 2Fe₂O₃','D. Fe + 3O₂ → 2Fe₂O₃'], answer:'C', explanation:'Feを合わせると左辺4、右辺2×2=4。Oは左辺3×2=6、右辺2×3=6で一致。4Fe+3O₂→2Fe₂O₃。' },
+  'm2-11': { type:'mc', question:'未定係数法でaCH₄+bO₂→cCO₂+dH₂O のとき、CH₄:O₂の比はどれか。', choices:['A. 1:1','B. 1:2','C. 2:1','D. 1:4'], answer:'B', explanation:'a=1とおくと：C→c=1、H→d=2、O→2b=2+2=6→b=2。よってCH₄:O₂=1:2（メタンの燃焼反応）。' },
+  'm2-12': { type:'mc', question:'化学反応式の量的計算の手順として正しい順序はどれか。', choices:['A. mol比→注目物質→単位変換→答え','B. 注目2物質を決める→係数からmol比→わかっているmolを代入→比例計算','C. 質量を求める→molに変換→係数を足す','D. 個数を数える→Nₐで割る→係数比'], answer:'B', explanation:'①注目2物質を決める②係数からmol比を書く③わかっているmolを代入④比例計算で答えを求める。この4ステップが基本。' },
+  'm2-13': { type:'mc', question:'2H₂+O₂→2H₂O でH₂ 3.0 molから生成するH₂Oの質量は何gか。（H=1, O=16）', choices:['A. 18g','B. 27g','C. 54g','D. 36g'], answer:'C', explanation:'H₂:H₂O=2:2=1:1のmol比。H₂ 3.0 mol→H₂O 3.0 mol。質量=3.0×18=54g。' },
+  'm2-14': { type:'mc', question:'H₂ 3 molとO₂ 1 molを反応させた（2H₂+O₂→2H₂O）とき、生成するH₂Oは何molか。', choices:['A. 1 mol','B. 2 mol','C. 3 mol','D. 4 mol'], answer:'B', explanation:'H₂:O₂=2:1の比が必要。O₂ 1 molに対しH₂ 2 mol必要。H₂は3 molあるが2 molしか使えない→H₂Oは2 mol。O₂が限定試薬。' },
+  'm2-15': { type:'mc', question:'標準状態でCH₄ 16gを完全燃焼（CH₄+2O₂→CO₂+2H₂O）すると生成するCO₂は何Lか。（C=12,H=1）', choices:['A. 11.2L','B. 22.4L','C. 44.8L','D. 5.6L'], answer:'B', explanation:'CH₄のモル質量=16。mol=16÷16=1mol。CH₄:CO₂=1:1より CO₂も1mol。体積=1×22.4=22.4L。' },
+
+  // ── 2学期期末 ────────────────────────────────────────────
+  'f2-1': { type:'mc', question:'アレニウスの定義で「塩基」とはどのような物質か。', choices:['A. H⁺を放出する物質','B. OH⁻を放出する物質','C. 電子を受け取る物質','D. プロトンを受け取る物質'], answer:'B', explanation:'アレニウスの定義：酸＝水中でH⁺を出す物質（例：HCl）、塩基＝水中でOH⁻を出す物質（例：NaOH）。' },
+  'f2-2': { type:'mc', question:'H₂SO₄（硫酸）は何価の酸か。', choices:['A. 1価','B. 2価','C. 3価','D. 4価'], answer:'B', explanation:'H₂SO₄→2H⁺+SO₄²⁻。1分子から最大2個のH⁺を出せるので2価の酸。HCl=1価、H₃PO₄=3価。' },
+  'f2-3': { type:'mc', question:'次のうち「弱酸」はどれか。', choices:['A. HCl（塩酸）','B. HNO₃（硝酸）','C. H₂SO₄（硫酸）','D. CH₃COOH（酢酸）'], answer:'D', explanation:'強酸（ほぼ100%電離）：HCl, HNO₃, H₂SO₄, HBr, HI, HClO₄。弱酸（一部のみ電離）：CH₃COOH, H₂CO₃, H₂S, HF。' },
+  'f2-4': { type:'mc', question:'0.1 mol/L の酢酸水溶液の電離度が0.013のとき、電離した酢酸の濃度は何mol/Lか。', choices:['A. 0.0013 mol/L','B. 0.013 mol/L','C. 0.13 mol/L','D. 1.3 mol/L'], answer:'A', explanation:'電離した濃度 = 全体の濃度 × 電離度 = 0.1 × 0.013 = 0.0013 mol/L。' },
+  'f2-5': { type:'mc', question:'溶質0.2 molを溶かして500 mLの水溶液を作ったときのモル濃度はいくつか。', choices:['A. 0.1 mol/L','B. 0.2 mol/L','C. 0.4 mol/L','D. 1.0 mol/L'], answer:'C', explanation:'モル濃度 = 溶質のmol÷溶液の体積[L] = 0.2÷0.5 = 0.4 mol/L。' },
+  'f2-6': { type:'mc', question:'2.0 mol/L のNaOH水溶液200 mLを水で薄めて1000 mLにしたときのモル濃度はいくつか。', choices:['A. 0.2 mol/L','B. 0.4 mol/L','C. 1.0 mol/L','D. 10 mol/L'], answer:'B', explanation:'c₁V₁=c₂V₂。2.0×0.2=c₂×1.0。c₂=0.4 mol/L。' },
+  'f2-7': { type:'mc', question:'25℃の水溶液で[H⁺]=1.0×10⁻³ mol/Lのとき、[OH⁻]はいくつか。', choices:['A. 1.0×10⁻³ mol/L','B. 1.0×10⁻¹¹ mol/L','C. 1.0×10⁻⁷ mol/L','D. 1.0×10⁻¹⁴ mol/L'], answer:'B', explanation:'Kw=[H⁺][OH⁻]=1.0×10⁻¹⁴。[OH⁻]=10⁻¹⁴÷10⁻³=1.0×10⁻¹¹ mol/L。' },
+  'f2-8': { type:'mc', question:'[H⁺]=1.0×10⁻⁴ mol/Lの水溶液のpHはいくつか。', choices:['A. pH=2','B. pH=4','C. pH=10','D. pH=14'], answer:'B', explanation:'pH=-log₁₀[H⁺]=-log₁₀(10⁻⁴)=4。' },
+  'f2-9': { type:'mc', question:'0.01 mol/L HClのpHはいくつか。（HClは強酸で完全電離）', choices:['A. pH=1','B. pH=2','C. pH=12','D. pH=13'], answer:'B', explanation:'HClは完全電離。[H⁺]=0.01=10⁻² mol/L。pH=-log₁₀(10⁻²)=2。' },
+  'f2-10': { type:'mc', question:'pH=3の水溶液の[OH⁻]はいくつか。（25℃）', choices:['A. 1.0×10⁻³ mol/L','B. 1.0×10⁻⁷ mol/L','C. 1.0×10⁻¹¹ mol/L','D. 1.0×10⁻¹⁴ mol/L'], answer:'C', explanation:'pH=3→[H⁺]=10⁻³。[OH⁻]=Kw/[H⁺]=10⁻¹⁴÷10⁻³=10⁻¹¹ mol/L。指数の和：3+11=14。' },
+  'f2-11': { type:'mc', question:'NaOHとHClの中和反応の化学反応式として正しいものはどれか。', choices:['A. NaOH+HCl→NaCl+H₂O','B. NaOH+HCl→Na+Cl+H₂O','C. NaOH+2HCl→NaCl₂+H₂O','D. 2NaOH+HCl→NaCl+2H₂O'], answer:'A', explanation:'酸+塩基→塩+水。NaOH（1価塩基）+HCl（1価酸）→NaCl（塩）+H₂O。' },
+  'f2-12': { type:'mc', question:'中和の量的関係で正しいものはどれか。', choices:['A. 酸のmol = 塩基のmol','B. 酸の体積 = 塩基の体積','C. 酸の価数×mol = 塩基の価数×mol','D. 酸の濃度 = 塩基の濃度'], answer:'C', explanation:'中和の条件：酸から出るH⁺のmol = 塩基から出るOH⁻のmol。つまり（価数×mol）が等しい。' },
+  'f2-13': { type:'mc', question:'0.1 mol/L H₂SO₄ 10 mLを中和するのに必要な0.1 mol/L NaOHは何mLか。', choices:['A. 5 mL','B. 10 mL','C. 20 mL','D. 40 mL'], answer:'C', explanation:'H₂SO₄（2価）×0.1×0.01=NaOH（1価）×0.1×V。0.002=0.1V。V=0.02L=20mL。' },
+  'f2-14': { type:'mc', question:'Ca(OH)₂とHClの中和で生じる塩はどれか。', choices:['A. CaCl','B. CaCl₂','C. Ca(OH)Cl','D. Ca₂Cl'], answer:'B', explanation:'Ca(OH)₂+2HCl→CaCl₂+2H₂O。Ca²⁺（2価）とCl⁻（1価）が2個でCaCl₂。' },
+  'f2-15': { type:'mc', question:'中和滴定で「ビュレット」を使う目的はどれか。', choices:['A. 一定体積の溶液を正確に量り取る','B. 一定体積の溶液を調製する','C. 少量ずつ液を滴下してその体積を正確に読み取る','D. 溶液の密度を測定する'], answer:'C', explanation:'ビュレット：少量ずつ液を滴下し、滴下した体積を0.1mLの精度で読み取る器具。ホールピペット：一定量を量り取る。メスフラスコ：一定体積を調製する。' },
+  'f2-16': { type:'mc', question:'強酸を強塩基で滴定するとき使う指示薬として適切なものはどれか。', choices:['A. メチルオレンジのみ（pH 3.1〜4.4）','B. フェノールフタレインのみ（pH 8.3〜10）','C. どちらでもよい','D. どちらも使えない'], answer:'C', explanation:'強酸×強塩基の滴定では当量点のpHが約7で、滴定曲線のpHの急変部分（pH 4〜10）がどちらの変色域もカバーするのでどちらも使える。' },
+  'f2-17': { type:'mc', question:'強酸と強塩基の中和滴定曲線の形として正しいものはどれか。', choices:['A. 直線状に増加する','B. 当量点付近でpHが急激に変化するS字形','C. 当量点でpHが最小になる','D. 常にpH=7を維持する'], answer:'B', explanation:'強酸×強塩基の滴定曲線：当量点（中和完了点）でpH≈7、その付近でpHが急激に変化するS字形を描く。' },
+  'f2-18': { type:'mc', question:'0.10 mol/L HCl 20 mLを0.10 mol/L NaOHで滴定した。NaOHが20 mL加わったとき（当量点）のpHは約いくつか。', choices:['A. pH=1','B. pH=7','C. pH=13','D. pH=14'], answer:'B', explanation:'強酸HClと強塩基NaOHの中和では当量点でpH=7（中性）。弱酸×強塩基の場合は当量点でpH>7になる。' },
+  'f2-19': { type:'mc', question:'未知濃度のNaOH溶液10 mLに0.10 mol/L HCl 15 mLを要した。NaOHの濃度は何mol/Lか。', choices:['A. 0.10 mol/L','B. 0.15 mol/L','C. 0.20 mol/L','D. 0.30 mol/L'], answer:'B', explanation:'1×c×0.01=1×0.10×0.015。c=0.0015÷0.01=0.15 mol/L。' },
+  'f2-20': { type:'text', question:'滴定実験のレポートで「誤差の原因」として考えられる事項を2つ挙げよ。', model_answer:'①ビュレットの読み取り誤差（視線の角度）②終点の判断のずれ（指示薬の変色域のタイミング）③器具の洗浄不足による濃度変化', points:['滴定器具の操作に関する誤差を挙げている','指示薬や終点判断に関する誤差を挙げている'] },
+
+  // ── 3学期 ────────────────────────────────────────────────
+  't3-1': { type:'mc', question:'2CuO → 2Cu + O₂ の反応で「還元」されているものはどれか。', choices:['A. Cu（銅）','B. O₂（酸素）','C. CuO（酸化銅）','D. この反応に還元はない'], answer:'C', explanation:'還元＝酸素を失う。CuOはOを失ってCuになる→還元された。Cuは酸素を得る逆反応では酸化される。' },
+  't3-2': { type:'mc', question:'酸化還元反応を「電子の授受」で定義したとき、「酸化」とはどれか。', choices:['A. 電子を得ること','B. 電子を失うこと','C. 酸素を受け取ること','D. 水素を失うこと'], answer:'B', explanation:'酸化＝電子を失う（酸化数が増加する）。還元＝電子を得る（酸化数が減少する）。' },
+  't3-3': { type:'mc', question:'Cu + O₂ → CuO の反応で「電子の授受」の観点からCuはどうなっているか。', choices:['A. 電子を得ている（還元）','B. 電子を失っている（酸化）','C. 電子の授受はない','D. 電子を共有している'], answer:'B', explanation:'Cu→Cu²⁺+2e⁻（電子2個を失う）→酸化。O₂+4e⁻→2O²⁻（電子を得る）→還元。酸素の授受による定義とも一致する。' },
+  't3-4': { type:'mc', question:'化合物H₂O中のOの酸化数はいくつか。', choices:['A. 0','B. -1','C. -2','D. +2'], answer:'C', explanation:'化合物中のO＝-2（過酸化物H₂O₂以外）。H₂O：H=+1が2個で+2、全体=0なのでO=-2。' },
+  't3-5': { type:'mc', question:'MnO₄⁻中のMnの酸化数はいくつか。', choices:['A. +2','B. +4','C. +7','D. -2'], answer:'C', explanation:'O=-2を4個→-8。多原子イオンの総和=電荷。x+(-8)=-1。x=+7。' },
+  't3-6': { type:'mc', question:'次の反応で酸化数が増加している原子はどれか。  Zn + H₂SO₄ → ZnSO₄ + H₂', choices:['A. Zn（亜鉛）','B. S（硫黄）','C. H（水素）','D. O（酸素）'], answer:'A', explanation:'Zn：0→+2（増加→酸化）。H：+1→0（減少→還元）。S, Oは変化なし。' },
+  't3-7': { type:'mc', question:'酸化剤の説明として正しいものはどれか。', choices:['A. 自分が酸化され、相手を還元する物質','B. 自分が還元され、相手を酸化する物質','C. 自分も相手も酸化する物質','D. 酸素を含むすべての物質'], answer:'B', explanation:'酸化剤＝相手を酸化する（自分は電子を受け取り還元される）。還元剤＝相手を還元する（自分は電子を渡し酸化される）。' },
+  't3-8': { type:'mc', question:'過マンガン酸カリウム（KMnO₄）が酸性条件下で酸化剤としてはたらくとき、Mnの酸化数はどう変化するか。', choices:['A. +7 → +2','B. +7 → 0','C. +2 → +7','D. 0 → +7'], answer:'A', explanation:'KMnO₄の半反応式（酸性）：MnO₄⁻+8H⁺+5e⁻→Mn²⁺+4H₂O。Mnの酸化数：+7→+2（5減少）。' },
+  't3-9': { type:'mc', question:'SO₂が還元剤としてはたらくときのSの酸化数変化はどれか。', choices:['A. +4 → +6','B. +4 → 0','C. 0 → +4','D. +6 → +4'], answer:'A', explanation:'SO₂（Sは+4）→SO₄²⁻（Sは+6）。酸化数が増加（+4→+6）→酸化された→SO₂は還元剤。' },
+  't3-10': { type:'mc', question:'半反応式どうしを組み合わせてイオン反応式を作るとき、消去する必要があるものはどれか。', choices:['A. H⁺','B. H₂O','C. e⁻（電子）','D. OH⁻'], answer:'C', explanation:'酸化剤の半反応式と還元剤の半反応式を整数倍して足し合わせ、e⁻を消去するとイオン反応式が得られる。' },
+  't3-11': { type:'mc', question:'イオン化傾向の順でZnとCuを比べたとき正しいものはどれか。', choices:['A. ZnよりCuのほうがイオン化傾向が大きい','B. CuよりZnのほうがイオン化傾向が大きい','C. ZnとCuのイオン化傾向は同じ','D. ZnとCuは酸に溶けない'], answer:'B', explanation:'イオン化列：…Zn>…>Cu>…。Znのほうがイオン化傾向が大きく酸化されやすい。ダニエル電池でZnが負極になる理由。' },
+  't3-12': { type:'fill', question:'イオン化列で、鉄（Fe）よりイオン化傾向が小さく、水素（H）よりイオン化傾向が大きい金属を1つ答えよ。', answer:'Ni', explanation:'イオン化列：…Fe>Ni>Sn>Pb>H>…。FeとHの間にはNi(ニッケル)とSn(スズ)とPb(鉛)がある。いずれも正解。', acceptedAnswers:['Ni','Sn','Pb'] },
+  't3-13': { type:'mc', question:'金（Au）を希硫酸に入れたとき、どうなるか。（イオン化傾向：H＞Au）', choices:['A. 溶けてAu²⁺になる','B. 水素が発生して溶ける','C. 溶けない','D. 酸化されてAu₂O₃になる'], answer:'C', explanation:'イオン化傾向がHより小さい金属（Cu, Hg, Ag, Pt, Au）は希酸に溶けない。AuはH₂SO₄（希）やHClにも溶けない。' },
+  't3-14': { type:'mc', question:'ダニエル電池の正極での反応として正しいものはどれか。', choices:['A. Zn → Zn²⁺ + 2e⁻','B. Cu²⁺ + 2e⁻ → Cu','C. 2H⁺ + 2e⁻ → H₂','D. Zn²⁺ + 2e⁻ → Zn'], answer:'B', explanation:'ダニエル電池：負極(Zn側)=Zn→Zn²⁺+2e⁻（酸化）。正極(Cu側)=Cu²⁺+2e⁻→Cu（還元）。イオン化傾向大→負極。' },
+  't3-15': { type:'mc', question:'ダニエル電池で電子はどの向きに流れるか。', choices:['A. Cu極からZn極へ（外部回路）','B. Zn極からCu極へ（外部回路）','C. 電解液中をZnからCuへ','D. 電子は流れない'], answer:'B', explanation:'負極Znで電子が放出→外部回路をZn極からCu極へ流れる→正極Cu²⁺が電子を受け取りCuが析出。電流の向きは電子と逆（Cu→Zn）。' },
+  't3-16': { type:'mc', question:'鉛蓄電池を放電したとき、負極(Pb)での反応はどれか。', choices:['A. Pb → Pb²⁺ + 2e⁻','B. PbO₂ + SO₄²⁻ + 4H⁺ + 2e⁻ → PbSO₄ + 2H₂O','C. Pb + SO₄²⁻ → PbSO₄ + 2e⁻','D. PbSO₄ + 2e⁻ → Pb + SO₄²⁻'], answer:'C', explanation:'鉛蓄電池放電（負極）：Pb+SO₄²⁻→PbSO₄+2e⁻。正極：PbO₂+SO₄²⁻+4H⁺+2e⁻→PbSO₄+2H₂O。' },
+  't3-17': { type:'mc', question:'1.0Aの電流を965秒間流したとき、移動した電子は何molか。（ファラデー定数F=9.65×10⁴ C/mol）', choices:['A. 0.001 mol','B. 0.01 mol','C. 0.1 mol','D. 1.0 mol'], answer:'B', explanation:'Q=It=1.0×965=965C。mol=Q/F=965÷96500=0.01mol。' },
+  't3-18': { type:'mc', question:'過マンガン酸カリウム（KMnO₄）滴定で、MnO₄⁻が5mol の電子を受け取るとき、Fe²⁺（1mol の電子を渡す）は何mol反応するか。', choices:['A. 1 mol','B. 2 mol','C. 5 mol','D. 10 mol'], answer:'C', explanation:'授受するe⁻のmolが等しい：MnO₄⁻×5=Fe²⁺×1。MnO₄⁻ 1molに対しFe²⁺ 5molが反応する。' },
+  't3-19': { type:'mc', question:'酸化還元反応において「電子e⁻のmolの収支」が成立する根拠はどれか。', choices:['A. 質量保存の法則','B. 電気的中性の法則','C. 酸化と還元は必ず同時に起こるから','D. ファラデーの法則'], answer:'C', explanation:'酸化（電子を失う）と還元（電子を得る）は必ず対になって起こる。放出されたe⁻は必ず他の物質に受け取られるため、e⁻のmolが等しくなる。' },
+};
+const SCOPES = [
+  {
+    id:'mid1', name:'1学期中間', term:'1学期中間',
+    desc:'物質の分類・元素と単体・成分元素の検出・原子の構造・同位体・電子配置',
+    totalHours:6,
+    phases:[
+      {
+        id:'m1p1', title:'混合物と純物質・分離', hRange:[1,2],
+        items:[
+          {id:'m1-1',h:1,text:'「混合物」と「純物質」の違いを自分の言葉で説明できる（教p14〜16）',review:'混合物・純物質の定義'},
+          {id:'m1-2',h:1,text:'混合物・純物質それぞれの具体例を3つずつ即答できる',review:'混合物・純物質の例'},
+          {id:'m1-3',h:1,text:'混合物から純物質を取り出す操作を「分離」という——この定義を言える',review:'分離の定義'},
+          {id:'m1-4',h:2,text:'ろ過のしくみ（何の性質の違いを利用するか）と操作上の注意点を説明できる ※特に重要',review:'ろ過の操作'},
+          {id:'m1-5',h:2,text:'蒸留のしくみ（何の性質の違いを利用するか）を説明でき、装置の図を描ける ※特に重要',review:'蒸留の操作'},
+          {id:'m1-6',h:2,text:'再結晶・抽出・クロマトグラフィーなどその他の分離操作を名称と原理で区別できる（※「分離の操作1」は除く）',review:'その他の分離方法'},
+        ]
+      },
+      {
+        id:'m1p2', title:'元素・単体・化合物', hRange:[2,3],
+        items:[
+          {id:'m1-7',h:2,text:'「元素」「単体」「化合物」の意味を区別して自分の言葉で説明できる（教p17〜19）',review:'元素・単体・化合物の定義'},
+          {id:'m1-8',h:2,text:'「水素」という言葉が「元素」を指す場合と「単体（H₂）」を指す場合を文脈から区別できる',review:'元素と単体の使い分け'},
+          {id:'m1-9',h:3,text:'純物質を単体と化合物に分類する問題を解ける（例：Fe・H₂O・NaCl・O₂）',review:'単体・化合物の分類練習'},
+          {id:'m1-10',h:3,text:'原子番号1〜20の元素名・元素記号・原子番号をすべて正確に書ける（スイヘイリーベ…）',review:'原子番号1〜20の暗記'},
+        ]
+      },
+      {
+        id:'m1p3', title:'成分元素の検出（炎色反応・沈殿反応）', hRange:[3,4],
+        items:[
+          {id:'m1-11',h:3,text:'炎色反応とは何かを説明でき、Li赤・Na黄・K紫・Ca橙赤・Sr紅・Ba黄緑・Cu青緑の色を言える（プリント範囲）',review:'炎色反応の色'},
+          {id:'m1-12',h:3,text:'炎色反応でわかることは「元素の種類」であることを説明できる',review:'炎色反応で検出できること'},
+          {id:'m1-13',h:4,text:'沈殿反応（硝酸銀水溶液でCl⁻を検出するなど）の操作と意味をプリントの範囲で説明できる',review:'沈殿反応による元素検出'},
+          {id:'m1-14',h:4,text:'成分元素の検出実験の結果から、含まれる元素を判定できる',review:'成分元素の検出まとめ'},
+        ]
+      },
+      {
+        id:'m1p4', title:'原子の構造・同位体', hRange:[4,5],
+        items:[
+          {id:'m1-15',h:4,text:'原子の構造（原子核＝陽子＋中性子、外側に電子）を図に描ける（教p26〜27）',review:'原子の構造の図示'},
+          {id:'m1-16',h:4,text:'原子番号＝陽子の数＝電子の数　という関係を自分の言葉で説明できる',review:'原子番号と粒子数の関係'},
+          {id:'m1-17',h:4,text:'質量数＝陽子の数＋中性子の数　を使い、中性子の数を求められる（例：<span class="nuclide"><span>12</span><span>6</span></span>C → 中性子6個）',review:'質量数・中性子数の計算'},
+          {id:'m1-18',h:5,text:'元素記号の表記（左上に質量数・左下に原子番号）を読んで陽子・中性子・電子の数を即答できる',review:'元素記号の表記の読み方'},
+          {id:'m1-19',h:5,text:'同位体の定義（陽子数が同じで中性子数が異なる原子）を言え、複数の核種から同位体のペアを選べる',review:'同位体の定義と選び方'},
+          {id:'m1-20',h:5,text:'同位体は化学的性質がほぼ同じ理由を「電子の数が同じだから」と説明できる',review:'同位体の化学的性質'},
+        ]
+      },
+      {
+        id:'m1p5', title:'電子殻・電子配置・最外殻電子', hRange:[5,6],
+        items:[
+          {id:'m1-21',h:5,text:'電子殻（K・L・M殻）に収容できる電子の最大数（2・8・8）を言える（教p35〜37）',review:'電子殻と収容数'},
+          {id:'m1-22',h:5,text:'原子番号1〜20の電子配置を書ける（例：Na → K2 L8 M1）',review:'電子配置の書き方'},
+          {id:'m1-23',h:6,text:'最外殻電子とは何かを自分の言葉で説明できる（※「価電子」の用語は試験では使わない）',review:'最外殻電子の定義'},
+          {id:'m1-24',h:6,text:'任意の元素（原子番号1〜20）の最外殻電子の数を電子配置から読み取れる',review:'最外殻電子数の読み取り'},
+          {id:'m1-25',h:6,text:'希ガス（He・Ne・Ar）の電子配置が特別に安定な理由を最外殻電子の数から説明できる',review:'希ガスの安定な電子配置'},
+          {id:'m1-26',h:6,text:'教科書p25・p30・p41の節末チェック問題をすべて自力で解いて答え合わせできる',review:'節末チェック（p25・30・41）'},
+        ]
+      },
+    ]
+  },
+  {
+    id:'fin1', name:'1学期期末', term:'1学期期末',
+    desc:'電子式・化学結合3種・結晶の性質',
+    totalHours:8,
+    phases:[
+      { id:'f1p1', title:'原子・イオン・電子式', hRange:[1,2],
+        items:[
+          {id:'f1-1',h:1,text:'電子対と不対電子の違いを説明し、N原子の電子式（・Ṅ・）を正しく書ける',review:'電子対・不対電子の定義'},
+          {id:'f1-2',h:1,text:'O, S, Cl, Na など主要原子の電子式を書ける',review:'原子の電子式'},
+          {id:'f1-3',h:2,text:'Na⁺, Cl⁻, O²⁻ などイオンの電子式を[ ]と価数付きで書ける',review:'イオンの電子式'},
+        ]
+      },
+      { id:'f1p2', title:'イオン結合', hRange:[2,3],
+        items:[
+          {id:'f1-4',h:2,text:'陽イオンと陰イオンが静電気力で引き合う結合をイオン結合と説明できる',review:'イオン結合の定義'},
+          {id:'f1-5',h:3,text:'イオン結晶の性質（硬いが割れやすい・高融点・水溶液で導電）を説明できる',review:'イオン結晶の性質'},
+          {id:'f1-6',h:3,text:'NaCl の結晶構造（正六面体状の格子）を図示できる',review:'イオン結晶の構造'},
+        ]
+      },
+      { id:'f1p3', title:'共有結合・電気陰性度', hRange:[3,5],
+        items:[
+          {id:'f1-7',h:3,text:'共有電子対と非共有電子対を区別し、H₂O の電子式と構造式を書ける',review:'共有結合と電子式'},
+          {id:'f1-8',h:4,text:'N₂（三重結合）、CO₂（二重結合）の電子式を書ける',review:'多重結合の電子式'},
+          {id:'f1-9',h:4,text:'電気陰性度の大小傾向（周期表の右上ほど大）を説明できる',review:'電気陰性度'},
+          {id:'f1-10',h:5,text:'極性結合と無極性結合の違いを電気陰性度差で説明でき、HCl と Cl₂ を分類できる',review:'極性・非極性の判定'},
+          {id:'f1-11',h:5,text:'分子全体の極性（H₂O：極性、CO₂：無極性）を形から判定できる',review:'分子の極性と形'},
+        ]
+      },
+      { id:'f1p4', title:'金属結合・結合の分類', hRange:[5,6],
+        items:[
+          {id:'f1-12',h:5,text:'自由電子の概念を使って金属結合を説明できる',review:'金属結合と自由電子'},
+          {id:'f1-13',h:6,text:'金属の性質（展性・延性・熱電気伝導）を自由電子で説明できる',review:'金属の性質'},
+          {id:'f1-14',h:6,text:'イオン・共有・金属の3種の結合を「何が何で引き合うか」で区別できる',review:'3種の化学結合の比較'},
+        ]
+      },
+      { id:'f1p5', title:'結晶の分類と性質', hRange:[6,8],
+        items:[
+          {id:'f1-15',h:6,text:'イオン・共有・分子・金属の4種の結晶と代表例を言える',review:'結晶の種類と代表例'},
+          {id:'f1-16',h:7,text:'融点・硬さ・電気伝導性を軸に4種の結晶を比較できる',review:'結晶の性質比較'},
+          {id:'f1-17',h:7,text:'ダイヤモンドと黒鉛の構造の違いとそれぞれの性質を説明できる',review:'共有結晶の同素体'},
+          {id:'f1-18',h:8,text:'試験形式の問題で結晶・結合の判別を時間内に解ける（自己採点75%以上）',review:'結合・結晶の総合演習'},
+        ]
+      },
+    ]
+  },
+  {
+    id:'mid2', name:'2学期中間', term:'2学期中間',
+    desc:'原子量・物質量・モル換算・化学反応式の量的関係',
+    totalHours:8,
+    phases:[
+      { id:'m2p1', title:'原子の数え方・原子量', hRange:[1,2],
+        items:[
+          {id:'m2-1',h:1,text:'相対質量の概念（¹²Cを12とした相対的な質量）を説明できる',review:'相対質量の定義'},
+          {id:'m2-2',h:1,text:'H=1, C=12, N=14, O=16, Na=23, Cl=35.5 などの原子量を言える',review:'主要元素の原子量'},
+          {id:'m2-3',h:2,text:'分子量・式量を原子量の和として計算できる（H₂O=18, NaCl=58.5）',review:'分子量・式量の計算'},
+          {id:'m2-4',h:2,text:'アボガドロ定数 6.0×10²³ /mol の意味を説明できる',review:'アボガドロ定数'},
+        ]
+      },
+      { id:'m2p2', title:'物質量と換算', hRange:[2,4],
+        items:[
+          {id:'m2-5',h:2,text:'1 mol = 6.0×10²³ 個 を使い、個数と mol を相互換算できる',review:'mol と個数の換算'},
+          {id:'m2-6',h:3,text:'mol ↔ g（×モル質量）の換算を使って問題を解ける',review:'mol と質量の換算'},
+          {id:'m2-7',h:3,text:'標準状態の気体 1 mol = 22.4 L を使い mol ↔ L を換算できる',review:'mol と気体体積の換算'},
+          {id:'m2-8',h:4,text:'個数・質量・体積の3種換算が混在した問題（CO₂ 44g は何個か）を解ける',review:'mol 換算の混合問題'},
+        ]
+      },
+      { id:'m2p3', title:'化学反応式の読み方・書き方', hRange:[4,5],
+        items:[
+          {id:'m2-9',h:4,text:'化学反応式の係数が「物質量の比」を表すことを説明できる',review:'化学反応式の係数の意味'},
+          {id:'m2-10',h:4,text:'両辺の原子数が等しくなるよう係数合わせができる',review:'化学反応式の係数合わせ'},
+          {id:'m2-11',h:5,text:'未定係数法（a, b, c を使う方法）で複雑な反応式を書ける',review:'未定係数法'},
+        ]
+      },
+      { id:'m2p4', title:'化学反応式の量的関係', hRange:[5,8],
+        items:[
+          {id:'m2-12',h:5,text:'「係数比 = mol 比」を使った4ステップの計算手順を説明できる',review:'量的関係の計算手順'},
+          {id:'m2-13',h:6,text:'2H₂+O₂→2H₂O で H₂ 3 mol から生成する H₂O の質量を求められる',review:'量的関係の基本問題'},
+          {id:'m2-14',h:7,text:'限定試薬（少ない方の試薬で量が決まる）の概念を使って問題を解ける',review:'限定試薬'},
+          {id:'m2-15',h:8,text:'気体・質量・個数が混在した量的関係の計算問題を時間内に解ける',review:'量的関係の総合問題'},
+        ]
+      },
+    ]
+  },
+  {
+    id:'fin2', name:'2学期期末', term:'2学期期末',
+    desc:'電離・酸塩基・pH・中和反応・中和滴定',
+    totalHours:10,
+    phases:[
+      { id:'f2p1', title:'電離・酸塩基の定義と分類', hRange:[1,2],
+        items:[
+          {id:'f2-1',h:1,text:'酸 = H⁺ を出す、塩基 = OH⁻ を出すという定義を述べられる',review:'酸塩基のアレニウス定義'},
+          {id:'f2-2',h:1,text:'酸の価数（HCl=1価, H₂SO₄=2価, H₃PO₄=3価）を言える',review:'酸の価数'},
+          {id:'f2-3',h:2,text:'強酸（HCl, HNO₃, H₂SO₄）と弱酸（CH₃COOH, H₂CO₃）を区別できる',review:'強酸・弱酸の分類'},
+          {id:'f2-4',h:2,text:'電離度 α = 電離した物質量 / 溶解した物質量 を使って計算できる',review:'電離度の定義と計算'},
+        ]
+      },
+      { id:'f2p2', title:'モル濃度', hRange:[2,3],
+        items:[
+          {id:'f2-5',h:2,text:'モル濃度 = 溶質の物質量[mol] / 溶液の体積[L] の式で計算できる',review:'モル濃度の計算'},
+          {id:'f2-6',h:3,text:'質量パーセント濃度からモル濃度への変換計算ができる',review:'濃度変換の計算'},
+          {id:'f2-7',h:3,text:'希釈計算（c₁V₁ = c₂V₂）を使って濃度・体積の問題を解ける',review:'希釈計算'},
+        ]
+      },
+      { id:'f2p3', title:'pH と水のイオン積', hRange:[3,5],
+        items:[
+          {id:'f2-8',h:3,text:'水のイオン積 Kw = [H⁺][OH⁻] = 1.0×10⁻¹⁴ を使って [OH⁻] を求められる',review:'水のイオン積 Kw'},
+          {id:'f2-9',h:4,text:'pH = −log₁₀[H⁺] を使い [H⁺] ↔ pH を相互変換できる',review:'pH の計算'},
+          {id:'f2-10',h:4,text:'強酸・強塩基（0.01 mol/L HCl など）の pH を計算できる',review:'強酸・強塩基の pH 計算'},
+          {id:'f2-11',h:5,text:'「指数のマイナス以降を足すと 14」の関係で [H⁺] ↔ [OH⁻] を変換できる',review:'[H⁺] と [OH⁻] の関係'},
+        ]
+      },
+      { id:'f2p4', title:'中和反応', hRange:[5,7],
+        items:[
+          {id:'f2-12',h:5,text:'酸 + 塩基 → 塩 + 水 の形で中和反応式を書ける',review:'中和反応の化学式'},
+          {id:'f2-13',h:6,text:'酸の価数×濃度×体積 = 塩基の価数×濃度×体積 の式を導出・使用できる',review:'中和の量的関係式'},
+          {id:'f2-14',h:6,text:'H₂SO₄ と NaOH を使った中和の計算問題を解ける',review:'中和計算の基本問題'},
+          {id:'f2-15',h:7,text:'塩（NaCl, Na₂SO₄ など）の生成と名称を説明できる',review:'塩の生成と分類'},
+        ]
+      },
+      { id:'f2p5', title:'中和滴定・指示薬', hRange:[7,10],
+        items:[
+          {id:'f2-16',h:7,text:'ビュレット・ホールピペット・メスフラスコの用途と使い方を説明できる',review:'滴定器具の使い方'},
+          {id:'f2-17',h:8,text:'フェノールフタレイン（pH 8.3〜10）とメチルオレンジ（pH 3.1〜4.4）の変色域と使い分けを言える',review:'指示薬と変色域'},
+          {id:'f2-18',h:8,text:'強酸・強塩基の滴定曲線（S字形、当量点 pH≈7）の形を説明できる',review:'滴定曲線の読み方'},
+          {id:'f2-19',h:9,text:'滴定データ（濃度・体積）から未知濃度を計算できる',review:'滴定計算'},
+          {id:'f2-20',h:10,text:'実験レポートで滴定結果・考察・誤差の原因を正しく記述できる',review:'実験レポートの書き方'},
+        ]
+      },
+    ]
+  },
+  {
+    id:'term3', name:'3学期', term:'3学期',
+    desc:'酸化還元・酸化数・酸化剤・還元剤・金属のイオン化傾向・電池',
+    totalHours:10,
+    phases:[
+      { id:'t3p1', title:'酸化還元の定義', hRange:[1,2],
+        items:[
+          {id:'t3-1',h:1,text:'酸素を受け取る＝酸化、失う＝還元という定義を例で説明できる',review:'酸素の授受による酸化還元'},
+          {id:'t3-2',h:1,text:'e⁻ を失う＝酸化、e⁻ を得る＝還元という電子の授受による定義を説明できる',review:'電子の授受による酸化還元'},
+          {id:'t3-3',h:2,text:'2つの定義が一致することを Cu+O₂→CuO などで確認できる',review:'2つの定義の対応確認'},
+        ]
+      },
+      { id:'t3p2', title:'酸化数', hRange:[2,4],
+        items:[
+          {id:'t3-4',h:2,text:'酸化数のルール（単体=0, 単原子イオン=電荷, H=+1, O=−2, 化合物の合計=0 等）を言える',review:'酸化数のルール'},
+          {id:'t3-5',h:3,text:'「物質の区別→イオン・単体・化合物→原子の書き出し→酸化数の書き出し（未知をx）→合計→確定」の手順で酸化数を求められる',review:'酸化数の計算手順'},
+          {id:'t3-6',h:3,text:'MnO₄⁻ の Mn、Cr₂O₇²⁻ の Cr など複雑なイオンの酸化数を求められる',review:'多原子イオンの酸化数'},
+          {id:'t3-7',h:4,text:'反応式を見て酸化数の変化から「何が酸化され何が還元されたか」を特定できる',review:'酸化・還元の特定'},
+        ]
+      },
+      { id:'t3p3', title:'酸化剤・還元剤と半反応式', hRange:[4,6],
+        items:[
+          {id:'t3-8',h:4,text:'酸化剤＝相手を酸化する（自分は還元される）という定義を言える',review:'酸化剤・還元剤の定義'},
+          {id:'t3-9',h:5,text:'代表的酸化剤（KMnO₄, K₂Cr₂O₇, H₂O₂, Cl₂, 濃HNO₃）の半反応式を書ける',review:'酸化剤の半反応式'},
+          {id:'t3-10',h:5,text:'代表的還元剤（H₂, C, SO₂, H₂S, Fe²⁺）の半反応式を書ける',review:'還元剤の半反応式'},
+          {id:'t3-11',h:6,text:'半反応式を組み合わせて（e⁻ を消去して）イオン反応式・全化学式を書ける',review:'半反応式の組合せ'},
+        ]
+      },
+      { id:'t3p4', title:'金属のイオン化傾向', hRange:[6,7],
+        items:[
+          {id:'t3-12',h:6,text:'K>Ca>Na>Mg>Al>Zn>Fe>Ni>Sn>Pb>H>Cu>Hg>Ag>Pt>Au のイオン化列を順に言える',review:'イオン化列の暗記'},
+          {id:'t3-13',h:7,text:'イオン化列を使って金属と酸・水・塩の反応性の有無を予測できる',review:'イオン化傾向と反応性'},
+          {id:'t3-14',h:7,text:'イオン化傾向の差が電池の起電力の源であることを説明できる',review:'電池とイオン化傾向の関係'},
+        ]
+      },
+      { id:'t3p5', title:'電池・酸化還元滴定', hRange:[7,10],
+        items:[
+          {id:'t3-15',h:7,text:'ダニエル電池の正極（Cu²⁺+2e⁻→Cu）・負極（Zn→Zn²⁺+2e⁻）の式を書ける',review:'ダニエル電池の反応式'},
+          {id:'t3-16',h:8,text:'鉛蓄電池の充電・放電の電極反応式を書ける',review:'鉛蓄電池'},
+          {id:'t3-17',h:9,text:'ファラデーの法則（Q=nF、析出量の計算）を使って問題を解ける',review:'ファラデーの法則'},
+          {id:'t3-18',h:9,text:'過マンガン酸カリウムによる酸化還元滴定の計算を解ける',review:'酸化還元滴定の計算'},
+          {id:'t3-19',h:10,text:'酸化還元の総合問題を時間内に解ける（自己採点75%以上）',review:'酸化還元の総合演習'},
+        ]
+      },
+    ]
+  },
+];
+
+const HINTS = {
+  '混合物・純物質の定義':'混合物は2種類以上の純物質が混ざったもの（例：食塩水・空気・合金）。純物質は1種類の物質だけからなるもの（例：水・鉄・エタノール）。「純粋な物質」という意味。',
+  '混合物・純物質の例':'混合物の例：食塩水、空気、石油。純物質の例：水(H₂O)、鉄(Fe)、塩化ナトリウム(NaCl)、酸素(O₂)。純物質はさらに単体と化合物に分類される。',
+  '分離の定義':'混合物から純物質を取り出す操作を「分離」という。物質の化学的な性質は変えずに、物理的な性質の違いを利用して行う。',
+  'ろ過の操作':'固体と液体の混合物を分離する方法。粒子の大きさの違いを利用。ガラス棒に伝わらせて注ぐ・ろ紙はひだをつける・ろうとの足は長い方をビーカーの壁につけるなど操作の注意点も重要。',
+  '蒸留の操作':'液体混合物を沸点の差を利用して分離する方法。加熱して蒸発させ、冷却して再び液体に戻す（凝縮）。温度計の先端は枝付きフラスコの枝の分岐部に合わせる。',
+  'その他の分離方法':'再結晶：溶解度の温度差を利用。抽出：溶媒への溶けやすさの違いを利用。クロマトグラフィー：吸着力の違いを利用。分留：沸点の差を利用（石油の精製など）。昇華：固体が直接気体になる性質を利用。',
+  '元素・単体・化合物の定義':'元素＝物質を構成する成分の種類（H, O, Naなど）。単体＝1種類の元素だけからなる純物質（H₂, O₂, Fe）。化合物＝2種類以上の元素からなる純物質（H₂O, NaCl, CO₂）。',
+  '元素と単体の使い分け':'「水素」→元素として使う場合（水素原子が含まれる意味）と、単体（H₂ガス）を指す場合がある。文脈で判断。「水は水素と酸素からなる」→元素。「水素は可燃性の気体だ」→単体。',
+  '単体・化合物の分類練習':'Fe(鉄)→単体、H₂O(水)→化合物、NaCl(食塩)→化合物、O₂(酸素)→単体、NH₃(アンモニア)→化合物、Cu(銅)→単体。「何種類の元素からなるか」で判断。',
+  '原子番号1〜20の暗記':'H He Li Be B C N O F Ne Na Mg Al Si P S Cl Ar K Ca。「スイヘイリーベ僕の船、七曲がりシップスクラークか」などの語呂で覚える。21番以降は試験中に周期表を配布。',
+  '炎色反応の色':'Li(リチウム)→赤、Na(ナトリウム)→黄、K(カリウム)→紫（赤紫）、Ca(カルシウム)→橙赤、Sr(ストロンチウム)→紅（深赤）、Ba(バリウム)→黄緑、Cu(銅)→青緑。語呂：「リアカーなき、K村、動力借りようとするもくれない」',
+  '炎色反応で検出できること':'炎色反応でわかるのは「その物質に含まれる元素の種類」。金属元素の検出に使う。Na（黄）は少量でも非常に鮮明に見えるので、他の色が見えにくいことがある。',
+  '沈殿反応による元素検出':'硝酸銀(AgNO₃)水溶液を加えて白色沈殿→塩素(Cl)の存在を示す（塩化銀AgClが沈殿）。石灰水(Ca(OH)₂)を白濁させる→炭素(C)の存在（CO₂が生成したから）。プリントに載っている範囲で覚える。',
+  '成分元素の検出まとめ':'炎色反応→金属元素の種類を確認。沈殿反応（AgNO₃など）→ハロゲン(Cl等)の有無を確認。石灰水→炭素(C)の有無。塩化コバルト紙が青→赤に変色→水素(H)と酸素(O)の存在（水の存在）。',
+  '原子の構造の図示':'原子核（中心）に陽子(+)と中性子が集まり、外側の電子殻を電子(−)が回る。原子全体のサイズ10⁻¹⁰m、原子核は10⁻¹⁵m（原子の10万分の1）。',
+  '原子番号と粒子数の関係':'原子は電気的に中性→陽子の数(+) = 電子の数(−)。原子番号は陽子の数で定義される。だから原子番号 = 陽子の数 = 電子の数。',
+  '質量数・中性子数の計算':'質量数 = 陽子の数 + 中性子の数。中性子の数 = 質量数 − 原子番号。例：<span class="nuclide"><span>12</span><span>6</span></span>C → 陽子6・中性子6・電子6。<span class="nuclide"><span>23</span><span>11</span></span>Na → 陽子11・中性子12・電子11。',
+  '元素記号の表記の読み方':'左上＝質量数、左下＝原子番号（省略される場合も）。例：³⁵₁₇Cl → 原子番号17(陽子17=電子17)、質量数35、中性子数35−17=18。即座に計算できるよう練習する。',
+  '同位体の定義と選び方':'同位体＝陽子数（原子番号）が同じで、中性子数（質量数）が異なる原子。例：₁¹H と ₂¹H と ₃¹H。同じ元素記号・異なる質量数の核種を選べばよい。',
+  '同位体の化学的性質':'同位体は陽子数が同じ＝電子の数が同じ。化学反応は電子の動きで決まるので、同位体の化学的性質はほぼ同じ。質量が異なるので物理的性質（沸点など）はわずかに異なる。',
+  '電子殻と収容数':'K殻：最大2個、L殻：最大8個、M殻：最大18個（高校では8個で扱う）。内側から順に埋まっていく。各殻の最大収容数 = 2n²（n=1,2,3…）。',
+  '電子配置の書き方':'原子番号順に内側の殻から電子を配置。Na(11)→K2 L8 M1。Ca(20)→K2 L8 M8 L2。書く手順：原子番号から電子の総数を確認→K殻から順に配置。',
+  '最外殻電子の定義':'最も外側の電子殻（最外殻）にある電子のこと。※この授業では「価電子」という用語は使わない。最外殻電子の数が元素の化学的性質に大きく関係する。',
+  '最外殻電子数の読み取り':'電子配置を書いてから、一番外側の数字を読む。例：Na(K2 L8 M1)→最外殻電子1個、Cl(K2 L8 M7)→最外殻電子7個。原子番号1〜20について即答できるよう練習する。',
+  '希ガスの安定な電子配置':'He(K2)、Ne(K2 L8)、Ar(K2 L8 M8)のように最外殻が2個か8個で満たされた状態（閉殻）は非常に安定。希ガスは反応しにくいのはこのため。他の原子もこの状態を目指す（イオン・結合形成の理由）。',
+  '節末チェック（p25・30・41）':'教科書p25（物質の分類）、p30（原子の構造）、p41（電子配置）の節末チェック問題を自分で解いて、解答(p187)で確認する。間違えた問題は用語の定義に戻って考え直す。',
+  '電子対・不対電子の定義':'電子対 = 2個1組でペアになった電子（非共有電子対と共有電子対）。不対電子 = 1個で対なし。N原子：不対電子3個＋非共有電子対1個。',
+  '原子の電子式':'最外殻電子をドット（・）で原子記号の上下左右に書く。O：6個（対2組＋不対2個）、Cl：7個（対3組＋不対1個）。',
+  'イオンの電子式':'イオンの電子式は[ ]に入れて右上にイオンの電荷を書く。例：[Na]⁺, [:Cl:]⁻。',
+  'イオン結合の定義':'陽イオン（金属）と陰イオン（非金属）が静電気的引力（クーロン力）で結合。',
+  'イオン結晶の性質':'硬いが割れやすい（劈開）・融点高・固体では導電性なし・溶液や融解すると導電。',
+  'イオン結晶の構造':'NaClは Na⁺ と Cl⁻ が交互に並ぶ正六面体構造。各イオンは6個の逆符号イオンに囲まれる。',
+  '共有結合と電子式':'2原子が電子を1個ずつ出し合って電子対を共有。共有電子対（結合）と非共有電子対を区別して書く。H₂O：O が2組の非共有電子対と2本の結合。',
+  '多重結合の電子式':'2重結合は電子対2組を共有、3重結合は3組。N₂ は :N≡N: （三重結合＋各1組の非共有電子対）。CO₂ は O=C=O。',
+  '電気陰性度':'原子が結合中の電子対を引き寄せる強さ。F が最大（約4.0）、周期表で右上ほど大きく左下ほど小さい。',
+  '極性・非極性の判定':'電気陰性度差が大きい結合は極性結合。分子全体では結合の極性ベクトルの合計→0なら無極性（CO₂）、0でなければ極性（H₂O）。',
+  '分子の極性と形':'直線形のCO₂は極性が打ち消し合い無極性。折れ線形のH₂Oは打ち消されず極性分子。形を先に決めてから考える。',
+  '金属結合と自由電子':'金属原子が価電子を放出し、正イオンの格子中を自由電子が動き回る。',
+  '金属の性質':'自由電子が動くので電気・熱伝導性大。格子がずれても自由電子が結合を維持→展性・延性。',
+  '3種の化学結合の比較':'イオン：陽イオン↔陰イオン（静電気力）。共有：原子↔原子（電子対共有）。金属：陽イオン↔自由電子（静電気力）。',
+  '結晶の種類と代表例':'イオン：NaCl, CaCO₃。共有：ダイヤモンド, SiO₂。分子：ドライアイス(CO₂), 氷(H₂O)。金属：Fe, Cu, Al。',
+  '結晶の性質比較':'融点：共有>イオン≒金属>分子。硬さ：共有>イオン>金属>分子。電気伝導：金属>（イオン：溶融・溶液時）>共有, 分子（絶縁）。',
+  '共有結晶の同素体':'ダイヤモンド：正四面体構造、最硬、絶縁体。黒鉛：層状構造、層間は弱い、電気伝導体（自由電子的なπ電子）。',
+  '結合・結晶の総合演習':'物質→構成粒子の種類を判断→結合の種類→結晶の種類→性質の順で系統的に考える。',
+  '相対質量の定義':'¹²C 原子1個の質量を12と決め、それを基準にした相対的な質量。H≈1.008≒1、O≈16.00≒16。',
+  '主要元素の原子量':'H=1, C=12, N=14, O=16, Na=23, Mg=24, Al=27, S=32, Cl=35.5, K=39, Ca=40。これを基本として分子量・式量を計算する。',
+  '分子量・式量の計算':'H₂O = 2×1+16 = 18。NaCl = 23+35.5 = 58.5。CaCO₃ = 40+12+3×16 = 100。',
+  'アボガドロ定数':'1 mol = 6.0×10²³ 個（アボガドロ定数 Nₐ）。原子・分子・イオンなど粒子の数を mol で表す際の変換定数。',
+  'mol と個数の換算':'個数 = mol × 6.0×10²³。mol = 個数 ÷ 6.0×10²³。',
+  'mol と質量の換算':'質量[g] = mol × モル質量[g/mol]。mol = 質量 ÷ モル質量。モル質量の数値 = 分子量（式量）。',
+  'mol と気体体積の換算':'標準状態（0℃, 1 atm）で気体 1 mol = 22.4 L。体積 = mol × 22.4。mol = 体積 ÷ 22.4。',
+  'mol 換算の混合問題':'「個数→mol（÷Nₐ）→質量（×M）→体積（×22.4）」の換算マップを頭に入れ、必要なルートを選ぶ。',
+  '化学反応式の係数の意味':'2H₂ + O₂ → 2H₂O の係数 2:1:2 = 物質量の比（mol の比）。質量の比ではない点に注意。',
+  '化学反応式の係数合わせ':'①両辺の原子種を確認 ②一番複雑な分子から係数を仮定 ③順に原子数を合わせる ④分数なら全体を整数倍。',
+  '未定係数法':'各物質に a, b, c … を置き、各元素の原子数について方程式を立てて解く。1つを1とおいて連立する。',
+  '量的関係の計算手順':'①注目する2物質を決める ②係数から mol 比を書く ③わかっている mol を代入 ④比例計算で求める。',
+  '量的関係の基本問題':'2H₂+O₂→2H₂O で H₂:H₂O = 2:2 = 1:1。H₂ 3 mol なら H₂O も 3 mol = 3×18 = 54 g。',
+  '限定試薬':'両方の試薬の mol を計算し、係数比で必要量を比べる。少ない方（限定試薬）に合わせて生成量が決まる。',
+  '量的関係の総合問題':'単位変換（g→mol, L→mol, 個→mol）→係数比→単位変換の流れを確実にマスターする。',
+  '酸塩基のアレニウス定義':'酸 = 水中で H⁺ を出す（HCl→H⁺+Cl⁻）。塩基 = 水中で OH⁻ を出す（NaOH→Na⁺+OH⁻）。',
+  '酸の価数':'1分子が出せる H⁺ の最大数。HCl=1価, H₂SO₄=2価, H₃PO₄=3価。',
+  '強酸・弱酸の分類':'強酸（ほぼ100%電離）：HCl, HBr, HI, H₂SO₄, HNO₃, HClO₄。弱酸（一部のみ電離）：CH₃COOH, H₂CO₃, H₂S, HF, H₃PO₄。',
+  '電離度の定義と計算':'α = 電離した物質量 / 溶解した物質量。強電解質 α≈1, 弱電解質 α≪1。0.1 mol/L 酢酸で α=1.3%なら電離した量 = 0.1×0.013 = 0.0013 mol/L。',
+  'モル濃度の計算':'c = n/V。c[mol/L], n[mol], V[L]。n = c×V は中和計算で頻出。',
+  '濃度変換の計算':'ρ[g/mL]、w[%]、M[g/mol]とすると c = 1000ρw / (100M) [mol/L]。',
+  '希釈計算':'c₁V₁ = c₂V₂（溶質のmolは変わらない）。',
+  '水のイオン積 Kw':'25℃で Kw = [H⁺][OH⁻] = 1.0×10⁻¹⁴。酸性：[H⁺]>10⁻⁷, 中性：[H⁺]=10⁻⁷, 塩基性：[H⁺]<10⁻⁷。',
+  'pH の計算':'pH = −log₁₀[H⁺]。[H⁺]=10⁻ⁿ なら pH=n。0.01 mol/L HCl →[H⁺]=10⁻² → pH=2。',
+  '強酸・強塩基の pH 計算':'強酸は完全電離→[H⁺] = 価数×濃度。強塩基は[OH⁻]を求め、Kw から[H⁺]を計算。',
+  '[H⁺] と [OH⁻] の関係':'[H⁺]=10⁻ᵃ, [OH⁻]=10⁻ᵇ のとき a+b=14（25℃）。pH=3 なら[OH⁻]=10⁻¹¹ mol/L。',
+  '中和反応の化学式':'H⁺ + OH⁻ → H₂O が基本。イオン反応式で書くと明確。NaOH+HCl → NaCl+H₂O。',
+  '中和の量的関係式':'（酸の価数）×（酸の濃度[mol/L]）×（体積[L]）=（塩基の価数）×（塩基の濃度）×（体積）。H⁺ の mol = OH⁻ の mol が根拠。',
+  '中和計算の基本問題':'H₂SO₄（2価）0.05 mol/L × V₁ × 2 = NaOH（1価）0.1 mol/L × V₂ × 1 の形で方程式を立てる。',
+  '塩の生成と分類':'強酸+強塩基→中性塩（NaCl）。弱酸+強塩基→弱塩基性（CH₃COONa）。強酸+弱塩基→弱酸性（NH₄Cl）。',
+  '滴定器具の使い方':'ビュレット：一定量ずつ滴下・体積を精密読取。ホールピペット：一定体積を正確に量る。メスフラスコ：一定体積の溶液を調製。',
+  '指示薬と変色域':'フェノールフタレイン：酸性→無色, 塩基性→赤（pH 8.3〜10）。強酸×強塩基の滴定に使用。メチルオレンジ：酸性→赤, 塩基性→黄（pH 3.1〜4.4）。弱塩基×強酸の滴定に使用。',
+  '滴定曲線の読み方':'強酸×強塩基：当量点 pH≈7、S字形の急激な変化。弱酸×強塩基：当量点 pH>7（塩の加水分解）。当量点をまたぐ変色域の指示薬を選ぶ。',
+  '滴定計算':'滴定は中和の量的関係を使う。未知濃度 c = （既知の価数×濃度×体積）/（未知の価数×体積）で計算。',
+  '実験レポートの書き方':'目的・操作・結果（数値）・計算・考察（誤差の原因・検討）の順で書く。誤差の原因：器具の不正確な読み取り、洗浄不足、終点のずれなど。',
+  '酸素の授受による酸化還元':'酸素を得る → 酸化。酸素を失う → 還元。例：2Cu+O₂ → 2CuO（Cuが酸化）。',
+  '電子の授受による酸化還元':'電子を失う（e⁻ を出す）→ 酸化。電子を得る（e⁻ を受け取る）→ 還元。酸化と還元は必ず同時に起こる。',
+  '2つの定義の対応確認':'Cu → Cu²⁺ + 2e⁻（電子を失う = 酸化）。CuO で見ると Cu は O を得ている = 酸化。両定義が一致する。',
+  '酸化数のルール':'①単体の酸化数=0 ②単原子イオン=電荷 ③化合物中のH=+1（金属水素化物は−1）④O=−2（過酸化物は−1）⑤化合物の総和=0 ⑥多原子イオンの総和=電荷。',
+  '酸化数の計算手順':'例）MnO₄⁻：①Mn=x, O=−2 ②x+4×(−2)=−1 ③x=+7。手順：物質の区別→原子の書き出し→未知をx→合計→確定。',
+  '多原子イオンの酸化数':'Cr₂O₇²⁻：2x+7×(−2)=−2 → x=+6。K₂Cr₂O₇ の Cr は +6価。',
+  '酸化・還元の特定':'酸化数が増加した原子が酸化された（酸化剤に含まれる）。酸化数が減少した原子が還元された（還元剤に含まれる）。',
+  '酸化剤・還元剤の定義':'酸化剤 = 相手を酸化する（自分は還元される、電子を受け取る）。還元剤 = 相手を還元する（自分は酸化される、電子を渡す）。',
+  '酸化剤の半反応式':'KMnO₄（酸性）：MnO₄⁻+8H⁺+5e⁻ → Mn²⁺+4H₂O。書き方：①O個数に合わせてH₂Oを追加 ②H個数に合わせてH⁺を追加 ③電荷を合わせてe⁻を追加。',
+  '還元剤の半反応式':'Fe²⁺：Fe²⁺ → Fe³⁺+e⁻。H₂S：H₂S → S+2H⁺+2e⁻。',
+  '半反応式の組合せ':'酸化剤×（還元剤のe⁻係数）+ 還元剤×（酸化剤のe⁻係数）でe⁻を消す。整数倍して辺々加える。',
+  'イオン化列の暗記':'K・Ca・Na・Mg・Al・Zn・Fe・Ni・Sn・Pb・H・Cu・Hg・Ag・Pt・Au。語呂合わせ：「貸そかな、まあ当てにすな、ひどすぎる借金」など。',
+  'イオン化傾向と反応性':'H₂ より左：H₂SO₄（希）と反応。Ca より右/K より左：水と反応。Cu より左/Pb より右：酸に溶ける。Cu, Ag は熱濃H₂SO₄ や希HNO₃ に溶ける。',
+  '電池とイオン化傾向の関係':'イオン化傾向が大きい金属が負極（酸化）、小さい金属が正極（還元）。差が大きいほど起電力が大きい。',
+  'ダニエル電池の反応式':'負極：Zn → Zn²⁺+2e⁻（酸化）。正極：Cu²⁺+2e⁻ → Cu（還元）。起電力 = 1.1 V。',
+  '鉛蓄電池':'放電（負極）：Pb+SO₄²⁻ → PbSO₄+2e⁻。放電（正極）：PbO₂+SO₄²⁻+4H⁺+2e⁻ → PbSO₄+2H₂O。充電は逆反応。',
+  'ファラデーの法則':'電気量Q[C] = 電流I[A]×時間t[s]。1 mol の e⁻ = 96500 C（ファラデー定数F）。析出 mol = Q/(n×F)（n は価数）。',
+  '酸化還元滴定の計算':'酸化剤の受け取るe⁻ mol = 還元剤の放出するe⁻ mol が基本。KMnO₄（5価変化）×mol = Fe²⁺（1価変化）×mol×（係数比）で立式。',
+  '酸化還元の総合演習':'①酸化数変化の特定 ②半反応式の組合せ ③量的関係の計算 の3ステップを系統的に練習する。',
+};
+
+let state = {
+  scopeId: null,
+  currentHour: 1,
+  checked: JSON.parse(localStorage.getItem('chem_nav') || '{}'),
+};
+const save = () => localStorage.setItem('chem_nav', JSON.stringify(state.checked));
+const scope = () => SCOPES.find(s => s.id === state.scopeId);
+function allItems(sc) { return sc ? sc.phases.flatMap(p => p.items) : []; }
+function doneCount(sc) { return allItems(sc).filter(i => state.checked[i.id]).length; }
+function hourState(sc, h) {
+  const its = allItems(sc).filter(i => i.h === h);
+  if (!its.length) return 'future';
+  const d = its.filter(i => state.checked[i.id]).length;
+  if (h === state.currentHour) return 'current';
+  if (d === its.length) return 'done';
+  if (d > 0) return 'partial';
+  return 'future';
+}
+function phaseState(phase) {
+  const d = phase.items.filter(i => state.checked[i.id]).length;
+  if (d === phase.items.length) return 'done';
+  const inRange = state.currentHour >= phase.hRange[0] && state.currentHour <= phase.hRange[phase.hRange.length-1];
+  if (inRange) return 'active';
+  if (d > 0) return 'partial';
+  return 'future';
+}
+
+function renderSidebar() {
+  const sb = document.getElementById('sidebar');
+  let head = sb.querySelector('.sidebar-head');
+  if (!head) { head = document.createElement('div'); head.className = 'sidebar-head'; head.textContent = '試験範囲'; }
+  sb.innerHTML = ''; sb.appendChild(head);
+
+  // ホームボタン
+  const homeBtn = document.createElement('button');
+  homeBtn.className = 'scope-btn home-btn' + (!state.scopeId ? ' active' : '');
+  homeBtn.innerHTML = `<div class="scope-btn-top"><span class="scope-btn-name">🗺 年間ロードマップ</span></div><div class="scope-mini-meta"><span>全体を一覧で確認</span></div>`;
+  homeBtn.onclick = () => { state.scopeId = null; renderAll(); };
+  sb.appendChild(homeBtn);
+
+  const divider = document.createElement('div');
+  divider.style.cssText = 'height:1px;background:var(--border);margin:4px 0';
+  sb.appendChild(divider);
+
+  SCOPES.forEach(sc => {
+    const total = allItems(sc).length, done = doneCount(sc);
+    const btn = document.createElement('button');
+    btn.className = 'scope-btn' + (state.scopeId === sc.id ? ' active' : '');
+    btn.innerHTML = `
+      <div class="scope-btn-top"><span class="scope-btn-name">${sc.name}</span><span class="scope-term">${sc.term}</span></div>
+      <div class="scope-mini-meta"><span>${sc.desc}</span><span>${done}/${total}</span></div>
+      <div class="scope-mini-bar"><div class="scope-mini-fill" style="width:${total?done/total*100:0}%"></div></div>
+    `;
+    btn.onclick = () => { state.scopeId = sc.id; state.currentHour = 1; renderAll(); };
+    sb.appendChild(btn);
+  });
+
+  // 録音ログボタン（サイドバー最下部）
+  // 授業の受け方ボタン
+  const howBtn = document.createElement('button');
+  howBtn.className = 'scope-btn' + (state.scopeId === '__how__' ? ' active' : '');
+  howBtn.style.borderLeftColor = state.scopeId === '__how__' ? 'var(--orange)' : 'transparent';
+  howBtn.innerHTML = `<div class="scope-btn-top">
+    <span class="scope-btn-name">📖 授業の受け方</span>
+  </div><div class="scope-mini-meta"><span>録音・哲学・評価の運用</span></div>`;
+  howBtn.onclick = () => { state.scopeId = '__how__'; renderAll(); };
+  sb.appendChild(howBtn);
+
+  const logDivider = document.createElement('div');
+  logDivider.style.cssText = 'flex:1';  // 残りスペースを埋めてログボタンを下に押し出す
+  sb.appendChild(logDivider);
+
+  const logSep = document.createElement('div');
+  logSep.style.cssText = 'height:1px;background:var(--border);';
+  sb.appendChild(logSep);
+
+  const logBtn = document.createElement('button');
+  logBtn.className = 'scope-btn' + (state.scopeId === '__log__' ? ' active' : '');
+  logBtn.style.borderLeftColor = state.scopeId === '__log__' ? 'var(--accent)' : 'transparent';
+  logBtn.innerHTML = `<div class="scope-btn-top"><span class="scope-btn-name" style="font-size:11px;color:var(--text3)">🎙 授業録音ログ</span>
+    <span class="scope-term" style="background:rgba(63,185,80,0.1);color:var(--green);border-color:rgba(63,185,80,0.3)">${RECORDING_LOG.length}件</span>
+  </div>`;
+  logBtn.onclick = () => { state.scopeId = '__log__'; renderAll(); };
+  sb.appendChild(logBtn);
+
+  // モバイル用：使い方ボタン（サイドバー内）
+  const mobileTourBtn = document.createElement('button');
+  mobileTourBtn.className = 'scope-btn';
+  mobileTourBtn.style.cssText = 'display:none';
+  mobileTourBtn.innerHTML = `<div class="scope-btn-top"><span class="scope-btn-name" style="font-size:11px;color:var(--text3)">？ 使い方（チュートリアル）</span></div>`;
+  mobileTourBtn.onclick = () => startTour();
+  if (window.innerWidth <= 768) mobileTourBtn.style.display = '';
+  sb.appendChild(mobileTourBtn);
+}
+
+function renderHowPage() {
+  const main = document.getElementById('main');
+  document.getElementById('headerBadge').textContent = '';
+  main.innerHTML = '';
+
+  const header = document.createElement('div');
+  header.className = 'home-summary';
+  header.innerHTML = `
+    <div class="home-summary-left">
+      <div class="home-title">📖 授業の受け方</div>
+      <div class="home-subtitle">録音の意図・先生の学習哲学・評価とコメントシートの活用法</div>
+    </div>`;
+  main.appendChild(header);
+
+  const cardWrap = document.createElement('div');
+  cardWrap.style.cssText = 'display:flex;flex-direction:column;gap:12px;padding-bottom:24px;';
+  main.appendChild(cardWrap);
+
+  const noteKeys = ['lesson_m1_recording', 'lesson_m1_philosophy', 'lesson_m1_evaluation'];
+  const icons    = ['🎙', '💡', '📋'];
+  const colors   = ['var(--accent)', 'var(--orange)', 'var(--green)'];
+
+  noteKeys.forEach((key, i) => {
+    const note = LESSON_NOTES[key];
+    if (!note) return;
+
+    const card = document.createElement('div');
+    card.style.cssText = `
+      background:var(--surface);border:1px solid var(--border);border-radius:10px;
+      overflow:hidden;border-top:3px solid ${colors[i]};
+    `;
+
+    // カードヘッダー（クリックで展開）
+    const cardHead = document.createElement('div');
+    cardHead.style.cssText = 'padding:14px 18px 12px;cursor:pointer;display:flex;align-items:flex-start;gap:10px;';
+    cardHead.innerHTML = `
+      <span style="font-size:20px;flex-shrink:0">${icons[i]}</span>
+      <div style="flex:1">
+        <div style="font-size:14px;font-weight:700;margin-bottom:3px">${note.title}</div>
+        <div style="font-size:11px;color:var(--text2);line-height:1.6">${note.digest}</div>
+      </div>
+      <span class="how-toggle" style="font-size:16px;color:var(--text3);flex-shrink:0;transition:transform 0.2s">▼</span>
+    `;
+    card.appendChild(cardHead);
+
+    // カード本体（セクション一覧）
+    const cardBody = document.createElement('div');
+    cardBody.style.cssText = 'padding:0 18px 16px;display:flex;flex-direction:column;gap:12px;';
+
+    note.sections.forEach(sec => {
+      const s = document.createElement('div');
+      s.className = 'note-section';
+      s.innerHTML = `<div class="note-section-heading">${sec.heading}</div>
+        <div class="note-section-body">${sec.body}</div>`;
+      cardBody.appendChild(s);
+    });
+
+    if (note.teacherQuote) {
+      const q = document.createElement('div');
+      q.className = 'note-quote';
+      q.innerHTML = `<div class="note-quote-label">🎤 先生の言葉</div>${note.teacherQuote}`;
+      cardBody.appendChild(q);
+    }
+
+    card.appendChild(cardBody);
+
+    // トグル開閉
+    let open = true;
+    cardHead.addEventListener('click', () => {
+      open = !open;
+      cardBody.style.display = open ? '' : 'none';
+      const toggle = cardHead.querySelector('.how-toggle');
+      if (toggle) toggle.style.transform = open ? 'rotate(0deg)' : 'rotate(-90deg)';
+    });
+
+    cardWrap.appendChild(card);
+  });
+}
+
+function renderLogPage() {
+  const main = document.getElementById('main');
+  document.getElementById('headerBadge').textContent = '';
+  main.innerHTML = '';
+
+  // ヘッダー
+  const header = document.createElement('div');
+  header.className = 'home-summary';
+  header.innerHTML = `
+    <div class="home-summary-left">
+      <div class="home-title">🎙 授業録音ログ</div>
+      <div class="home-subtitle">アップロード済みの録音ファイルと対応するチェック項目の一覧</div>
+    </div>
+    <div class="home-summary-right">
+      <div class="ov-stat"><div class="ov-num b">${RECORDING_LOG.length}</div><div class="ov-lbl">件</div></div>
+      <div class="ov-stat"><div class="ov-num g">${[...new Set(RECORDING_LOG.flatMap(l=>l.relatedItems))].length}</div><div class="ov-lbl">対応項目数</div></div>
+    </div>
+  `;
+  main.appendChild(header);
+
+  // ログカード一覧（ラッパーでgapを確保）
+  const cardList = document.createElement('div');
+  cardList.style.cssText = 'display:flex;flex-direction:column;gap:8px;padding:0 0 24px;';
+  main.appendChild(cardList);
+
+  // ログカード一覧
+  RECORDING_LOG.forEach(log => {
+    const card = document.createElement('div');
+    card.style.cssText = 'background:var(--surface);border:1px solid var(--border);border-radius:8px;overflow:hidden;flex-shrink:0;';
+
+    // カードヘッダー
+    const cardHead = document.createElement('div');
+    cardHead.style.cssText = 'padding:12px 16px;border-bottom:1px solid var(--border);display:flex;align-items:flex-start;gap:12px;';
+    cardHead.innerHTML = `
+      <div style="flex:1">
+        <div style="display:flex;align-items:center;gap:8px;margin-bottom:4px">
+          <span style="font-size:13px;font-weight:700">${log.title}</span>
+          <span style="font-family:var(--mono);font-size:9px;background:rgba(63,185,80,0.1);color:var(--green);border:1px solid rgba(63,185,80,0.3);padding:1px 6px;border-radius:3px">✓ 処理済み</span>
+        </div>
+        <div style="font-size:10px;color:var(--text3);font-family:var(--mono)">${log.date}　クラス：${log.classes.join('・')}</div>
+      </div>
+      <div style="font-size:11px;color:var(--text3);font-family:var(--mono);flex-shrink:0">追加：${log.addedAt}</div>
+    `;
+    card.appendChild(cardHead);
+
+    // ファイル名
+    const fileRow = document.createElement('div');
+    fileRow.style.cssText = 'padding:8px 16px;background:var(--surface2);border-bottom:1px solid var(--border);font-size:10px;font-family:var(--mono);color:var(--text3);display:flex;align-items:center;gap:6px;';
+    fileRow.innerHTML = `<span style="color:var(--text2)">📄</span>${log.filename}`;
+    card.appendChild(fileRow);
+
+    // トピック
+    const topicsRow = document.createElement('div');
+    topicsRow.style.cssText = 'padding:10px 16px;border-bottom:1px solid var(--border);display:flex;flex-wrap:wrap;gap:5px;';
+    log.topics.forEach(t => {
+      const tag = document.createElement('span');
+      tag.style.cssText = 'font-size:10px;background:var(--surface2);border:1px solid var(--border2);padding:2px 8px;border-radius:10px;color:var(--text2);';
+      tag.textContent = t;
+      topicsRow.appendChild(tag);
+    });
+    card.appendChild(topicsRow);
+
+    // 対応チェック項目
+    const itemsSection = document.createElement('div');
+    itemsSection.style.cssText = 'padding:10px 16px;';
+
+    const itemsLabel = document.createElement('div');
+    itemsLabel.style.cssText = 'font-size:9px;font-family:var(--mono);color:var(--text3);letter-spacing:0.08em;text-transform:uppercase;margin-bottom:7px;';
+    itemsLabel.textContent = `📋 対応チェック項目（${log.relatedItems.length}件）`;
+    itemsSection.appendChild(itemsLabel);
+
+    // 対応するスコープとアイテムを探す
+    const sc = SCOPES.find(s => s.id === log.scope.replace('1学期中間','mid1').replace('1学期期末','fin1').replace('2学期中間','mid2').replace('2学期期末','fin2').replace('3学期','term3'));
+    const scopeId = log.scope === '1学期中間' ? 'mid1' : log.scope === '1学期期末' ? 'fin1' : log.scope === '2学期中間' ? 'mid2' : log.scope === '2学期期末' ? 'fin2' : 'term3';
+    const targetSc = SCOPES.find(s => s.id === scopeId);
+
+    if (targetSc) {
+      const allIt = allItems(targetSc);
+      log.relatedItems.forEach(id => {
+        const item = allIt.find(i => i.id === id);
+        if (!item) return;
+        const ck = state.checked[id];
+        const row = document.createElement('div');
+        row.style.cssText = 'display:flex;align-items:flex-start;gap:7px;padding:4px 6px;border-radius:4px;margin-bottom:2px;cursor:pointer;';
+        row.style.background = ck ? 'rgba(63,185,80,0.07)' : 'var(--surface2)';
+        row.innerHTML = `
+          <span style="width:14px;height:14px;border-radius:3px;border:1.5px solid;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:2px;
+            ${ck ? 'background:var(--green);border-color:var(--green)' : 'background:var(--bg);border-color:var(--border2)'}">
+            ${ck ? '<svg width="9" height="9" viewBox="0 0 9 9"><polyline points="1,4.5 3.5,7 8,1.5" fill="none" stroke="white" stroke-width="1.5" stroke-linecap="round"/></svg>' : ''}
+          </span>
+          <span style="font-size:10px;line-height:1.6;${ck ? 'color:var(--text3);text-decoration:line-through' : 'color:var(--text2)'}">${item.text.replace(/<[^>]+>/g,'')}</span>
+        `;
+        row.onclick = () => { state.scopeId = scopeId; state.currentHour = item.h; renderAll(); setTimeout(()=>{ const el=document.getElementById('pc-'+targetSc.phases.find(p=>p.items.find(i=>i.id===id))?.id); if(el)el.scrollIntoView({behavior:'smooth',block:'center'}); },100); };
+        itemsSection.appendChild(row);
+      });
+    }
+
+    // 授業メモを開くボタン
+    if (log.noteKey && LESSON_NOTES[log.noteKey]) {
+      const noteBtn = document.createElement('button');
+      noteBtn.style.cssText = 'margin-top:10px;background:rgba(88,166,255,0.1);border:1px solid rgba(88,166,255,0.3);color:var(--accent);padding:5px 14px;border-radius:5px;font-size:11px;cursor:pointer;font-family:var(--font);';
+      noteBtn.textContent = '📝 授業メモを見る';
+      noteBtn.onclick = () => openNoteModal(LESSON_NOTES[log.noteKey], null);
+      itemsSection.appendChild(noteBtn);
+    }
+
+    card.appendChild(itemsSection);
+    cardList.appendChild(card);
+  });
+}
+
+function renderHome() {
+  const main = document.getElementById('main');
+  document.getElementById('headerBadge').textContent = '';
+  main.innerHTML = '';
+
+  const totalAll = SCOPES.reduce((s,sc)=>s+allItems(sc).length,0);
+  const doneAll  = SCOPES.reduce((s,sc)=>s+doneCount(sc),0);
+  const pctAll   = totalAll ? Math.round(doneAll/totalAll*100) : 0;
+
+  // ── サマリー
+  const summary = document.createElement('div');
+  summary.className = 'home-summary';
+  summary.innerHTML = `
+    <div class="home-summary-left">
+      <div class="home-title">必修化学　年間学習ロードマップ</div>
+      <div class="home-subtitle">各試験範囲にマウスを乗せるとキーワードマップが表示されます　／　クリックでチェックリストへ</div>
+    </div>
+    <div class="home-summary-right">
+      <div class="ov-stat"><div class="ov-num g">${doneAll}</div><div class="ov-lbl">完了</div></div>
+      <div class="ov-stat"><div class="ov-num b">${totalAll}</div><div class="ov-lbl">合計</div></div>
+      <div class="ov-stat"><div class="ov-num o">${pctAll}%</div><div class="ov-lbl">達成率</div></div>
+    </div>
+  `;
+  main.appendChild(summary);
+
+  const scopeMeta = [
+    { id:'mid1',  label:'1学期\n中間', term:'5月',  color:'#388bfd' },
+    { id:'fin1',  label:'1学期\n期末', term:'7月',  color:'#bc8cff' },
+    { id:'mid2',  label:'2学期\n中間', term:'10月', color:'#3fb950' },
+    { id:'fin2',  label:'2学期\n期末', term:'12月', color:'#f0883e' },
+    { id:'term3', label:'3学期',       term:'2月',  color:'#ff7b72' },
+  ];
+
+  // ── ノードカードをHTML divで直接作る（SVGなし）
+  // ツールチップ要素（mapWrapの外、mainの直下）
+  const tooltip = document.createElement('div');
+  tooltip.className = 'phase-tooltip';
+  // position:fixed で使うので body 直下に置く
+  document.body.appendChild(tooltip);
+
+  const mapWrap = document.createElement('div');
+  mapWrap.className = 'roadmap-map-wrap';
+  // カード5枚 + 矢印4本 を grid で均等配置
+  mapWrap.style.cssText = 'display:grid;grid-template-columns:1fr 28px 1fr 28px 1fr 28px 1fr 28px 1fr;align-items:stretch;padding:14px 12px 16px;width:100%;box-sizing:border-box;';
+
+  let hideTimer = null;
+
+  scopeMeta.forEach((meta, idx) => {
+    // 矢印
+    if (idx > 0) {
+      const arrow = document.createElement('div');
+      arrow.style.cssText = 'color:#2e3a55;font-size:14px;text-align:center;align-self:center;user-select:none;';
+      arrow.textContent = '→';
+      mapWrap.appendChild(arrow);
+    }
+
+    const sc  = SCOPES.find(s => s.id === meta.id);
+    const tot = allItems(sc).length;
+    const dn  = doneCount(sc);
+    const pct = tot ? dn / tot : 0;
+
+    // 期ラベル（モバイルではringWrap上部に、PCではcard直下に）
+    const card = document.createElement('div');
+    card.className = 'home-map-card';
+    card.style.cssText = `
+      width: 100%;
+      background: var(--surface2);
+      border: 1.5px solid ${meta.color}66;
+      border-radius: 10px;
+      padding: 10px 8px 10px;
+      text-align: center;
+      cursor: pointer;
+      transition: border-color 0.15s, box-shadow 0.15s, transform 0.15s;
+      position: relative;
+      box-sizing: border-box;
+    `;
+
+    // リングSVG（常にPC構造、モバイル変換はCSSで）
+    const ringSize = 56;
+    const R   = 24;
+    const circ = 2 * Math.PI * R;
+
+    const termEl = document.createElement('div');
+    termEl.className = 'map-card-term';
+    termEl.style.cssText = `font-family:var(--mono);font-size:9px;color:${meta.color};opacity:0.8;margin-bottom:6px;`;
+    termEl.textContent = meta.term;
+    card.appendChild(termEl);
+
+    const ringWrap = document.createElement('div');
+    ringWrap.className = 'map-card-ring';
+    ringWrap.style.cssText = `
+      width:${ringSize}px; height:${ringSize}px;
+      flex-shrink:0; margin:0 auto 8px;
+      display:grid; place-items:center;
+    `;
+
+    const svgNS = 'http://www.w3.org/2000/svg';
+    const svg = document.createElementNS(svgNS, 'svg');
+    svg.setAttribute('viewBox',`0 0 ${ringSize} ${ringSize}`);
+    svg.style.cssText = `grid-area:1/1; width:${ringSize}px;height:${ringSize}px;pointer-events:none`;
+
+    const cx = ringSize / 2, cy = ringSize / 2;
+    const bg = document.createElementNS(svgNS,'circle');
+    bg.setAttribute('cx', cx); bg.setAttribute('cy', cy); bg.setAttribute('r', R);
+    bg.setAttribute('fill','none'); bg.setAttribute('stroke','rgba(255,255,255,0.06)'); bg.setAttribute('stroke-width','4');
+    svg.appendChild(bg);
+
+    const fg = document.createElementNS(svgNS,'circle');
+    fg.setAttribute('cx', cx); fg.setAttribute('cy', cy); fg.setAttribute('r', R);
+    fg.setAttribute('fill','none'); fg.setAttribute('stroke', meta.color); fg.setAttribute('stroke-width','4');
+    fg.setAttribute('stroke-linecap','round');
+    fg.setAttribute('stroke-dasharray', circ.toFixed(1));
+    fg.setAttribute('stroke-dashoffset', (circ * (1 - pct)).toFixed(1));
+    fg.setAttribute('transform',`rotate(-90 ${cx} ${cy})`); fg.setAttribute('opacity','0.85');
+    svg.appendChild(fg);
+
+    ringWrap.appendChild(svg);
+
+    // リング中央テキスト（グリッドで重ねる）
+    const ringText = document.createElement('div');
+    ringText.style.cssText = `
+      grid-area:1/1; display:flex; flex-direction:column;
+      align-items:center; justify-content:center; pointer-events:none;
+    `;
+    ringText.innerHTML = `
+      <span style="font-family:var(--mono);font-size:11px;font-weight:700;color:${meta.color};line-height:1">${Math.round(pct*100)}%</span>
+      <span style="font-family:var(--mono);font-size:8px;color:var(--text3);margin-top:1px">${dn}/${tot}</span>
+    `;
+    ringWrap.appendChild(ringText);
+    card.appendChild(ringWrap);
+
+    // タイトル
+    const titleEl = document.createElement('div');
+    titleEl.className = 'map-card-title';
+    titleEl.style.cssText = 'font-size:13px;font-weight:700;color:var(--text);line-height:1.35;';
+    titleEl.innerHTML = meta.label.replace('\n','<br>');
+    card.appendChild(titleEl);
+
+    // ── ツールチップ内容を構築して表示
+    const buildAndShow = () => {
+      clearTimeout(hideTimer);
+
+      let html = `
+        <div style="padding:9px 13px 7px;border-bottom:2px solid ${meta.color};display:flex;justify-content:space-between;align-items:center;gap:8px">
+          <span style="font-size:12px;font-weight:700;color:${meta.color}">${sc.name}</span>
+          <span style="font-family:var(--mono);font-size:9px;color:${meta.color};opacity:0.75;background:rgba(255,255,255,0.06);padding:1px 6px;border-radius:3px">${meta.term}</span>
+          <button class="tt-close-btn" style="background:none;border:none;color:var(--text2);cursor:pointer;font-size:18px;line-height:1;padding:0 4px;margin-left:auto;flex-shrink:0">×</button>
+        </div>
+        <div style="padding:9px 12px;display:flex;flex-direction:column;gap:5px">
+      `;
+
+      sc.phases.forEach((ph, pi) => {
+        const pd  = ph.items.filter(i => state.checked[i.id]).length;
+        const pt2 = ph.items.length;
+        const ps  = phaseState(ph);
+        const sc2 = ps==='done'?'#3fb950':ps==='active'?'#58a6ff':ps==='partial'?'#f0883e':'#404d61';
+        const lbl = ps==='done'?'✓ 完了':ps==='active'?'▶ 学習中':ps==='partial'?'◑ 途中':'○ 未着手';
+        const kws = [...new Set(ph.items.map(i=>i.review).filter(Boolean))];
+
+        html += `
+          <div style="background:rgba(255,255,255,0.025);border:1px solid var(--border);border-radius:5px;padding:7px 9px">
+            <div style="display:flex;align-items:center;gap:5px;margin-bottom:3px">
+              <span style="width:6px;height:6px;border-radius:50%;background:${sc2};flex-shrink:0;display:inline-block"></span>
+              <span style="flex:1;font-size:10px;font-weight:700;color:var(--text);cursor:pointer" class="tt-kw-btn" data-scope="${meta.id}" data-phase="${ph.id}" data-hour="${ph.hRange[0]}">${ph.title}</span>
+              <span style="font-size:8px;font-family:var(--mono);color:${sc2}">${lbl}</span>
+              <span style="font-size:8px;font-family:var(--mono);color:${sc2};background:rgba(255,255,255,0.05);padding:0 4px;border-radius:2px">${pd}/${pt2}</span>
+            </div>
+            <div style="font-size:8px;font-family:var(--mono);color:var(--text3);margin-bottom:5px">${ph.hRange[0]}〜${ph.hRange[ph.hRange.length-1]}時間目</div>
+            <div style="display:flex;flex-wrap:wrap;gap:3px;align-items:center">
+        `;
+
+        kws.forEach((kw, ki) => {
+          const allDone = ph.items.filter(i=>i.review===kw).every(i=>state.checked[i.id]);
+          if (ki > 0) html += `<span style="font-size:8px;color:var(--text3)">→</span>`;
+          html += `<span
+            class="tt-kw-btn"
+            data-scope="${meta.id}"
+            data-phase="${ph.id}"
+            data-hour="${ph.hRange[0]}"
+            style="font-size:9px;padding:2px 8px;border-radius:8px;border:1px solid;white-space:nowrap;cursor:pointer;transition:filter 0.12s;
+            ${allDone
+              ? 'color:#3fb950;background:rgba(63,185,80,0.1);border-color:rgba(63,185,80,0.3)'
+              : 'color:var(--text2);background:var(--surface2);border-color:var(--border2)'
+            }">${kw}${allDone?' ✓':''}</span>`;
+        });
+
+        html += `</div></div>`;
+        if (pi < sc.phases.length - 1) {
+          html += `<div style="text-align:center;font-size:11px;color:${meta.color};opacity:0.4;margin:-2px 0">↓</div>`;
+        }
+      });
+
+      html += `</div>
+        <div class="tt-kw-btn" data-scope="${meta.id}" data-phase="${sc.phases[0].id}" data-hour="${sc.phases[0].hRange[0]}"
+          style="padding:7px 13px;border-top:1px solid var(--border);font-size:9px;font-family:var(--mono);color:var(--text3);text-align:right;cursor:pointer;transition:color 0.15s">
+          チェックリストを開く →
+        </div>`;
+
+      tooltip.innerHTML = html;
+
+      // 閉じるボタン
+      const closeBtn = tooltip.querySelector('.tt-close-btn');
+      if (closeBtn) {
+        closeBtn.addEventListener('click', (e) => {
+          e.stopPropagation();
+          tooltip.classList.remove('visible');
+        });
+      }
+
+      // キーワードタグ・フェーズタイトルのクリックで該当画面へ遷移
+      tooltip.querySelectorAll('.tt-kw-btn').forEach(btn => {
+        btn.addEventListener('mouseenter', () => { btn.style.filter = 'brightness(1.25)'; btn.style.transform = 'translateY(-1px)'; });
+        btn.addEventListener('mouseleave', () => { btn.style.filter = ''; btn.style.transform = ''; });
+        btn.addEventListener('click', (e) => {
+          e.stopPropagation();
+          const sid   = btn.dataset.scope;
+          const phId  = btn.dataset.phase;
+          const hour  = parseInt(btn.dataset.hour);
+          tooltip.classList.remove('visible');
+          state.scopeId      = sid;
+          state.currentHour  = hour;
+          renderAll();
+          // フェーズカードまでスクロール
+          setTimeout(() => {
+            const el = document.getElementById('pc-' + phId);
+            if (el) el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+          }, 120);
+        });
+      });
+
+      tooltip.classList.add('visible');
+
+      const isMobileView = window.innerWidth <= 768;
+      if (isMobileView) {
+        // モバイル：画面中央〜下部に固定表示（fullwidth）
+        tooltip.style.left   = '12px';
+        tooltip.style.right  = '12px';
+        tooltip.style.top    = 'auto';
+        tooltip.style.bottom = '20px';
+        tooltip.style.width  = 'auto';
+        tooltip.style.maxWidth = 'calc(100vw - 24px)';
+      } else {
+        // PC：カードの下に表示
+        const cardRect = card.getBoundingClientRect();
+        const tw = 340;
+        let left = cardRect.left + cardRect.width / 2 - tw / 2;
+        left = Math.max(8, Math.min(window.innerWidth - tw - 8, left));
+        const top = cardRect.bottom + 8;
+        tooltip.style.left  = left + 'px';
+        tooltip.style.top   = top  + 'px';
+        tooltip.style.width = tw + 'px';
+        tooltip.style.bottom = 'auto';
+        tooltip.style.right  = 'auto';
+      }
+    };
+
+    card.addEventListener('mouseenter', () => {
+      card.style.borderColor = meta.color;
+      card.style.boxShadow   = `0 0 20px ${meta.color}40`;
+      card.style.transform   = 'translateY(-2px)';
+      buildAndShow();
+    });
+    card.addEventListener('mouseleave', () => {
+      card.style.borderColor = `${meta.color}66`;
+      card.style.boxShadow   = '';
+      card.style.transform   = '';
+      hideTimer = setTimeout(() => tooltip.classList.remove('visible'), 150);
+    });
+    card.addEventListener('click', () => {
+      state.scopeId = meta.id;
+      state.currentHour = 1;
+      renderAll();
+    });
+
+    mapWrap.appendChild(card);
+  });
+
+  tooltip.addEventListener('mouseenter', () => clearTimeout(hideTimer));
+  tooltip.addEventListener('mouseleave', () => tooltip.classList.remove('visible'));
+
+  main.appendChild(mapWrap);
+
+  // ── 学期カードグリッド
+  const scopeMetaMap = Object.fromEntries(scopeMeta.map(m=>[m.id,m]));
+  const semester = [
+    { label:'1学期', ids:['mid1','fin1'] },
+    { label:'2学期', ids:['mid2','fin2'] },
+    { label:'3学期', ids:['term3'] },
+  ];
+  semester.forEach(sem => {
+    const row = document.createElement('div');
+    row.className = 'home-row';
+    row.innerHTML = `<div class="home-row-label">${sem.label}</div><div class="home-row-cards" id="row-${sem.label}"></div>`;
+    main.appendChild(row);
+    const cardsEl = row.querySelector(`#row-${sem.label}`);
+
+    sem.ids.forEach(sid => {
+      const sc   = SCOPES.find(s => s.id === sid);
+      const meta = scopeMetaMap[sid];
+      const tot  = allItems(sc).length, dn = doneCount(sc);
+      const pct  = tot ? Math.round(dn/tot*100) : 0;
+      const card = document.createElement('div');
+      card.className = 'home-scope-card';
+      card.style.setProperty('--c', meta.color);
+
+      const phaseList = sc.phases.map(ph => {
+        const pd = ph.items.filter(i=>state.checked[i.id]).length, pt2 = ph.items.length;
+        const ps = phaseState(ph);
+        const dot = ps==='done'?'var(--green)':ps==='active'?'var(--accent)':ps==='partial'?'var(--orange)':'var(--border2)';
+        return `<div class="home-phase-row">
+          <span class="home-phase-dot" style="background:${dot}"></span>
+          <span class="home-phase-name">${ph.title}</span>
+          <span class="home-phase-count">${pd}/${pt2}</span>
+        </div>`;
+      }).join('');
+
+      card.innerHTML = `
+        <div class="home-card-top">
+          <div><div class="home-card-name">${sc.name}</div><div class="home-card-desc">${sc.desc}</div></div>
+          <div class="home-card-pct">${pct}%</div>
+        </div>
+        <div class="home-card-bar"><div class="home-card-bar-fill" style="width:${pct}%;background:${meta.color}"></div></div>
+        <div class="home-card-phases">${phaseList}</div>
+        <div class="home-card-btn">チェックリストを開く →</div>
+      `;
+      card.addEventListener('click', () => { state.scopeId=sid; state.currentHour=1; renderAll(); });
+      cardsEl.appendChild(card);
+    });
+  });
+}
+
+function renderMain() {
+  const main = document.getElementById('main');
+  const sc = scope();
+  if (!sc) {
+    if (state.scopeId === '__log__') { renderLogPage(); return; }
+    if (state.scopeId === '__how__') { renderHowPage(); return; }
+    renderHome();
+    return;
+  }
+  document.getElementById('headerBadge').textContent = sc.name;
+  main.innerHTML = '';
+
+  const items = allItems(sc), done = doneCount(sc), total = items.length;
+  const pct = total ? Math.round(done/total*100) : 0;
+
+  // ── OVERVIEW
+  const ov = document.createElement('div'); ov.className = 'overview';
+  ov.innerHTML = `
+    <div class="overview-top">
+      <div class="overview-title"><h2>${sc.name}　<span style="font-size:12px;font-weight:400;color:var(--text2)">${sc.desc}</span></h2></div>
+      <div class="ov-stats">
+        <div class="ov-stat"><div class="ov-num g">${done}</div><div class="ov-lbl">完了</div></div>
+        <div class="ov-stat"><div class="ov-num b">${total}</div><div class="ov-lbl">合計</div></div>
+        <div class="ov-stat"><div class="ov-num o">${pct}%</div><div class="ov-lbl">達成率</div></div>
+      </div>
+    </div>
+    <div class="tl-labels">${Array.from({length:sc.totalHours},(_,i)=>`<span>${i+1}h</span>`).join('')}</div>
+    <div class="tl-track" id="tlT"></div>
+    <div class="hour-row"><label>現在地（何時間目まで学習しましたか？）</label><div class="hr-btns" id="hrB"></div></div>
+  `;
+  main.appendChild(ov);
+  const tlt = ov.querySelector('#tlT');
+  for (let h=1;h<=sc.totalHours;h++) {
+    const b=document.createElement('div');
+    const hs=hourState(sc,h);
+    b.className=`tl-blk ${hs==='current'?'st-current':hs==='done'?'st-done':hs==='partial'?'st-partial':'st-future'}`;
+    b.title=`${h}時間目`; b.onclick=()=>{state.currentHour=h;renderAll();};
+    tlt.appendChild(b);
+  }
+  const hrb=ov.querySelector('#hrB');
+  for(let h=1;h<=sc.totalHours;h++){
+    const b=document.createElement('button');
+    const hs=hourState(sc,h);
+    b.className='hr-btn'+(h===state.currentHour?' active':(hs==='done'?' done':''));
+    b.textContent=`${h}h`; b.onclick=()=>{state.currentHour=h;renderAll();};
+    hrb.appendChild(b);
+  }
+
+  // ── FLOW MAP
+  const flow=document.createElement('div'); flow.className='flow-section';
+  flow.innerHTML=`<div class="flow-header">📋 ${sc.name} ロードマップ <span style="font-size:9px;color:var(--text3);font-family:var(--mono)">（各フェーズをクリックでジャンプ）</span></div><div class="flow-body" id="fb"></div>`;
+  main.appendChild(flow);
+  const fb=flow.querySelector('#fb');
+  sc.phases.forEach((ph,idx)=>{
+    const ps=phaseState(ph);
+    const pd=ph.items.filter(i=>state.checked[i.id]).length, pt=ph.items.length;
+    const pp=pt?pd/pt:0, r=16, circ=2*Math.PI*r;
+    if(idx>0){const a=document.createElement('div');a.className='flow-arrow';a.textContent='→';fb.appendChild(a);}
+    const node=document.createElement('div');
+    node.className=`flow-node fn-${ps==='active'?'active':ps==='done'?'done':ps==='partial'?'partial':''}`;
+    node.innerHTML=`
+      <div class="flow-circle">
+        <svg viewBox="0 0 44 44"><circle cx="22" cy="22" r="${r}" fill="none" stroke="var(--border2)" stroke-width="2"/>
+        <circle cx="22" cy="22" r="${r}" fill="none" stroke="${ps==='done'?'var(--green)':ps==='active'?'var(--accent)':ps==='partial'?'var(--orange)':'var(--border2)'}" stroke-width="2" stroke-linecap="round" stroke-dasharray="${circ}" stroke-dashoffset="${circ*(1-pp)}" transform="rotate(-90 22 22)"/></svg>
+        <span>${Math.round(pp*100)}%</span>
+      </div>
+      <div class="flow-node-name">${ph.title}</div>
+    `;
+    node.onclick=()=>{state.currentHour=ph.hRange[0];renderAll();setTimeout(()=>{const el=document.getElementById('pc-'+ph.id);if(el)el.scrollIntoView({behavior:'smooth',block:'center'});},100);};
+    fb.appendChild(node);
+  });
+
+  // ── PHASE CARDS
+  const grid=document.createElement('div'); grid.className='cards-grid'; main.appendChild(grid);
+  sc.phases.forEach(ph=>{
+    const ps=phaseState(ph);
+    const pd=ph.items.filter(i=>state.checked[i.id]).length, pt=ph.items.length;
+    const pp=pt?pd/pt:0, r=11, circ=2*Math.PI*r;
+    const card=document.createElement('div');
+    card.className='phase-card'+(ps==='active'?' is-active':''); card.id='pc-'+ph.id;
+    card.innerHTML=`
+      <div class="pc-header">
+        <svg class="pc-ring" viewBox="0 0 30 30">
+          <circle cx="15" cy="15" r="${r}" fill="none" stroke="var(--border2)" stroke-width="2"/>
+          <circle cx="15" cy="15" r="${r}" fill="none" stroke="${pp===1?'var(--green)':ps==='active'?'var(--accent)':'var(--border2)'}" stroke-width="2" stroke-linecap="round" stroke-dasharray="${circ}" stroke-dashoffset="${circ*(1-pp)}" transform="rotate(-90 15 15)"/>
+        </svg>
+        <span class="pc-num">${ph.hRange[0]}〜${ph.hRange[ph.hRange.length-1]}h</span>
+        <span class="pc-title">${ph.title}</span>
+        <span style="font-size:9px;color:var(--text3);font-family:var(--mono);flex-shrink:0">${pd}/${pt}</span>
+        <span class="pc-arrow">▾</span>
+      </div>
+      <div class="pc-body"><ul class="checklist" id="cl-${ph.id}"></ul></div>
+    `;
+    card.querySelector('.pc-header').onclick=()=>card.classList.toggle('collapsed');
+    grid.appendChild(card);
+    const ul=card.querySelector(`#cl-${ph.id}`);
+    ph.items.forEach(item=>{
+      const ck=!!state.checked[item.id], cur=item.h===state.currentHour;
+      const li=document.createElement('li');
+      li.className='ci'+(ck?' ck':'')+(cur&&!ck?' cur':'');
+      li.innerHTML=`
+        <div class="ci-box"><svg class="ci-check" width="9" height="9" viewBox="0 0 9 9"><polyline points="1,4.5 3.5,7 8,1.5" fill="none" stroke="white" stroke-width="1.5" stroke-linecap="round"/></svg></div>
+        <div class="ci-body">
+          <div class="ci-text">${item.text}</div>
+          <div class="ci-meta">${item.h}時間目${ck?' ✓ 完了':cur?' ← 現在地':''}</div>
+        </div>
+      `;
+      // クイズボタンをci-boxの直後（テキストの前）に挿入
+      const qBtn = document.createElement('button');
+      qBtn.className = 'quiz-btn';
+      qBtn.title = '確認クイズ';
+      qBtn.textContent = '🧩';
+      qBtn.addEventListener('click', (e)=>{
+        e.stopPropagation();
+        e.preventDefault();
+        openQuizModal(item);
+      });
+      // ci-box の直後、ci-body の前に挿入
+      const ciBody = li.querySelector('.ci-body');
+      li.insertBefore(qBtn, ciBody);
+
+      // 授業メモボタン（対応する録音メモがある場合のみ）
+      const note = getLessonNote(item.id);
+      if (note) {
+        const nBtn = document.createElement('button');
+        nBtn.className = 'note-btn';
+        nBtn.title = '授業メモを見る';
+        nBtn.textContent = '📝';
+        nBtn.addEventListener('click', (e)=>{
+          e.stopPropagation();
+          e.preventDefault();
+          openNoteModal(note, item.id);
+        });
+        li.insertBefore(nBtn, ciBody);
+      }
+
+      li.addEventListener('click', (e)=>{
+        if(!e.target.closest('.quiz-btn') && !e.target.closest('.note-btn')) toggleCheck(item.id);
+      });
+      ul.appendChild(li);
+    });
+  });
+
+  // ── 到達確認
+  const hAll=items.filter(i=>i.h===state.currentHour);
+  const hDone=hAll.filter(i=>state.checked[i.id]).length;
+  const detail=document.createElement('div'); detail.className='detail-card';
+  detail.innerHTML=`
+    <div class="detail-head"><h3>📍 第${state.currentHour}時間目の到達確認チェックリスト</h3><span class="badge ${hDone===hAll.length&&hAll.length>0?'badge-g':'badge-b'}">${hDone}/${hAll.length}</span></div>
+    <div class="detail-body" id="abB"></div>
+  `;
+  main.appendChild(detail);
+  const ab=detail.querySelector('#abB');
+  if(!hAll.length){ab.innerHTML=`<p style="color:var(--text3);font-size:11px">この時間帯の指定項目はありません。</p>`;}
+  else{
+    const can=hAll.filter(i=>state.checked[i.id]), cannot=hAll.filter(i=>!state.checked[i.id]);
+    if(can.length){
+      const s=document.createElement('div'); s.className='ab-section';
+      s.innerHTML=`<div class="ab-label">✅ できている（${can.length}）</div>`;
+      can.forEach(i=>{const d=document.createElement('div');d.className='ab-item can';d.innerHTML=`<div class="ab-dot"></div><div class="ab-content"><div class="ab-text">${i.text}</div></div>`;s.appendChild(d);});
+      ab.appendChild(s);
+    }
+    if(cannot.length){
+      const s=document.createElement('div'); s.className='ab-section';
+      s.innerHTML=`<div class="ab-label">⚠️ まだ自信がない（${cannot.length}）</div>`;
+      cannot.forEach(i=>{const d=document.createElement('div');d.className='ab-item cannot';d.innerHTML=`<div class="ab-dot"></div><div class="ab-content"><div class="ab-text">${i.text}</div>${i.review?`<div class="ab-hint" onclick="openModal('${i.id}')">↩ 振り返る：${i.review}</div>`:''}</div>`;s.appendChild(d);});
+      ab.appendChild(s);
+    }
+  }
+
+  // ── 振り返りパネル
+  const past=items.filter(i=>i.h<state.currentHour&&!state.checked[i.id]);
+  const rv=document.createElement('div'); rv.className='review-card'+(past.length===0?' hidden':'');
+  rv.innerHTML=`<div class="review-head"><h3>🔁 前の時間帯の未完了項目（${past.length}個）</h3></div><div class="review-body" id="rvB"></div>`;
+  main.appendChild(rv);
+  if(past.length){
+    const rvb=rv.querySelector('#rvB');
+    past.forEach(i=>{const d=document.createElement('div');d.className='rv-item';d.innerHTML=`<div><div class="rv-title">${i.text}</div><div class="rv-sub">${i.h}時間目の項目</div>${i.review?`<div class="rv-link" onclick="openModal('${i.id}')">↩ 「${i.review}」を振り返る</div>`:''}</div>`;rvb.appendChild(d);});
+  }
+}
+
+function toggleCheck(id) { state.checked[id]=!state.checked[id]; save(); renderAll(); }
+
+function openModal(itemId) {
+  const sc=scope(); if(!sc) return;
+  const item=allItems(sc).find(i=>i.id===itemId); if(!item) return;
+  const hint=HINTS[item.review]||`教科書・ノートで「${item.review}」を確認し、自分の言葉で説明できるか確かめましょう。`;
+  document.getElementById('modalBody').innerHTML=`
+    <button class="modal-close" onclick="closeModal()">×</button>
+    <h2 style="margin-bottom:10px;color:var(--orange)">振り返り：${item.review}</h2>
+    <div style="background:var(--surface2);border-radius:6px;padding:12px 14px;font-size:12px;line-height:1.9;color:var(--text2);margin-bottom:12px">${hint}</div>
+    <div style="background:var(--done-bg);border:1px solid rgba(63,185,80,0.2);border-radius:6px;padding:10px 12px;font-size:11px;line-height:1.7;color:var(--text2)">
+      <strong style="color:var(--green)">チェック項目：</strong><br>${item.text}
+    </div>
+    <div style="margin-top:12px;text-align:right">
+      <button onclick="toggleFromModal('${item.id}')" style="background:var(--green);border:none;color:#000;padding:6px 14px;border-radius:5px;cursor:pointer;font-weight:700;font-size:12px">
+        ${state.checked[item.id]?'☑ 完了を取り消す':'✓ 理解できた！完了にする'}
+      </button>
+    </div>
+  `;
+  document.getElementById('overlay').classList.add('open');
+}
+function toggleFromModal(id) { state.checked[id]=!state.checked[id]; save(); renderAll(); closeModal(); }
+function closeModal() { document.getElementById('overlay').classList.remove('open'); }
+document.getElementById('modalClose').onclick=closeModal;
+document.getElementById('overlay').onclick=(e)=>{if(e.target===e.currentTarget)closeModal();};
+
+// ═══════════════════════════════════════════════════════
+//  LESSON NOTE MODAL  ── 授業メモ表示
+// ═══════════════════════════════════════════════════════
+
+function openNoteModal(note, currentItemId) {
+  // ヘッダー
+  document.getElementById('noteLabel').textContent = `${note.scope} ／ ${note.date}`;
+  document.getElementById('noteTitle').textContent = note.title;
+
+  const body = document.getElementById('noteBody');
+  body.innerHTML = '';
+
+  // ダイジェスト
+  const digest = document.createElement('div');
+  digest.className = 'note-digest';
+  digest.textContent = note.digest;
+  body.appendChild(digest);
+
+  // セクション
+  note.sections.forEach(sec => {
+    const s = document.createElement('div');
+    s.className = 'note-section';
+    s.innerHTML = `<div class="note-section-heading">${sec.heading}</div>
+      <div class="note-section-body">${sec.body}</div>`;
+    body.appendChild(s);
+  });
+
+  // 先生の言葉
+  if (note.teacherQuote) {
+    const q = document.createElement('div');
+    q.className = 'note-quote';
+    q.innerHTML = `<div class="note-quote-label">🎤 先生の言葉</div>${note.teacherQuote}`;
+    body.appendChild(q);
+  }
+
+  // 関連チェック項目
+  const sc = scope();
+  if (sc && note.relatedItems?.length) {
+    const rel = document.createElement('div');
+    rel.className = 'note-related';
+    const allItems_list = allItems(sc);
+    const relItems = note.relatedItems
+      .map(id => allItems_list.find(i => i.id === id))
+      .filter(Boolean);
+    if (relItems.length) {
+      rel.innerHTML = `<div class="note-related-label">📋 この授業に対応するチェック項目</div>` +
+        relItems.map(i => {
+          const ck = state.checked[i.id];
+          const isCurrent = i.id === currentItemId;
+          return `<div class="note-related-item">
+            <div class="note-related-dot" style="background:${ck?'var(--green)':isCurrent?'var(--accent)':'var(--text3)'}"></div>
+            <span style="${ck?'text-decoration:line-through;color:var(--text3)':''}">${i.text.replace(/<[^>]+>/g,'')}</span>
+            ${ck?'<span style="color:var(--green);font-size:9px;font-family:var(--mono);flex-shrink:0"> ✓</span>':''}
+          </div>`;
+        }).join('');
+      body.appendChild(rel);
+    }
+  }
+
+  document.getElementById('noteOverlay').classList.add('open');
+}
+
+function closeNoteModal() {
+  document.getElementById('noteOverlay').classList.remove('open');
+}
+
+document.getElementById('noteClose').addEventListener('click', closeNoteModal);
+document.getElementById('noteOverlay').addEventListener('click', (e) => {
+  if (e.target === e.currentTarget) closeNoteModal();
+});
+
+// ═══════════════════════════════════════════════════════
+//  QUIZ MODAL  ── 事前生成済み問題を表示
+// ═══════════════════════════════════════════════════════
+
+let quizState = { item: null, quizData: null, answered: false };
+
+function openQuizModal(item) {
+  quizState = { item, quizData: null, answered: false };
+  const plainText = item.text.replace(/<[^>]+>/g, '');
+  document.getElementById('quizTopic').textContent = item.review || plainText.slice(0, 40) + '…';
+  document.getElementById('quizOverlay').classList.add('open');
+  loadQuiz(item);
+}
+
+function closeQuizModal() {
+  document.getElementById('quizOverlay').classList.remove('open');
+}
+
+document.getElementById('quizClose').addEventListener('click', closeQuizModal);
+document.getElementById('quizOverlay').addEventListener('click', (e) => {
+  if (e.target === e.currentTarget) closeQuizModal();
+});
+
+function loadQuiz(item) {
+  const q = QUIZZES[item.id];
+  if (!q) {
+    document.getElementById('quizBody').innerHTML = `
+      <div style="padding:32px;text-align:center;color:var(--text2)">
+        <div style="font-size:28px;margin-bottom:10px">📝</div>
+        <div style="font-size:12px;color:var(--text2);margin-bottom:6px">この項目のクイズは準備中です。</div>
+        <div style="font-size:11px;color:var(--text3)">振り返りヒントを確認して理解を深めましょう。</div>
+      </div>`;
+    return;
+  }
+  quizState.quizData = q;
+  renderQuiz(q);
+}
+
+// ── 問題レンダリング
+function renderQuiz(q) {
+  const body = document.getElementById('quizBody');
+  const typeLabel = q.type === 'mc' ? '選択式' : q.type === 'fill' ? '穴埋め式' : '記述式';
+  const typeCls   = q.type === 'mc' ? 'mc'    : q.type === 'fill' ? 'fil'      : 'txt';
+
+  let html = `<div class="quiz-type-badge ${typeCls}">${typeLabel}</div>
+    <div class="quiz-question">${q.question}</div>`;
+
+  if (q.type === 'mc') {
+    html += `<div class="quiz-choices" id="quizChoices">`;
+    q.choices.forEach((c, i) => {
+      const key = ['A','B','C','D'][i];
+      html += `<button class="quiz-choice" data-key="${key}" onclick="answerMC('${key}')">`
+            + `<span class="quiz-choice-key">${key}</span>${c.replace(/^[A-D]\.\s*/,'')}</button>`;
+    });
+    html += `</div>`;
+  } else if (q.type === 'fill') {
+    if (q.hint) html += `<div style="font-size:11px;color:var(--text3);margin-bottom:8px">💡 ヒント：${q.hint}</div>`;
+    html += `<div class="quiz-input-wrap">
+      <input class="quiz-input" style="min-height:auto;resize:none" id="quizFillInput"
+        placeholder="答えを入力してください" onkeydown="if(event.key==='Enter')submitFill()">
+    </div>`;
+  } else {
+    html += `<div class="quiz-input-wrap">
+      <textarea class="quiz-input" id="quizTextInput" placeholder="自分の言葉で説明してください"></textarea>
+    </div>`;
+  }
+
+  html += `<div class="quiz-result" id="quizResult">
+    <div class="quiz-result-head" id="quizResultHead"></div>
+    <div class="quiz-result-body" id="quizResultBody"></div>
+  </div>
+  <div class="quiz-actions" id="quizActions">`;
+
+  if (q.type === 'mc') {
+    // 選択式はボタンクリックで即回答
+    html += `</div>`;
+  } else if (q.type === 'fill') {
+    html += `<button class="quiz-action-btn qab-submit" id="quizSubmitBtn" onclick="submitFill()">答え合わせ</button></div>`;
+  } else {
+    html += `<button class="quiz-action-btn qab-submit" id="quizSubmitBtn" onclick="submitText()">AIに採点してもらう</button></div>`;
+  }
+
+  body.innerHTML = html;
+
+  if (q.type === 'fill') {
+    document.getElementById('quizFillInput')?.focus();
+  } else if (q.type === 'text') {
+    document.getElementById('quizTextInput')?.focus();
+  }
+}
+
+// ── 選択式：即時判定
+function answerMC(key) {
+  if (quizState.answered) return;
+  quizState.answered = true;
+  const q = quizState.quizData;
+  const correct = q.answer.toUpperCase().replace(/[^A-D]/,'');
+  document.querySelectorAll('.quiz-choice').forEach(btn => {
+    btn.disabled = true;
+    const k = btn.dataset.key;
+    if (k === correct) btn.classList.add('correct');
+    else if (k === key && key !== correct) btn.classList.add('incorrect');
+  });
+  const pass = key === correct;
+  showResult(pass,
+    pass ? '正解！' : `不正解 — 正解は ${correct}`,
+    q.explanation || ''
+  );
+}
+
+// ── 穴埋め式：文字列判定
+function submitFill() {
+  if (quizState.answered) return;
+  const input = document.getElementById('quizFillInput');
+  if (!input || !input.value.trim()) return;
+  quizState.answered = true;
+  const q = quizState.quizData;
+  const userAns = input.value.trim();
+  // 正解との比較（スペース・記号を除いた比較）
+  const normalize = s => s.replace(/[\s・、。]/g,'').toLowerCase();
+  const pass = normalize(userAns) === normalize(q.answer);
+  input.disabled = true;
+  showResult(pass,
+    pass ? '正解！' : `不正解 — 正解：${q.answer}`,
+    q.explanation || ''
+  );
+}
+
+// ── 記述式：AIが採点
+function submitText() {
+  if (quizState.answered) return;
+  const input = document.getElementById('quizTextInput');
+  if (!input || !input.value.trim()) return;
+  quizState.answered = true;
+  const q = quizState.quizData;
+  // 模範解答と採点基準を表示して自己採点してもらう
+  const pointsHtml = (q.points||[]).map(p => `<li style="margin-bottom:3px">${p}</li>`).join('');
+  const body = `
+    <div style="margin-bottom:8px"><strong style="color:var(--text)">模範解答：</strong><br>
+    <span style="color:var(--text2)">${q.model_answer}</span></div>
+    ${q.points?.length ? `<div><strong style="color:var(--text)">採点基準：</strong><ul style="margin:4px 0 0 16px;color:var(--text2);font-size:11px">${pointsHtml}</ul></div>` : ''}
+  `;
+  // 自己採点ボタンを表示
+  const result = document.getElementById('quizResult');
+  result.className = 'quiz-result show';
+  result.style.background = 'rgba(88,166,255,0.08)';
+  result.style.borderColor = 'rgba(88,166,255,0.3)';
+  document.getElementById('quizResultHead').innerHTML = '📖 模範解答を確認して自己採点しよう';
+  document.getElementById('quizResultHead').style.color = 'var(--accent)';
+  document.getElementById('quizResultBody').innerHTML = body;
+  const actions = document.getElementById('quizActions');
+  const itemId = quizState.item?.id;
+  actions.innerHTML = `
+    <button class="quiz-action-btn" style="background:var(--orange);color:#000" onclick="showResult(false,'もう少し！自信がついたらまた挑戦しよう','')">△ もう少し</button>
+    <button class="quiz-action-btn qab-check" onclick="checkFromQuiz('${itemId}')">✓ 理解できた！</button>
+  `;
+}
+
+// ── 結果表示・アクションボタン
+function showResult(pass, head, body) {
+  const result = document.getElementById('quizResult');
+  result.className = 'quiz-result show ' + (pass ? 'pass' : 'fail');
+  document.getElementById('quizResultHead').innerHTML = (pass ? '✅ ' : '❌ ') + head;
+  document.getElementById('quizResultBody').innerHTML = body;
+
+  // アクションボタン更新
+  const actions = document.getElementById('quizActions');
+  const itemId = quizState.item?.id;
+  const alreadyChecked = itemId && state.checked[itemId];
+  actions.innerHTML = `
+    ${pass && !alreadyChecked
+      ? `<button class="quiz-action-btn qab-check" onclick="checkFromQuiz('${itemId}')">✓ 理解済みにする</button>`
+      : alreadyChecked
+        ? `<span style="font-size:11px;color:var(--green);align-self:center">✓ 完了済み</span>`
+        : ''}
+    <button class="quiz-action-btn qab-next" onclick="closeQuizModal()">閉じる</button>
+  `;
+}
+
+function checkFromQuiz(itemId) {
+  if (!itemId) return;
+  state.checked[itemId] = true;
+  save();
+  renderAll();
+  closeQuizModal();
+}
+
+function retryQuiz() {
+  quizState.answered = false;
+  quizState.quizData = null;
+  document.getElementById('quizBody').innerHTML = `
+    <div class="quiz-loading">
+      <div class="quiz-spinner"></div>
+      <div class="quiz-loading-text">AIが問題を生成しています…</div>
+    </div>`;
+  loadQuiz(quizState.item);
+}
+
+
+function renderAll() {
+  // ページ遷移時に残ったツールチップを消す
+  document.querySelectorAll('.phase-tooltip').forEach(el => el.remove());
+  renderSidebar();
+  // モバイルではサイドバーボタンに自動クローズを付与
+  if (window.innerWidth <= 768) {
+    document.getElementById('sidebar').querySelectorAll('.scope-btn').forEach(btn => {
+      btn.addEventListener('click', () => setTimeout(closeSidebar, 150));
+    });
+  }
+  renderMain();
+  // ページ遷移後にスクロール位置をトップに戻す
+  requestAnimationFrame(() => {
+    window.scrollTo(0, 0);
+    const main = document.getElementById('main');
+    if (main) main.scrollTop = 0;
+  });
+}
+
+renderAll();
+
+// ═══════════════════════════════════════════════════
+//  MOBILE SIDEBAR TOGGLE
+// ═══════════════════════════════════════════════════
+function toggleSidebar() {
+  const sb  = document.getElementById('sidebar');
+  const ov  = document.getElementById('sidebarOverlay');
+  const isOpen = sb.classList.contains('open');
+  if (isOpen) { closeSidebar(); } else { openSidebar(); }
+}
+function openSidebar() {
+  document.getElementById('sidebar').classList.add('open');
+  document.getElementById('sidebarOverlay').classList.add('show');
+}
+function closeSidebar() {
+  document.getElementById('sidebar').classList.remove('open');
+  document.getElementById('sidebarOverlay').classList.remove('show');
+}
+
+// サイドバーのボタンクリック後にモバイルで自動クローズ
+function renderSidebarWithAutoClose() {
+  renderSidebar();
+  if (window.innerWidth <= 768) {
+    document.getElementById('sidebar').querySelectorAll('.scope-btn').forEach(btn => {
+      btn.addEventListener('click', () => setTimeout(closeSidebar, 150), { once: false });
+    });
+  }
+}
+
+
+
+const TOUR_KEY = 'chem_nav_tour_done';
+
+const TOUR_STEPS = [
+  {
+    title: 'ChemNav へようこそ！',
+    body: '必修化学の年間学習ロードマップナビゲーターです。\nチェックリスト・確認クイズ・授業メモがひとつにまとまっています。\nざっとご案内します（約1分）。',
+    target: null,  // 中央表示
+  },
+  {
+    title: '🗺 年間ロードマップ',
+    body: '5つの試験範囲がリングの進捗付きで並んでいます。\n各カードにマウスを乗せると、フェーズごとのキーワードマップが表示されます。',
+    target: '.roadmap-map-wrap',
+    side: 'bottom',
+  },
+  {
+    title: '📋 サイドバーで試験範囲を選ぶ',
+    body: '左の一覧から試験範囲を選ぶと、チェックリスト画面に切り替わります。\n進捗バーで各範囲の達成率が一目でわかります。',
+    target: '.sidebar',
+    side: 'right',
+  },
+  {
+    title: '☑️ チェックリスト',
+    body: '各項目をクリックすると完了マークが付きます。\nチェック状態はブラウザに自動保存されるので、次回開いても消えません。',
+    target: null,
+    targetSelector: '.ci',
+    side: 'bottom',
+  },
+  {
+    title: '🧩 確認クイズ',
+    body: '各項目にマウスを乗せると右に 🧩 ボタンが出ます。\nクリックすると選択式・穴埋め式の確認クイズが出題されます。',
+    target: null,
+    targetSelector: '.quiz-btn',
+    side: 'left',
+  },
+  {
+    title: '📝 授業メモ',
+    body: '録音から作った授業メモが付いている項目には 📝 ボタンが表示されます。\n先生のキーフレーズや例え話を振り返れます。',
+    target: null,
+    targetSelector: '.note-btn',
+    side: 'left',
+  },
+  {
+    title: '📖 授業の受け方',
+    body: '左サイドバーの「授業の受け方」では、\n先生の学習哲学・評価の仕組み・コメントシートの活用法を確認できます。',
+    target: null,
+    targetId: null,
+    targetText: '📖 授業の受け方',
+    side: 'right',
+  },
+  {
+    title: '準備完了です！',
+    body: 'まずはトップページの試験範囲カードにマウスを乗せてみてください。\nわからないことがあればこのガイドはいつでも再表示できます。',
+    target: null,
+    isLast: true,
+  },
+];
+
+let tourStep = 0;
+let tourActive = false;
+
+function startTour() {
+  closeSidebar();
+  tourActive = true;
+  tourStep = 0;
+  // ホーム画面に戻す
+  if (state.scopeId !== null) {
+    state.scopeId = null;
+    renderAll();
+  }
+  // ドット生成
+  const dots = document.getElementById('tourDots');
+  dots.innerHTML = '';
+  TOUR_STEPS.forEach((_, i) => {
+    const d = document.createElement('div');
+    d.className = 'tour-dot';
+    dots.appendChild(d);
+  });
+  showTourStep(0);
+}
+
+function showTourStep(idx) {
+  const step = TOUR_STEPS[idx];
+  const ring    = document.getElementById('tourRing');
+  const bubble  = document.getElementById('tourBubble');
+  const stepNum = document.getElementById('tourStepNum');
+  const title   = document.getElementById('tourTitle');
+  const body    = document.getElementById('tourBody');
+  const nextBtn = document.getElementById('tourNext');
+
+  // ドット更新
+  document.querySelectorAll('.tour-dot').forEach((d, i) => {
+    d.classList.toggle('active', i === idx);
+    d.classList.toggle('done',   i < idx);
+  });
+
+  stepNum.textContent = `STEP ${idx + 1} / ${TOUR_STEPS.length}`;
+  title.textContent   = step.title;
+  body.textContent    = step.body;
+
+  const isLast = step.isLast || idx === TOUR_STEPS.length - 1;
+  nextBtn.textContent = isLast ? '✓ はじめる' : '次へ';
+  nextBtn.className   = 'tour-btn-next' + (isLast ? ' finish' : '');
+
+  // 最終ステップでボタンをパルス開始
+  const tourBtn = document.querySelector('.header-tour-btn');
+  if (isLast) {
+    if (tourBtn) tourBtn.classList.add('pulse');
+  } else {
+    if (tourBtn) tourBtn.classList.remove('pulse');
+  }
+
+  // ターゲット要素を探す
+  let targetEl = null;
+  if (step.target)         targetEl = document.querySelector(step.target);
+  if (step.targetSelector) targetEl = document.querySelector(step.targetSelector);
+  if (step.targetText) {
+    document.querySelectorAll('.scope-btn-name').forEach(el => {
+      if (el.textContent.trim().includes(step.targetText.replace('📖 ',''))) targetEl = el.closest('.scope-btn');
+    });
+  }
+
+  bubble.style.display = 'block';
+  // 古いarrowを削除
+  bubble.querySelectorAll('.tour-bubble-arrow').forEach(a => a.remove());
+
+  // モバイルでは常に画面下部中央に固定表示
+  if (window.innerWidth <= 768) {
+    ring.style.display = 'none';
+    bubble.style.left   = '12px';
+    bubble.style.right  = '12px';
+    bubble.style.width  = 'calc(100vw - 24px)';
+    bubble.style.bottom = '24px';
+    bubble.style.top    = 'auto';
+    // アニメーションリセット
+    bubble.style.animation = 'none';
+    bubble.offsetHeight;
+    bubble.style.animation = '';
+    return;
+  }
+
+  if (targetEl) {
+    const rect = targetEl.getBoundingClientRect();
+    const pad  = 6;
+    ring.style.display = 'block';
+    ring.style.left   = (rect.left   - pad) + 'px';
+    ring.style.top    = (rect.top    - pad) + 'px';
+    ring.style.width  = (rect.width  + pad*2) + 'px';
+    ring.style.height = (rect.height + pad*2) + 'px';
+
+    // バブル位置（ターゲットの下 or 右）
+    const side = step.side || 'bottom';
+    const bw = 300, bh = 180;
+    let bx, by;
+
+    if (side === 'bottom') {
+      bx = Math.max(8, Math.min(window.innerWidth - bw - 8,
+            rect.left + rect.width / 2 - bw / 2));
+      by = rect.bottom + 16;
+      if (by + bh > window.innerHeight - 8) by = rect.top - bh - 16;
+      const arrow = document.createElement('div');
+      arrow.className = 'tour-bubble-arrow tour-arrow-top';
+      arrow.style.left = (rect.left + rect.width/2 - bx - 6) + 'px';
+      bubble.prepend(arrow);
+    } else if (side === 'right') {
+      bx = rect.right + 16;
+      by = Math.max(8, Math.min(window.innerHeight - bh - 8,
+            rect.top + rect.height / 2 - bh / 2));
+      if (bx + bw > window.innerWidth - 8) bx = rect.left - bw - 16;
+      const arrow = document.createElement('div');
+      arrow.className = 'tour-bubble-arrow tour-arrow-left';
+      arrow.style.top = (rect.top + rect.height/2 - by - 6) + 'px';
+      bubble.prepend(arrow);
+    } else if (side === 'left') {
+      bx = rect.left - bw - 16;
+      if (bx < 8) bx = rect.right + 16;
+      by = Math.max(8, Math.min(window.innerHeight - bh - 8,
+            rect.top + rect.height / 2 - bh / 2));
+    }
+
+    bubble.style.left = bx + 'px';
+    bubble.style.top  = by + 'px';
+  } else {
+    // 中央表示
+    ring.style.display = 'none';
+    bubble.style.left = Math.max(8, window.innerWidth  / 2 - 150) + 'px';
+    bubble.style.top  = Math.max(8, window.innerHeight / 2 - 90)  + 'px';
+  }
+
+  // アニメーションリセット
+  bubble.style.animation = 'none';
+  bubble.offsetHeight;
+  bubble.style.animation = '';
+}
+
+function tourNext() {
+  if (!tourActive) return;
+  if (tourStep >= TOUR_STEPS.length - 1) {
+    endTour();
+    return;
+  }
+  // step3（チェックリスト）に進む前にチェックリスト画面へ切り替え
+  if (tourStep === 2) {
+    const firstScope = state.scopeId || 'mid1';
+    if (!state.scopeId) {
+      state.scopeId = 'mid1';
+      state.currentHour = 1;
+      renderAll();
+      setTimeout(() => { tourStep++; showTourStep(tourStep); }, 350);
+      return;
+    }
+  }
+  tourStep++;
+  showTourStep(tourStep);
+}
+
+function endTour() {
+  tourActive = false;
+  document.getElementById('tourRing').style.display = 'none';
+  localStorage.setItem(TOUR_KEY, '1');
+
+  const bubble  = document.getElementById('tourBubble');
+  const tourBtn = document.querySelector('.header-tour-btn');
+
+  if (tourBtn && bubble.style.display !== 'none') {
+    // ボタンの中心座標を取得
+    const btnRect = tourBtn.getBoundingClientRect();
+    const btnCx   = btnRect.left + btnRect.width  / 2;
+    const btnCy   = btnRect.top  + btnRect.height / 2;
+
+    // 吹き出しの現在の中心から吹き出しの transform-origin をボタン方向に設定
+    const bRect = bubble.getBoundingClientRect();
+    const originX = btnCx - bRect.left;
+    const originY = btnCy - bRect.top;
+    bubble.style.transformOrigin = `${originX}px ${originY}px`;
+
+    // 吸い込みアニメーション開始
+    // animation を無効化してtransitionで制御
+    bubble.style.animation = 'none';
+    requestAnimationFrame(() => {
+      bubble.classList.add('fly-to');
+      bubble.addEventListener('transitionend', () => {
+        bubble.style.display = 'none';
+        bubble.classList.remove('fly-to');
+        bubble.style.transformOrigin = '';
+        bubble.style.animation = '';
+        // パルスを止めてボタンを通常に戻す
+        tourBtn.classList.remove('pulse');
+      }, { once: true });
+    });
+  } else {
+    bubble.style.display = 'none';
+    if (tourBtn) tourBtn.classList.remove('pulse');
+  }
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+  document.getElementById('tourNext').addEventListener('click', tourNext);
+  document.getElementById('tourSkip').addEventListener('click', endTour);
+
+  // Enterキーでも次へ進む
+  document.addEventListener('keydown', (e) => {
+    if (!tourActive) return;
+    if (e.key === 'Enter') { e.preventDefault(); tourNext(); }
+    if (e.key === 'Escape') { endTour(); }
+  });
+
+  // 初回起動判定
+  if (!localStorage.getItem(TOUR_KEY)) {
+    setTimeout(startTour, 600);
+  }
+});
+
+</script>
+
+<!-- TOUR -->
+<div id="tourRing" class="tour-highlight-ring" style="display:none"></div>
+<div id="tourBubble" class="tour-bubble" style="display:none">
+  <div class="tour-step-num" id="tourStepNum"></div>
+  <h3 id="tourTitle"></h3>
+  <p id="tourBody"></p>
+  <div class="tour-actions">
+    <button class="tour-btn-skip" id="tourSkip">スキップ</button>
+    <div class="tour-dots" id="tourDots"></div>
+    <button class="tour-btn-next" id="tourNext">次へ</button>
+  </div>
+</div>
+
+</body>
+</html>
